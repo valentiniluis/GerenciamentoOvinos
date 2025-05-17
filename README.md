@@ -1,4 +1,8 @@
-# trabalho_integrador
+# Sistema para Gerenciamento de Rebanho de Ovelhas
+
+## Requisitos da Aplicação
+
+A documentação completa contendo todos os requisitos da aplicação está em `requisitos_aplicacao/documentacao.pdf`
 
 ## Como executar o projeto com Docker
 
