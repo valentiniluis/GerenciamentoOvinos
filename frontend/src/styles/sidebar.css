@@ -1,0 +1,24 @@
+.cont {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.profile-picture-one {
+  max-width: 100px;
+  border-radius: 100%;
+}
+
+.profile-picture-two {
+  max-width: 60px;
+}
+
+.option-text {
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.option-icon {
+  width: 28px;
+}
