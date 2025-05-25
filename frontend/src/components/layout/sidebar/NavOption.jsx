@@ -1,7 +1,7 @@
 const NavOption = ({ name, icon, onClick, active }) => {
   return (
     <div
-      className={`d-flex gap-4 py-1 align-items-center nav-option ${
+      className={`d-flex gap-4 py-1 align-items-center nav-option p-2 ${
         active ? 'active' : ''
       }`}
       onClick={onClick}

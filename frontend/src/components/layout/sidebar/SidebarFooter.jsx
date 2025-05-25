@@ -1,6 +1,6 @@
 const SidebarFooter = ({ profilePicture }) => {
   return (
-    <div className="row justify-content-center">
+    <div className="row justify-content-center py-3 border-top">
       <div className="col-6 d-flex justify-content-center align-items-center gap-3">
         <img
           className="profile-picture-two"
