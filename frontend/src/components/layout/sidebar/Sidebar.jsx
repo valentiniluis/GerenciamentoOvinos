@@ -28,6 +28,10 @@ const Sidebar = ({ user, group, paginaAtual }) => {
     {
       name: 'Usuários',
       icon: './people_icon.svg',
+      submenu: [
+        { name: 'Usuário'},
+        { name: 'Grupos'}
+      ]
     },
   ];
 
