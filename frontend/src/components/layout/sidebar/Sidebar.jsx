@@ -13,18 +13,19 @@ const Sidebar = ({ user, group, onNavigate }) => {
   ];
 
   return (
-    <nav className="cont bg-white">
-      <SidebarHeader user={user} profilePicture="./Group_2.png" />
+    <nav className="sidebar">
+      <SidebarHeader user={user} profilePicture={"./Group_2.png"} />
       <div className="row">
-        <div className="col-5"></div>
-        <div className="col">
-          { optNavegacao.map((option) => (
-            <NavOption
-              key={option.name}
-              name={option.name}
-              icon={option.icon}
-            />
-          ))};
+        <div className="col d-flex justify-content-center">
+          <div>
+            { optNavegacao.map((option) => (
+              <NavOption
+                key={option.name}
+                name={option.name}
+                icon={option.icon}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <SidebarFooter profilePicture={'./Group_2.png'} />

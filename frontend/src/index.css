@@ -1,9 +1,26 @@
 body, html {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .sla {
-    border: solid black 2px;
-  }
-  
+  margin: 0;
+  padding: 0;
+}
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-btn {
+  width: fit-content;
+  padding: 0.6rem 3rem;
+  border-radius: 3px;
+  background-color: #009099;
+}
+
+.form-btn:hover {
+  background-color: #006a72;
+}
+
+.sla {
+  border: solid black 2px;
+}

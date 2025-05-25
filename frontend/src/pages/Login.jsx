@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
 import '../styles/login.css'
-import InputField from '../components/ui/InputField';
+import InputField from '../components/UI/InputField';
 
 const Login = () => {
 
