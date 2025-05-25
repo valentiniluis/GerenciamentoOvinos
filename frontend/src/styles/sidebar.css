@@ -4,7 +4,8 @@
   flex-direction: column;
   justify-content: space-around;
   background-color: white;
-  max-width: 400px;
+  max-width: 300px;
+  padding: 0;
 }
 
 .profile-picture-one {
@@ -29,4 +30,18 @@
 
 .sidebar-text {
   font-size: 1.1rem;
+}
+
+.nav-option.active {
+  background-color: #eee;
+}
+
+.submenu-item {
+  padding-left: 20px;
+  color: #555;
+  cursor: pointer;
+}
+
+.submenu-item:hover {
+  color: #000;
 }
