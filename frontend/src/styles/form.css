@@ -11,20 +11,27 @@
   outline: none;
 }
 
+.form-input:disabled {
+  background-color: rgb(209, 209, 209);
+}
+
 .my-label {
   padding: 0.5rem 1px;
 }
 
 .large-input {
-  width: 10rem;
+  width: 40rem;
+  padding: 0px;
 }
 
 .medium-input {
   width: 20rem;
+  padding: 0px;
 }
 
 .small-input {
   width: 12.5rem;
+  padding: 0px;
 }
 
 .my-link {

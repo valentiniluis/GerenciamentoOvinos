@@ -3,7 +3,7 @@ import SidebarHeader from './SidebarHeader';
 import NavOption from './NavOption';
 import SidebarFooter from './SidebarFooter';
 
-// Adicionar prop group
+// Adicionar prop 'group'
 const Sidebar = ({ user, currentPage }) => {
   const optNavegacao = [
     {
@@ -62,5 +62,6 @@ const Sidebar = ({ user, currentPage }) => {
     </nav>
   );
 };
+
 
 export default Sidebar;
