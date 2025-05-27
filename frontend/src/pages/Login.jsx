@@ -1,9 +1,10 @@
 import { Button } from 'react-bootstrap';
 import '../styles/login.css'
+import '../styles/form.css'
 import InputField from '../components/UI/InputField';
 
-const Login = () => {
 
+const Login = () => {
   return (
     <div className='cont flex-center'>
       <div className='row w-100'>
@@ -33,5 +34,6 @@ const Login = () => {
     </div>
   )
 }
+
 
 export default Login

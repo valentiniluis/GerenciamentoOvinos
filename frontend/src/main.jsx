@@ -5,9 +5,10 @@ import './index.css';
 
 import Login from './pages/Login.jsx';
 import CadastroRebanho from './pages/CadastroRebanho.jsx';
+import CadastroUsuario from './pages/CadastroUsuario.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CadastroRebanho />
+    <CadastroUsuario />
   </StrictMode>,
 )
