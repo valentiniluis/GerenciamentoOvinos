@@ -1,6 +1,6 @@
-const NavOption = ({ name, icon, callback }) => {
+const NavOption = ({ name, icon, callback, active }) => {
   return (
-    <div className="d-flex gap-4 align-items-center py-1 nav-option"
+    <div className={`d-flex gap-4 align-items-center py-1 nav-option`}
       onClick={callback}>
       <img className="option-icon" src={icon} alt={`${name} Sidebar Icon`} />
       <p className="option-text m-0">{name}</p>

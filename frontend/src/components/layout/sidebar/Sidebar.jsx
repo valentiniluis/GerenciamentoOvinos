@@ -1,10 +1,12 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import SidebarHeader from './SidebarHeader';
 import NavOption from './NavOption';
 import SidebarFooter from './SidebarFooter';
 
 // Adicionar prop 'group'
 const Sidebar = ({ user, currentPage }) => {
+  const [ actPage, setActPage ] = useState(currentPage);
+
   const optNavegacao = [
     {
       name: 'Dashboard',
@@ -13,7 +15,7 @@ const Sidebar = ({ user, currentPage }) => {
     {
       name: 'Rebanho',
       icon: './sheep_icon.svg',
-      submenu: [{ name: 'Cadastro' }, { name: 'Listar' }, { name: 'Lotes' }],
+      submenu: [{ name: 'Cadastro' }, { name: 'Listar' }, { name: 'Pesagem' }],
     },
     {
       name: 'Calendário',
@@ -22,7 +24,6 @@ const Sidebar = ({ user, currentPage }) => {
     {
       name: 'Relatórios',
       icon: './report.svg',
-      submenu: [{ name: 'Cadastrados' }, { name: 'SIEM' }],
     },
     {
       name: 'Usuários',
@@ -31,9 +32,9 @@ const Sidebar = ({ user, currentPage }) => {
     }
   ];
 
-    const paginaSelecionada = (name) => {
+  const paginaSelecionada = (name) => {
     console.log(`DEBUG: Clicado em ${name}`);
-    setActiveOption((prev) => (prev === name? null: name));
+    setActPage((prev) => (prev === name? null: name));
   };
 
   return (
@@ -43,17 +44,17 @@ const Sidebar = ({ user, currentPage }) => {
         <div className="row pt-3 m-0">
           {optNavegacao.map(option => (
             <div className="row w-100 mx-0 px-0" key={option.name}>
-              <div  className={`row justify-content-center w-100 m-0 p-0 ${option.name === currentPage ? 'active' : ''}`}>
+              <div  className={`row justify-content-center w-100 m-0 p-0 ${option.name === actPage ? 'active' : null}`}>
                 <div className='opt-cont'>
                   <NavOption
                     name={option.name}
                     icon={option.icon}
                     active={currentPage === option.name}
-                    
+                    callback={() => paginaSelecionada(option.name)}
                   />
                 </div>
               </div>
-              {currentPage === option.name && option.submenu && (
+              {actPage === option.name && option.submenu && (
                 <div className="submenu text-center">
                   {option.submenu.map((sub) => (
                     <p key={sub.name} className="submenu-item">{sub.name}</p>
