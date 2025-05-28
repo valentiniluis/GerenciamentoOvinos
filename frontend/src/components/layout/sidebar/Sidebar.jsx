@@ -15,15 +15,16 @@ const Sidebar = ({ user, currentPage }) => {
     {
       name: 'Rebanho',
       icon: './sheep_icon.svg',
-      submenu: [{ name: 'Cadastro' }, { name: 'Listar' }, { name: 'Pesagem' }],
+      submenu: [{ name: 'Cadastro' }, { name: 'Listar' }, { name: 'Pesagem' }]
     },
     {
       name: 'Calendário',
-      icon: './calendar.svg',
+      icon: './calendar.svg'
     },
     {
       name: 'Relatórios',
       icon: './report.svg',
+      submenu: [{ name: 'Cadastrados' }, { name: 'SIEM' }]
     },
     {
       name: 'Usuários',
@@ -44,7 +45,7 @@ const Sidebar = ({ user, currentPage }) => {
         <div className="row pt-3 m-0">
           {optNavegacao.map(option => (
             <div className="row w-100 mx-0 px-0" key={option.name}>
-              <div  className={`row justify-content-center w-100 m-0 p-0 ${option.name === actPage ? 'active' : null}`}>
+              <div  className={`row justify-content-center w-100 m-0 p-0 ${option.name === ac ? 'active' : null}`}>
                 <div className='opt-cont'>
                   <NavOption
                     name={option.name}
