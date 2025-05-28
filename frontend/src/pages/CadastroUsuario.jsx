@@ -24,8 +24,8 @@ const CadastroUsuario = () => {
           <form action="/usuario" method="POST">
             {campos.map((campo) => {
               return (
-                <div className={`row py-2 ${campo.size}`}>
-                  <InputField key={campo.name} label={campo.label} name={campo.name} type={campo.type ?? 'text'} />
+                <div key={campo.name} className={`row py-2 ${campo.size}`}>
+                  <InputField label={campo.label} name={campo.name} type={campo.type ?? 'text'} />
                 </div>
               );
             })}
