@@ -20,8 +20,10 @@ const CadastroRebanho = () => {
 
   const [comprado, setComprado] = useState(false);
 
-  const changeComprado = () => {
-    setComprado(prev => !prev);
+  const changeComprado = event => {
+    // se o checkbox estiver marcardo, o state 'comprado' será = true.
+    // com isso, faz-se um reset no valor do input 'Brinco Mãe'
+    setComprado(event.target.checked);
     if (comprado === false) document.getElementById('brinco_mae').value = '';
   }
 

@@ -34,7 +34,7 @@ const Sidebar = ({ user, currentPage }) => {
 
   const paginaSelecionada = (name) => {
     console.log(`DEBUG: Clicado em ${name}`);
-    setActPage((prev) => (prev = name));
+    setActPage(() => name);
   };
 
   const submenuSelecionado = (name) => {

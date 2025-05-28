@@ -6,9 +6,10 @@ import './index.css';
 import Login from './pages/Login.jsx';
 import CadastroRebanho from './pages/CadastroRebanho.jsx';
 import CadastroUsuario from './pages/CadastroUsuario.jsx';
+import ListarRebanho from './pages/ListarRebanho.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CadastroUsuario />
+    <ListarRebanho />
   </StrictMode>,
 )
