@@ -1,3 +1,5 @@
+import logoutIcon from '/logout.svg';
+
 const SidebarFooter = ({ profilePicture }) => {
   return (
     <div className="row justify-content-center py-3 border-top">
@@ -10,7 +12,7 @@ const SidebarFooter = ({ profilePicture }) => {
         <p className="m-0 sidebar-text">Meu Perfil</p>
       </div>
       <div className="col-2 d-flex align-items-center justify-content-center mx-2">
-        <img className="option-icon" src="./logout.svg" alt="Ícone de Logout" />
+        <img className="option-icon" src={logoutIcon} alt="Ícone de Logout" />
       </div>
     </div>
   );

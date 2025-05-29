@@ -12,9 +12,9 @@ router.get('/rebanho', (req, res, next) => {
             sexo: 'M',
             finalidade: 'Reprodução'
         }
-    ]
-
-    return res.json(dados);
+    ];
+    res.header('Access-Control-Allow-Origin', '*');
+    res.status(200).json(dados);
 });
 
 module.exports = router;

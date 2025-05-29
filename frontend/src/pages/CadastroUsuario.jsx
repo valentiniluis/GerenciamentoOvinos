@@ -1,6 +1,7 @@
 import { Button } from 'react-bootstrap';
 import '../styles/sidebar.css';
 import '../styles/form.css'
+import PageTitle from '../components/UI/PageTitle';
 import Sidebar from '../components/layout/sidebar/Sidebar';
 import InputField from '../components/UI/InputField';
 
@@ -17,9 +18,7 @@ const CadastroUsuario = () => {
     <div className="row m-0">
       <Sidebar user="Emerson" currentPage={'Usuários'} />
       <main className="col cont px-5">
-        <div className="row py-5">
-          <h1 className="page-title text-center">Cadastrar Usuário</h1>
-        </div>
+        <PageTitle title="Cadastrar Usuário" />
         <div className='form-cont px-4 flex-center'>
           <form action="/usuario" method="POST">
             {campos.map((campo) => {

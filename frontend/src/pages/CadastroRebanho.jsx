@@ -1,6 +1,7 @@
 import { Button } from 'react-bootstrap';
 import '../styles/sidebar.css';
 import '../styles/form.css'
+import PageTitle from '../components/UI/PageTitle';
 import Sidebar from '../components/layout/sidebar/Sidebar';
 import InputField from '../components/UI/InputField';
 import { useState } from 'react';
@@ -31,9 +32,7 @@ const CadastroRebanho = () => {
     <div className="row m-0">
       <Sidebar user="Emerson" currentPage={'Rebanho'} />
       <main className="col cont px-5">
-        <div className="row py-3">
-          <h1 className="page-title text-center">Cadastrar Ovelha</h1>
-        </div>
+        <PageTitle title="Cadastrar Ovino" />
         <div className='form-cont flex-center'>
           <form action="/ovino" method="POST">
             <h4 className='py-3'>Informações</h4>

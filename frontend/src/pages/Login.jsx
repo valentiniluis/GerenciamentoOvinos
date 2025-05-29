@@ -30,7 +30,7 @@ const Login = () => {
             )}
           </div>
           <div className='row py-4'>
-            <a className='text-center my-link' href='...'>Esqueci Minha Senha</a>
+            <a className='text-center my-link no-decoration' href='...'>Esqueci Minha Senha</a>
           </div>
           <div className='row pt-1 pb-5 justify-content-center'>
             <Button className='form-btn' variant='primary' type='submit'>Acessar</Button>

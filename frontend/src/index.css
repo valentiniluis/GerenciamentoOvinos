@@ -23,6 +23,10 @@ img {
   align-items: center;
 }
 
+.no-decoration {
+  text-decoration: none;
+}
+
 .sla {
   border: solid black 2px;
 }

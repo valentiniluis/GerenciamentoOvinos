@@ -3,6 +3,12 @@ import SidebarHeader from './SidebarHeader';
 import NavOption from './NavOption';
 import SidebarFooter from './SidebarFooter';
 
+import dashboardIcon from '/dashboard.svg';
+import sheepIcon from '/sheep.svg';
+import calendarIcon from '/calendar.svg';
+import reportIcon from '/report.svg';
+import usersIcon from '/users.svg';
+
 // Adicionar prop 'group'
 const Sidebar = ({ user, currentPage }) => {
   const [actPage, setActPage] = useState(currentPage);
@@ -10,35 +16,35 @@ const Sidebar = ({ user, currentPage }) => {
   const optNavegacao = [
     {
       name: 'Dashboard',
-      icon: './dash_icon.svg',
+      icon: dashboardIcon,
+      path: '/'
     },
     {
       name: 'Rebanho',
-      icon: './sheep_icon.svg',
-      submenu: [{ name: 'Cadastro' }, { name: 'Listar' }, { name: 'Pesagem' }],
+      icon: sheepIcon,
+      basepath: '/rebanho',
+      submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }, { name: 'Cadastrar Pesagem', path: 'pesagem' }]
     },
     {
       name: 'Calendário',
-      icon: './calendar.svg',
+      icon: calendarIcon,
+      path: '/calendario'
     },
     {
       name: 'Relatório',
-      icon: './report.svg',
+      icon: reportIcon,
+      path: '/relatorio'
     },
     {
       name: 'Usuários',
-      icon: './people_icon.svg',
-      submenu: [{ name: 'Cadastrar' }, { name: 'Listar' }, { name: 'Grupos' }],
-    },
+      icon: usersIcon,
+      basepath: '/usuario',
+      submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }, { name: 'Grupos', path: 'grupos' }],
+    }
   ];
 
   const paginaSelecionada = (name) => {
-    console.log(`DEBUG: Clicado em ${name}`);
     setActPage(() => name);
-  };
-
-  const submenuSelecionado = (name) => {
-    console.log(`DEBUG: Clicado no submenu ${name}`);
   };
 
   return (
@@ -47,36 +53,15 @@ const Sidebar = ({ user, currentPage }) => {
         <SidebarHeader user={user} profilePicture={'./Group_2.png'} />
         <div className="row pt-3 m-0">
           {optNavegacao.map((option) => (
-            <div className="row w-100 mx-0 px-0" key={option.name}>
-              <div
-                className={`row justify-content-center w-100 m-0 p-0 ${
-                  option.name === actPage ? 'active' : ''
-                }`}
-              >
-                <div className="opt-cont">
-                  <NavOption
-                    name={option.name}
-                    icon={option.icon}
-                    active={currentPage === option.name}
-                    callback={() => paginaSelecionada(option.name)}
-                  />
-                </div>
-              </div>
-              {actPage === option.name && option.submenu && (
-                <div className="submenu text-center">
-                  {option.submenu.map((sub) => (
-                    <p
-                      key={sub.name}
-                      className="submenu-item"
-                      onClick={() => submenuSelecionado(sub.name)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {sub.name}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
+            <NavOption
+              key={option.name}
+              name={option.name}
+              icon={option.icon}
+              path={option.path ?? option.basepath}
+              active={actPage === option.name}
+              callback={() => paginaSelecionada(option.name)}
+              submenu={option.submenu}
+            />
           ))}
         </div>
       </div>
