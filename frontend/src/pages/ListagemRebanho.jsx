@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import Sidebar from '../components/layout/sidebar/Sidebar';
+import FormRow from '../components/UI/FormRow';
 import InputField from '../components/UI/InputField';
 import PageTitle from '../components/UI/PageTitle';
 import CustomTable from '../components/layout/table/CustomTable';
@@ -10,7 +11,7 @@ import { useEffect, useState } from 'react';
 // ADICIONAR A FUNCIONALIDADE DOS FILTROS
 
 
-const ListarRebanho = () => {
+const ListagemRebanho = () => {
   const [animalData, setAnimalData] = useState([]);
   const schema = [
     ["num_brinco", "Nº do Brinco"],
@@ -58,7 +59,7 @@ const ListarRebanho = () => {
         <div className="row py-3">
           {(animalData.length > 0)
             ? <CustomTable schema={schema} data={animalData} uniqueCol={'num_brinco'} />
-            : <h3>Nenhuma informação cadastrada</h3>
+            : <h3 className='text-center'>Nenhuma informação cadastrada</h3>
           }
         </div>
       </main>
@@ -66,4 +67,4 @@ const ListarRebanho = () => {
   );
 }
 
-export default ListarRebanho;
+export default ListagemRebanho;

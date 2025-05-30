@@ -4,7 +4,7 @@ import NavOption from './NavOption';
 import SidebarFooter from './SidebarFooter';
 
 import dashboardIcon from '/dashboard.svg';
-import sheepIcon from '/sheep.svg';
+import sheepIcon from '/sheep_icon.svg';
 import calendarIcon from '/calendar.svg';
 import reportIcon from '/report.svg';
 import usersIcon from '/users.svg';

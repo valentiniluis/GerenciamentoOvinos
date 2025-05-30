@@ -9,12 +9,28 @@ import InputField from '../components/UI/InputField';
 import FormRow from '../components/UI/FormRow';
 
 const CadastroUsuario = () => {
-  const campos = [
-    { label: 'Nome', element: <input id='nome' type='text' name='nome' className="form-input" />, size: 'medium-input' },
-    { label: 'E-Mail', element: <input id='email' type='email' name='email' className="form-input" />, size: 'medium-input' },
-    { label: 'Grupo', element: <input id='grupo' type='text' name='grupo' className="form-input" />, size: 'medium-input' },
-    { label: 'Senha', element: <input id='senha' type='password' name='senha' className="form-input" />, size: 'small-input' },
-    { label: 'Confirmação Senha', element: <input id='confirmacao_senha' type='password' name='confirmacao_senha' className="form-input" />, size: 'small-input' }
+  const rowPadding = 'py-3';
+  const rows = [
+    {
+      label: 'Nome', size: 'medium-input',
+      element: <input id='nome' type='text' name='nome' className="form-input" />
+    },
+    {
+      label: 'E-Mail', size: 'medium-input',
+      element: <input id='email' type='email' name='email' className="form-input" />
+    },
+    {
+      label: 'Grupo', size: 'medium-input',
+      element: <input id='grupo' type='text' name='grupo' className="form-input" />
+    },
+    {
+      label: 'Senha', size: 'small-input',
+      element: <input id='senha' type='password' name='senha' className="form-input" />
+    },
+    {
+      label: 'Confirmação Senha', size: 'small-input',
+      element: <input id='confirmacao_senha' type='password' name='confirmacao_senha' className="form-input" />
+    }
   ];
 
   return (
@@ -24,13 +40,11 @@ const CadastroUsuario = () => {
         <PageTitle title="Cadastrar Usuário" />
         <div className='form-cont px-4 flex-center'>
           <form action="/usuario" method="POST">
-            {campos.map((campo) => {
-              return (
-                <FormRow>
-                  <InputField label={campo.label} input={campo.element} size={campo.size} />
-                </FormRow>
-              );
-            })}
+            {rows.map((row, index) => (
+              <FormRow padding={rowPadding} key={`Form Row ${index + 1}`} >
+                <InputField label={row.label} input={row.element} size={row.size} />
+              </FormRow>
+            ))}
             <div className="row pt-5 mt-5 justify-content-center">
               <Button className="form-btn" variant="primary" type="submit">
                 Cadastrar
