@@ -1,13 +1,21 @@
 import { Button } from 'react-bootstrap';
+
 import '../styles/login.css'
 import '../styles/form.css'
+
 import InputField from '../components/UI/InputField';
 
-
 const Login = () => {
-  const campos = [
-    { label: 'E-Mail', name: 'email', type: 'email', size: 'medium-input' },
-    { label: 'Senha', name: 'senha', type: 'password', size: 'medium-input' }
+  const padding = 'py-3';
+  const rows = [
+    {
+      element: <input id='email' name='email' type='email' className='form-input' />,
+      label: 'E-Mail', size: 'medium-input', padding
+    },
+    {
+      element: <input id='senha' name='senha' type='password' className='form-input' />,
+      label: 'Senha', size: 'medium-input', padding
+    }
   ];
 
   return (
@@ -22,12 +30,9 @@ const Login = () => {
             <h2 className='text-center'>Acessar Sistema</h2>
           </div>
           <div className="row d-flex flex-column align-items-center">
-            {campos.map(campo => (
-                <div className={`py-2 ${campo.size}`}>
-                  <InputField label={campo.label} name={campo.name} type={campo.type} />
-                </div>
-              )
-            )}
+            {rows.map(row => (
+              <InputField label={row.label} input={row.element} size={row.size} />
+            ))}
           </div>
           <div className='row py-4'>
             <a className='text-center my-link no-decoration' href='...'>Esqueci Minha Senha</a>

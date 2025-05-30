@@ -1,11 +1,11 @@
 import React from 'react';
 
-const InputField = ({ label, name, type="text" }) => {
+const InputField = ({ label, input, size, labelClass }) => {
   return (
-    <>
-      <label className="my-label" htmlFor={name}>{label}</label>
-      <input id={name} type={type} name={name} className="form-input" step={null} />
-    </>
+    <div className={`${size}`}>
+      <label className={`my-label ${labelClass}`} htmlFor={input.id}>{label}</label>
+      {input}
+    </div>
   );
 };
 

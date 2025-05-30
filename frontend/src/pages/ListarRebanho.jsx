@@ -7,16 +7,20 @@ import CustomTable from '../components/layout/table/CustomTable';
 import { useEffect, useState } from 'react';
 
 
+// ADICIONAR A FUNCIONALIDADE DOS FILTROS
+
+
 const ListarRebanho = () => {
   const [animalData, setAnimalData] = useState([]);
-  const schema = {
-    "num_brinco": "Nº do Brinco",
-    "brinco_mae": "Nº Brinco Mãe",
-    "data_nasc": "Data Nascimento",
-    "raca": "Raça", "sexo": "Sexo",
-    "finalidade": "Finalidade",
-    "mais_detalhes": "Mais Detalhes"
-  };
+  const schema = [
+    ["num_brinco", "Nº do Brinco"],
+    ["brinco_mae", "Nº Brinco Mãe"],
+    ["data_nasc", "Data Nascimento"],
+    ["raca", "Raça"],
+    ["sexo", "Sexo"],
+    ["finalidade", "Finalidade"],
+    ["mais_detalhes", "Mais Detalhes"]
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,14 +51,16 @@ const ListarRebanho = () => {
   return (
     <div className="row m-0">
       <Sidebar user='Luís' currentPage='Rebanho' />
-      <main className="col cont px-5 sla">
+      <main className="col cont px-5">
         <PageTitle title="Listagem Rebanho" />
         <form action={handleSubmit}>
         </form>
-        {(animalData.length > 0)
-         ? <CustomTable schema={schema} data={animalData} uniqueCol={'num_brinco'} />
-         : <h3>Nenhuma informação cadastrada</h3>
-        }
+        <div className="row py-3">
+          {(animalData.length > 0)
+            ? <CustomTable schema={schema} data={animalData} uniqueCol={'num_brinco'} />
+            : <h3>Nenhuma informação cadastrada</h3>
+          }
+        </div>
       </main>
     </div>
   );

@@ -1,14 +1,14 @@
 import Table from 'react-bootstrap/Table';
 
 const CustomTable = ({ schema, data, uniqueCol }) => {
-  const columns = Object.keys(schema);
+  const columns = schema.map(column => column[0]);
 
   return (
     <Table bordered className='text-center'>
       <thead>
         <tr>
-          {columns.map(column => (
-            <th key={schema[column]}>{schema[column]}</th>
+          {schema.map(column => (
+            <th key={column[1]}>{column[1]}</th>
           ))}
         </tr>
       </thead>
@@ -21,7 +21,6 @@ const CustomTable = ({ schema, data, uniqueCol }) => {
           </tr>
         ))}
       </tbody>
-
     </Table>
   )
 }

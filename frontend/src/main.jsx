@@ -9,12 +9,19 @@ import CadastroRebanho from './pages/CadastroRebanho.jsx';
 import CadastroUsuario from './pages/CadastroUsuario.jsx';
 import ListarRebanho from './pages/ListarRebanho.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import CadastroPesagem from './pages/CadastroPesagem.jsx';
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
-  { path: '/rebanho/listar', element: <ListarRebanho /> },
+  { path: '/', element: <h1>Página em desenvolvimento</h1> },
   { path: '/rebanho/cadastrar', element: <CadastroRebanho /> },
+  { path: '/rebanho/listar', element: <ListarRebanho /> },
+  { path: '/rebanho/pesagem', element: <CadastroPesagem /> },
+  { path: '/calendario', element: <h1>Página em desenvolvimento</h1> },
+  { path: '/relatorio', element: <h1>Página em desenvolvimento</h1> },
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
+  { path: '/usuario/listar', element: <h1>Página em desenvolvimento</h1> },
+  { path: '/usuario/grupos', element: <h1>Página em desenvolvimento</h1> },
   { path: '*', element: <NotFoundPage /> }
 ]);
 
