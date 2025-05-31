@@ -1,6 +1,6 @@
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
-import '../styles/form.css'
+import '../styles/form.css';
 
 import PageTitle from '../components/UI/PageTitle';
 import Sidebar from '../components/layout/sidebar/Sidebar';
@@ -11,25 +11,69 @@ const CadastroUsuario = () => {
   const rowPadding = 'py-3';
   const rows = [
     {
-      label: 'Nome', size: 'medium-input',
-      element: <input id='nome' type='text' name='nome' className="form-input" />
+      label: 'Nome',
+      size: 'medium-input',
+      element: (
+        <Form.Control
+          id="nome"
+          type="text"
+          name="nome"
+          placeholder="Digite o nome"
+          required
+        />
+      ),
     },
     {
-      label: 'E-Mail', size: 'medium-input',
-      element: <input id='email' type='email' name='email' className="form-input" />
+      label: 'E-Mail',
+      size: 'medium-input',
+      element: (
+        <Form.Control
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Digite o e-mail"
+          required
+        />
+      ),
     },
     {
-      label: 'Grupo', size: 'medium-input',
-      element: <input id='grupo' type='text' name='grupo' className="form-input" />
+      label: 'Grupo',
+      size: 'medium-input',
+      element: (
+        <Form.Control
+          id="grupo"
+          type="text"
+          name="grupo"
+          placeholder="Digite o grupo"
+        />
+      ),
     },
     {
-      label: 'Senha', size: 'small-input',
-      element: <input id='senha' type='password' name='senha' className="form-input" />
+      label: 'Senha',
+      size: 'small-input',
+      element: (
+        <Form.Control
+          id="senha"
+          type="password"
+          name="senha"
+          placeholder="Digite a senha"
+          required
+        />
+      ),
     },
     {
-      label: 'Confirmação Senha', size: 'small-input',
-      element: <input id='confirmacao_senha' type='password' name='confirmacao_senha' className="form-input" />
-    }
+      label: 'Confirmação Senha',
+      size: 'small-input',
+      element: (
+        <Form.Control
+          id="confirmacao_senha"
+          type="password"
+          name="confirmacao_senha"
+          placeholder="Repita a senha"
+          required
+        />
+      ),
+    },
   ];
 
   return (
@@ -37,11 +81,15 @@ const CadastroUsuario = () => {
       <Sidebar user="Emerson" currentPage={'Usuários'} />
       <main className="col cont px-5">
         <PageTitle title="Cadastrar Usuário" />
-        <div className='form-cont px-4 flex-center'>
+        <div className="form-cont px-4 flex-center">
           <form action="/usuario" method="POST">
             {rows.map((row, index) => (
-              <FormRow padding={rowPadding} key={`Form Row ${index + 1}`} >
-                <InputField label={row.label} input={row.element} size={row.size} />
+              <FormRow padding={rowPadding} key={`Form Row ${index + 1}`}>
+                <InputField
+                  label={row.label}
+                  input={row.element}
+                  size={row.size}
+                />
               </FormRow>
             ))}
             <div className="row pt-5 mt-5 justify-content-center">

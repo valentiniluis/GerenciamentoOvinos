@@ -11,7 +11,8 @@ const DadosOvino = () => {
         const url = `http://localhost:3000/rebanho/${brinco}`;
         const headers = { 'Content-Type': 'application/json' };
         const response = await fetch(url, headers);
-        if (!response.ok) throw new Error("Não foi possível consultar os dados");
+        if (!response.ok)
+          throw new Error('Não foi possível consultar os dados');
         const data = await response.json();
         setDados(data);
       } catch (err) {
@@ -21,11 +22,7 @@ const DadosOvino = () => {
     fetchData();
   }, [brinco]);
 
-  return (
-    <div>
-      {dados ?? "Indisponível"}
-    </div>
-  )
-}
+  return <div>{dados ?? 'Indisponível'}</div>;
+};
 
 export default DadosOvino;
