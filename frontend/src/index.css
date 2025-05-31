@@ -27,6 +27,10 @@ img {
   text-decoration: none;
 }
 
+.my-select {
+  max-width: 140px;
+}
+
 .sla {
   border: solid black 2px;
 }

@@ -1,6 +1,5 @@
 import { Button } from 'react-bootstrap';
 
-import '../styles/sidebar.css';
 import '../styles/form.css'
 
 import PageTitle from '../components/UI/PageTitle';

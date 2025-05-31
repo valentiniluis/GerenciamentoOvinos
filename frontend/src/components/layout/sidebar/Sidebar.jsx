@@ -1,3 +1,5 @@
+import '../../../styles/sidebar.css';
+
 import { useState } from 'react';
 import SidebarHeader from './SidebarHeader';
 import NavOption from './NavOption';

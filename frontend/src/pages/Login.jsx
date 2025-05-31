@@ -4,6 +4,7 @@ import '../styles/login.css'
 import '../styles/form.css'
 
 import InputField from '../components/UI/InputField';
+import PageTitle from '../components/UI/PageTitle';
 
 const Login = () => {
   const padding = 'py-3';
@@ -20,10 +21,8 @@ const Login = () => {
 
   return (
     <div className='cont flex-center'>
+      <PageTitle title={'SGO'}/>
       <div className='row w-100'>
-        <h1 className='text-center pg-title'>SGO</h1>
-      </div>
-      <div className='row w-100 pt-5'>
         <div className='col'></div>
         <form className='col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form'>
           <div className='row py-4'>

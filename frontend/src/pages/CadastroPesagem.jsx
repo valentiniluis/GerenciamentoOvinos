@@ -37,8 +37,8 @@ const CadastroPesagem = () => {
         <PageTitle title="Cadastrar Pesagem de Ovino" />
         <div className="form-cont flex-center">
           <form action="/" method="POST">
-            {rows.map(row => (
-              <FormRow padding={rowPadding}>
+            {rows.map((row, i) => (
+              <FormRow padding={rowPadding} key={`Form Row ${i + 1}`} >
                 <InputField label={row.label} input={row.element} size={row.size} />
               </FormRow>
             ))}

@@ -14,8 +14,10 @@ const ListagemUsuarios = () => {
     ['data_cadastro', 'Data de Cadastro'],
   ];
   const [usersData, setUsersData] = useState([]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
+
     async function fetchData() {
       try {
         const url = 'http://localhost:3000/usuarios';
@@ -30,14 +32,39 @@ const ListagemUsuarios = () => {
     }
     fetchData();
   }, []);
-  
+
+  const handleSelect = (event) => {
+    setFilter(event.target.value);
+  }
+
   return (
     <div className="row m-0">
       <Sidebar user='Luís' currentPage='Usuários' />
       <main className="col cont px-5">
         <PageTitle title="Listagem de Usuários" />
-        <form action={null}>
-        </form>
+        <div className="form-cont">
+          <form className='flex-center' action={null}>
+            <label className="my-label d-block text-center" htmlFor="filtro">Condição de Filtro (Opcional)</label>
+            <select className='my-select' name="filtro" id="filtro" onChange={handleSelect}>
+              <option>Nenhuma</option>
+              <option value="email">E-Mail</option>
+              <option value="nome">Nome</option>
+            </select>
+            {filter !== 'nome' && filter !== 'email'
+              ? null
+              : (
+                <FormRow padding={'py-3'}>
+                  {
+                    filter === 'nome'
+                      ? <InputField label={'Nome'} input={<input id='nome' name='nome' className='form-input' />} size={'medium-input'} />
+                      : <InputField label={'E-Mail'} input={<input type='email' id='email' name='email' className='form-input' />} size={'medium-input'} />
+                  }
+                </FormRow>
+              )
+            }
+          </form>
+
+        </div>
         <div className="row py-3">
           {(usersData.length > 0)
             ? <CustomTable schema={schema} data={usersData} uniqueCol={'email'} />
@@ -46,7 +73,6 @@ const ListagemUsuarios = () => {
         </div>
       </main>
     </div>
-
   )
 }
 
