@@ -46,9 +46,16 @@
   padding: 0px;
 }
 
+.filter-btn {
+  background-color: #5f62b9;
+  padding: 0.3em 2em;
+  border-radius: 100px;
+  border: none;
+}
+
 .my-link {
   text-decoration: none;
-  color: #00287D;
+  color: #00087d;
   font-weight: bold;
   font-size: 1rem;
 }

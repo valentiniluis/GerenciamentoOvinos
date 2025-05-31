@@ -1,3 +1,4 @@
+import { Form, Button } from 'react-bootstrap';
 import Sidebar from '../components/layout/sidebar/Sidebar';
 import FormRow from '../components/UI/FormRow';
 import InputField from '../components/UI/InputField';
@@ -12,6 +13,7 @@ const ListagemUsuarios = () => {
     ['grupo', 'Grupo'],
     ['data_cadastro', 'Data de Cadastro'],
   ];
+
   const [usersData, setUsersData] = useState([]);
   const [filter, setFilter] = useState('');
 
@@ -36,6 +38,18 @@ const ListagemUsuarios = () => {
     setFilter(event.target.value);
   };
 
+  const inputFilter = {
+    label: 'Condição de Filtro (Opcional)',
+    size: 'medium-input',
+    element: (
+      <Form.Select id="filtro" name="filtro" onChange={handleSelect} >
+        <option>Nenhuma</option>
+        <option value="email">E-Mail</option>
+        <option value="nome">Nome</option>
+      </Form.Select>
+    )
+  }
+
   return (
     <div className="row m-0">
       <Sidebar user="Luís" currentPage="Usuários" />
@@ -43,44 +57,28 @@ const ListagemUsuarios = () => {
         <PageTitle title="Listagem de Usuários" />
         <div className="form-cont">
           <form className="flex-center" action={null}>
-            <label className="my-label d-block text-center" htmlFor="filtro">
-              Condição de Filtro (Opcional)
-            </label>
-            <select
-              className="my-select"
-              name="filtro"
-              id="filtro"
-              onChange={handleSelect}
-            >
-              <option>Nenhuma</option>
-              <option value="email">E-Mail</option>
-              <option value="nome">Nome</option>
-            </select>
+            <InputField label={inputFilter.label} input={inputFilter.element} size={inputFilter.size} />
             {filter !== 'nome' && filter !== 'email' ? null : (
-              <FormRow padding={'py-3'}>
-                {filter === 'nome' ? (
-                  <InputField
-                    label={'Nome'}
-                    input={
-                      <input id="nome" name="nome" className="form-input" />
-                    }
-                    size={'medium-input'}
-                  />
-                ) : (
-                  <InputField
-                    label={'E-Mail'}
-                    input={
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="form-input"
-                      />
-                    }
-                    size={'medium-input'}
-                  />
-                )}
-              </FormRow>
+              <>
+                <FormRow padding={'py-3'}>
+                  {filter === 'nome' ? (
+                    <InputField
+                      label={'Nome'}
+                      input={<Form.Control id="nome" name="nome" />}
+                      size={'medium-input'}
+                    />
+                  ) : (
+                    <InputField
+                      label={'E-Mail'}
+                      input={<Form.Control type="email" id="email" name="email" />}
+                      size={'medium-input'}
+                    />
+                  )}
+                </FormRow>
+                <Button variant='primary' className='filter-btn' type='submit'>
+                  Filtrar
+                </Button>
+              </>
             )}
           </form>
         </div>

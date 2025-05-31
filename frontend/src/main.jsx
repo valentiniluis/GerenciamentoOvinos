@@ -7,10 +7,11 @@ import './index.css';
 import Login from './pages/Login.jsx';
 import CadastroRebanho from './pages/CadastroRebanho.jsx';
 import ListarRebanho from './pages/ListagemRebanho.jsx';
+import CadastroPesagem from './pages/CadastroPesagem.jsx';
 import DadosOvino from './pages/DadosOvino.jsx';
 import CadastroUsuario from './pages/CadastroUsuario.jsx';
-import CadastroPesagem from './pages/CadastroPesagem.jsx';
 import ListagemUsuarios from './pages/ListagemUsuarios.jsx';
+import ListagemGrupos from './pages/ListagemGrupos.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx';
 
 const router = createBrowserRouter([
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
   { path: '/relatorio', element: <h1>Página em desenvolvimento</h1> },
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
-  { path: '/usuario/grupos', element: <h1>Página em desenvolvimento</h1> },
+  { path: '/usuario/grupos', element: <ListagemGrupos /> },
   { path: '*', element: <NotFoundPage /> }
 ]);
 
