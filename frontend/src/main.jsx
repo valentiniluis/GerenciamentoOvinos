@@ -14,15 +14,17 @@ import ListagemUsuarios from './pages/ListagemUsuarios.jsx';
 import ListagemGrupos from './pages/ListagemGrupos.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import Relatorio from './pages/Relatorio.jsx';
+import Calendario from './pages/Calendario.jsx'
+import Dashboard from './pages/Dashboard.jsx';
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
-  { path: '/', element: <h1>Página em desenvolvimento</h1> },
+  { path: '/', element: <Dashboard /> },
   { path: '/rebanho/cadastrar', element: <CadastroRebanho /> },
   { path: '/rebanho/listar', element: <ListarRebanho /> },
   { path: '/rebanho/pesagem', element: <CadastroPesagem /> },
   { path: '/rebanho/:brinco', element: <DadosOvino /> },
-  { path: '/calendario', element: <h1>Página em desenvolvimento</h1> },
+  { path: '/calendario', element:  <Calendario />},
   { path: '/relatorio', element: <Relatorio /> },
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
