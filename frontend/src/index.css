@@ -31,6 +31,15 @@ img {
   max-width: 140px;
 }
 
+.my-paragraph {
+  font-size: 1.1rem;
+  text-align: justify;
+}
+
+.limit-600 {
+  max-width: 600px;
+}
+
 .sla {
   border: solid black 2px;
 }

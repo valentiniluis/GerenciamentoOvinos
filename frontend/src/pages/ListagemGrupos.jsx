@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 
 const ListagemUsuarios = () => {
   const schema = [
-    ['nome', 'Nome'],
-    ['email', 'E-Mail'],
-    ['grupo', 'Grupo'],
-    ['data_cadastro', 'Data de Cadastro'],
+    ['nome_grupo', 'Nome do Grupo'],
+    ['data_criacao', 'Data de Criação'],
+    ['num_membros', 'Nº de Membros'],
+    ['permissoes', 'Permissões']
   ];
 
   const [groupsData, setGroupsData] = useState([]);
@@ -37,7 +37,7 @@ const ListagemUsuarios = () => {
         <PageTitle title="Grupos de Usuários" />
         <div className="row py-3">
           {groupsData.length > 0 ? (
-            <CustomTable schema={schema} data={groupsData} uniqueCol={''} />
+            <CustomTable schema={schema} data={groupsData} uniqueCol={'nome_grupo'} />
           ) : (
             <h3 className="text-center">Nenhuma informação cadastrada</h3>
           )}

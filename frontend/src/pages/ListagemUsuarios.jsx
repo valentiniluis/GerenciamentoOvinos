@@ -15,12 +15,14 @@ const ListagemUsuarios = () => {
   ];
 
   const [usersData, setUsersData] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filterProp, setFilterProp] = useState('');
+  const [queryParam, setQueryParam] = useState('');
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const url = 'http://localhost:3000/usuarios';
+        const baseUrl = 'http://localhost:3000/usuarios';
+        const url = (queryParam === '') ? baseUrl : `${baseUrl}?${queryParam}`;
         const headers = { 'Content-Type': 'application/json' };
         const response = await fetch(url, headers);
         if (!response.ok)
@@ -32,18 +34,25 @@ const ListagemUsuarios = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [queryParam]);
 
   const handleSelect = (event) => {
-    setFilter(event.target.value);
+    setFilterProp(event.target.value);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const filterValue = formData.get(filterProp);
+    setQueryParam(`${filterProp}=${filterValue}`);
+  }
 
   const inputFilter = {
     label: 'Condição de Filtro (Opcional)',
     size: 'medium-input',
     element: (
       <Form.Select id="filtro" name="filtro" onChange={handleSelect} >
-        <option>Nenhuma</option>
+        <option value="nenhuma">Nenhuma</option>
         <option value="email">E-Mail</option>
         <option value="nome">Nome</option>
       </Form.Select>
@@ -56,12 +65,12 @@ const ListagemUsuarios = () => {
       <main className="col cont px-5">
         <PageTitle title="Listagem de Usuários" />
         <div className="form-cont">
-          <form className="flex-center" action={null}>
+          <form className="flex-center" onSubmit={handleSubmit}>
             <InputField label={inputFilter.label} input={inputFilter.element} size={inputFilter.size} />
-            {filter !== 'nome' && filter !== 'email' ? null : (
+            {filterProp !== 'nome' && filterProp !== 'email' ? null : (
               <>
                 <FormRow padding={'py-3'}>
-                  {filter === 'nome' ? (
+                  {filterProp === 'nome' ? (
                     <InputField
                       label={'Nome'}
                       input={<Form.Control id="nome" name="nome" />}

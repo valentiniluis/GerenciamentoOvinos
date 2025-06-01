@@ -13,6 +13,7 @@ import CadastroUsuario from './pages/CadastroUsuario.jsx';
 import ListagemUsuarios from './pages/ListagemUsuarios.jsx';
 import ListagemGrupos from './pages/ListagemGrupos.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import Relatorio from './pages/Relatorio.jsx';
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
   { path: '/rebanho/pesagem', element: <CadastroPesagem /> },
   { path: '/rebanho/:brinco', element: <DadosOvino /> },
   { path: '/calendario', element: <h1>Página em desenvolvimento</h1> },
-  { path: '/relatorio', element: <h1>Página em desenvolvimento</h1> },
+  { path: '/relatorio', element: <Relatorio /> },
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
   { path: '/usuario/grupos', element: <ListagemGrupos /> },
