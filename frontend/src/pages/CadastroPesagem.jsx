@@ -17,7 +17,7 @@ const CadastroPesagem = () => {
           id="num_brinco"
           name="num_brinco"
           required
-          placeholder="Digite o número do brinco"
+          placeholder="Ex. 1N123"
         />
       ),
     },
@@ -34,10 +34,8 @@ const CadastroPesagem = () => {
           }
           onInput={(e) => e.target.setCustomValidity('')}
         >
-          <option value="" hidden>
-            Selecione a etapa
-          </option>
-          <option value="criacao">Criação</option>
+          <option value="" hidden>Selecione a etapa</option>
+          <option value="criacao">Desmame</option>
           <option value="engorda">Engorda</option>
           <option value="abate">Abate</option>
           <option value="reproducao">Reprodução</option>
@@ -55,7 +53,7 @@ const CadastroPesagem = () => {
           step={0.001}
           min={0}
           required
-          placeholder="0.000"
+          placeholder="Ex. 3,500"
         />
       ),
     },

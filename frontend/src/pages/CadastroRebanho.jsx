@@ -28,7 +28,7 @@ const CadastroRebanho = () => {
             type="text"
             name="num_brinco"
             required
-            placeholder="Digite o número do brinco"
+            placeholder="Ex. 1N123"
           />
         ),
         label: 'Nº do Brinco',
@@ -44,7 +44,7 @@ const CadastroRebanho = () => {
             name="brinco_mae"
             disabled={comprado === true}
             required={!comprado}
-            placeholder="Digite o brinco da mãe"
+            placeholder={comprado === true ? "" : "Ex. 1N100"}
           />
         ),
         label: 'Nº Brinco Mãe',
@@ -56,11 +56,9 @@ const CadastroRebanho = () => {
             id="comprado"
             type="checkbox"
             name="comprado"
-            label=""
             onChange={changeComprado}
             value={true}
             className="text-center"
-            style={{}}
           />
         ),
         label: 'Ovino Comprado',
@@ -71,23 +69,13 @@ const CadastroRebanho = () => {
     [
       {
         element: (
-          <Form.Select
+          <Form.Control
             id="raca"
             name="raca"
+            type="text"
             required
-            onInvalid={(e) =>
-              e.target.setCustomValidity('Selecione uma raça válida')
-            }
-            onInput={(e) => e.target.setCustomValidity('')}
-          >
-            <option value="" disabled hidden>
-              Selecione a raça
-            </option>
-            <option value="dorper">Dorper</option>
-            <option value="santa_ines">Santa Inês</option>
-            <option value="suffolk">Suffolk</option>
-            <option value="outra">Outra</option>
-          </Form.Select>
+            placeholder='Ex. Santa Inês'
+          />
         ),
         label: 'Raça',
         size: 'medium-input',
@@ -99,6 +87,7 @@ const CadastroRebanho = () => {
           <div className="d-flex gap-3">
             <Form.Check
               inline
+              id='macho'
               type="radio"
               name="sexo"
               value="macho"
@@ -107,6 +96,7 @@ const CadastroRebanho = () => {
             />
             <Form.Check
               inline
+              id='femea'
               type="radio"
               name="sexo"
               value="femea"
@@ -142,6 +132,7 @@ const CadastroRebanho = () => {
             </option>
             <option value="abate">Abate</option>
             <option value="reproducao">Reprodução</option>
+            <option value="venda">Venda</option>
             <option value="leite">Leite</option>
             <option value="outro">Outros</option>
           </Form.Select>
@@ -158,10 +149,10 @@ const CadastroRebanho = () => {
             min={0}
             step={0.001}
             required
-            placeholder="Peso em kg"
+            placeholder="Ex. 3,250"
           />
         ),
-        label: 'Peso Nascimento',
+        label: 'Peso Nascimento (kg)',
         size: 'small-input',
       },
     ],
@@ -172,7 +163,7 @@ const CadastroRebanho = () => {
             id="observacao"
             type="text"
             name="observacao"
-            placeholder="Observações adicionais"
+            placeholder="Observações Opcionais"
           />
         ),
         label: 'Observação',

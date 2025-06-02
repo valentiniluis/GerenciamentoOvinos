@@ -1,20 +1,15 @@
 const express = require('express');
-
 const router = express.Router();
 
-router.get('/rebanho', (req, res, next) => {
-    const dados = [
-        {
-            num_brinco: '1002',
-            brinco_mae: '731',
-            data_nasc: '18/12/2023',
-            raca: 'Santa Ines',
-            sexo: 'M',
-            finalidade: 'Reprodução'
-        }
-    ];
-    res.header('Access-Control-Allow-Origin', '*');
-    res.status(200).json(dados);
+const db = require('../model/database');
+
+router.get('/', async (req, res, next) => {
+    try {
+        const data = await db.many('SELECT * FROM ovino');
+        res.status(200).json(data);
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 module.exports = router;

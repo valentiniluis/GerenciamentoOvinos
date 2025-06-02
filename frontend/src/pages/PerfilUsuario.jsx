@@ -1,4 +1,5 @@
 import { Button, Form } from 'react-bootstrap';
+import { useState } from 'react';
 
 import '../styles/form.css';
 
@@ -7,8 +8,10 @@ import Sidebar from '../components/layout/sidebar/Sidebar';
 import InputField from '../components/UI/InputField';
 import FormRow from '../components/UI/FormRow';
 
-const CadastroUsuario = () => {
-  const rowPadding = 'py-3';
+const PerfilUsuario = () => {
+  const [readMode, setReadMode] = useState(true);
+
+  const rowPadding = 'py-2';
   const rows = [
     {
       label: 'Nome',
@@ -18,7 +21,7 @@ const CadastroUsuario = () => {
           id="nome"
           type="text"
           name="nome"
-          placeholder="Ex. João da Silva"
+          readOnly={readMode}
           required
         />
       ),
@@ -31,7 +34,7 @@ const CadastroUsuario = () => {
           id="email"
           type="email"
           name="email"
-          placeholder="email@exemplo.com"
+          readOnly={readMode}
           required
         />
       ),
@@ -44,7 +47,7 @@ const CadastroUsuario = () => {
           id="grupo"
           type="text"
           name="grupo"
-          placeholder="Ex. Administradores"
+          readOnly={readMode}
         />
       ),
     },
@@ -56,29 +59,18 @@ const CadastroUsuario = () => {
           id="senha"
           type="password"
           name="senha"
+          readOnly={readMode}
           required
         />
       ),
-    },
-    {
-      label: 'Confirmação Senha',
-      size: 'small-input',
-      element: (
-        <Form.Control
-          id="confirmacao_senha"
-          type="password"
-          name="confirmacao_senha"
-          required
-        />
-      ),
-    },
+    }
   ];
 
   return (
     <div className="row m-0">
       <Sidebar user="Emerson" currentPage={'Usuários'} />
       <main className="col cont px-5">
-        <PageTitle title="Cadastrar Usuário" />
+        <PageTitle title="Meu Perfil" />
         <div className="form-cont px-4 flex-center">
           <form action="/usuario" method="POST">
             {rows.map((row, index) => (
@@ -92,7 +84,11 @@ const CadastroUsuario = () => {
             ))}
             <div className="row pt-5 mt-5 justify-content-center">
               <Button className="form-btn" variant="primary" type="submit">
-                Cadastrar
+                {
+                  readMode
+                  ? 'Editar Dados'
+                  : 'Salvar Alterações'
+                }
               </Button>
             </div>
           </form>
@@ -102,4 +98,4 @@ const CadastroUsuario = () => {
   );
 };
 
-export default CadastroUsuario;
+export default PerfilUsuario;

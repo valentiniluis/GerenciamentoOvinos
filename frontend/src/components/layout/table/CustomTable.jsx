@@ -16,7 +16,7 @@ const CustomTable = ({ schema, data, uniqueCol }) => {
         {data.map(obj => (
           <tr key={obj[uniqueCol]}>
             {columns.map(column => (
-              <td key={`${obj[uniqueCol]} ${column}`}>{obj[column] ?? 'Não Encontrado'}</td>
+              <td key={`${obj[uniqueCol]} ${column}`}>{obj[column] ?? 'Não Há'}</td>
             ))}
           </tr>
         ))}

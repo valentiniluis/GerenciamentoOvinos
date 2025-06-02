@@ -11,11 +11,12 @@ import CadastroPesagem from './pages/CadastroPesagem.jsx';
 import DadosOvino from './pages/DadosOvino.jsx';
 import CadastroUsuario from './pages/CadastroUsuario.jsx';
 import ListagemUsuarios from './pages/ListagemUsuarios.jsx';
-import ListagemGrupos from './pages/ListagemGrupos.jsx'
-import NotFoundPage from './pages/NotFoundPage.jsx';
+import PerfilUsuario from './pages/PerfilUsuario.jsx';
+import ListagemGrupos from './pages/ListagemGrupos.jsx';
 import Relatorio from './pages/Relatorio.jsx';
-import Calendario from './pages/Calendario.jsx'
+import Calendario from './pages/Calendario.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import PaginaNaoEncontrada from './pages/PaginaNaoEncontrada.jsx';
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
@@ -28,8 +29,9 @@ const router = createBrowserRouter([
   { path: '/relatorio', element: <Relatorio /> },
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
+  { path: '/usuario/:id', element: <PerfilUsuario /> },
   { path: '/usuario/grupos', element: <ListagemGrupos /> },
-  { path: '*', element: <NotFoundPage /> }
+  { path: '*', element: <PaginaNaoEncontrada /> }
 ]);
 
 createRoot(document.getElementById('root')).render(
