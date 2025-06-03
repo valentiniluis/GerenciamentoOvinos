@@ -32,7 +32,7 @@ const ListagemUsuarios = () => {
 
   return (
     <div className="row m-0">
-      <Sidebar user="Luís" currentPage="Usuários" />
+      <Sidebar user="Luís" currentPage="Grupos" />
       <main className="col cont px-5">
         <PageTitle title="Grupos de Usuários" />
         <div className="row py-3">

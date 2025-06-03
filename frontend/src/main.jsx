@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
   { path: '/usuario/:id', element: <PerfilUsuario /> },
-  { path: '/usuario/grupos', element: <ListagemGrupos /> },
+  { path: '/grupo/listar', element: <ListagemGrupos /> },
   { path: '*', element: <PaginaNaoEncontrada /> }
 ]);
 

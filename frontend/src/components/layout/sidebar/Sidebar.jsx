@@ -41,7 +41,13 @@ const Sidebar = ({ user, currentPage }) => {
       name: 'Usuários',
       icon: usersIcon,
       basepath: '/usuario',
-      submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }, { name: 'Grupos', path: 'grupos' }],
+      submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }],
+    },
+    {
+      name: 'Grupos',
+      icon: usersIcon,
+      basepath: '/grupo',
+      submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }]
     }
   ];
 

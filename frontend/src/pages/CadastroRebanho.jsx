@@ -172,13 +172,17 @@ const CadastroRebanho = () => {
     ],
   ];
 
+  const submitForm = (formData) => {
+    console.log(formData);
+  }
+
   return (
     <div className="row m-0">
       <Sidebar user="Emerson" currentPage={'Rebanho'} />
       <main className="col cont px-5">
         <PageTitle title="Cadastrar Ovino" />
         <div className="form-cont flex-center">
-          <form action="/ovino" method="POST">
+          <form action={submitForm}>
             <h4 className="py-1">Informações</h4>
             {rows.map((row, i) => (
               <FormRow padding={rowPadding} key={`Form Row ${i + 1}`}>
