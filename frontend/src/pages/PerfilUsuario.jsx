@@ -1,5 +1,5 @@
 import { Button, Form } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import '../styles/form.css';
 
@@ -9,7 +9,27 @@ import InputField from '../components/UI/InputField';
 import FormRow from '../components/UI/FormRow';
 
 const PerfilUsuario = () => {
+  const [userData, setUserData] = useState({});
   const [readMode, setReadMode] = useState(true);
+
+  useEffect(() => {
+    const email = 'usuarioum@gmail.com';
+    async function fetchData() {
+      try {
+        const url = `http://localhost:3000/usuarios/${email}`;
+        const headers = { 'Content-Type': 'application/json' };
+        const response = await fetch(url, headers);
+        if (!response.ok)
+          throw new Error('Não foi possível consultar os dados');
+        const data = await response.json();
+        setUserData(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
+  }, []);
+
 
   const rowPadding = 'py-2';
   const rows = [
@@ -22,6 +42,7 @@ const PerfilUsuario = () => {
           type="text"
           name="nome"
           readOnly={readMode}
+          value={userData.nome}
           required
         />
       ),
@@ -35,6 +56,7 @@ const PerfilUsuario = () => {
           type="email"
           name="email"
           readOnly={readMode}
+          value={userData.email}
           required
         />
       ),
@@ -47,24 +69,20 @@ const PerfilUsuario = () => {
           id="grupo"
           type="text"
           name="grupo"
-          readOnly={readMode}
-        />
-      ),
-    },
-    {
-      label: 'Senha',
-      size: 'small-input',
-      element: (
-        <Form.Control
-          id="senha"
-          type="password"
-          name="senha"
-          readOnly={readMode}
-          required
+          readOnly
+          value={userData.grupo}
         />
       ),
     }
   ];
+
+  const handleEdit = (event) => {
+    event.preventDefault();
+  }
+
+  const toggleReadMode = () => {
+    setReadMode(prevMode => !prevMode);
+  }
 
   return (
     <div className="row m-0">
@@ -72,7 +90,7 @@ const PerfilUsuario = () => {
       <main className="col cont px-5">
         <PageTitle title="Meu Perfil" />
         <div className="form-cont px-4 flex-center">
-          <form action="/usuario" method="POST">
+          <form onSubmit={handleEdit}>
             {rows.map((row, index) => (
               <FormRow padding={rowPadding} key={`Form Row ${index + 1}`}>
                 <InputField
@@ -82,13 +100,12 @@ const PerfilUsuario = () => {
                 />
               </FormRow>
             ))}
-            <div className="row pt-5 mt-5 justify-content-center">
-              <Button className="form-btn" variant="primary" type="submit">
-                {
-                  readMode
-                  ? 'Editar Dados'
-                  : 'Salvar Alterações'
-                }
+            <div className="row pt-5 mt-5 justify-content-evenly">
+              <Button type={readMode ? 'button' : 'submit'} onClick={toggleReadMode} className="form-btn me-3" variant="primary">
+                {readMode ? 'Editar Dados' : 'Salvar Alterações'}
+              </Button>
+              <Button className="form-btn ms-3" variant="primary" type="button">
+                Alterar Senha
               </Button>
             </div>
           </form>
