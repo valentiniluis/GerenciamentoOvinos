@@ -1,9 +1,9 @@
-import Sidebar from '../components/layout/sidebar/Sidebar';
-import PageTitle from '../components/UI/PageTitle';
+import Sidebar from '../../components/layout/sidebar/Sidebar';
+import PageTitle from '../../components/UI/PageTitle';
 
-import CardEstadoSaude from '../components/layout/cards/cardEstadoSaude';
-import CardTiposFuncao from '../components/layout/cards/cardTiposFuncao';
-import CardTotalAnimais from '../components/layout/cards/cardTotalAnimais';
+import CardEstadoSaude from '../../components/layout/cards/cardEstadoSaude';
+import CardTiposFuncao from '../../components/layout/cards/cardTiposFuncao';
+import CardTotalAnimais from '../../components/layout/cards/cardTotalAnimais';
 
 import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';

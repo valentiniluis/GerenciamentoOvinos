@@ -1,6 +1,6 @@
-import Sidebar from '../components/layout/sidebar/Sidebar';
-import PageTitle from '../components/UI/PageTitle';
-import CustomTable from '../components/layout/table/CustomTable';
+import Sidebar from '../../components/layout/sidebar/Sidebar';
+import PageTitle from '../../components/UI/PageTitle';
+import CustomTable from '../../components/layout/table/CustomTable';
 import { useEffect, useState } from 'react';
 
 const ListagemUsuarios = () => {

@@ -1,10 +1,10 @@
 import { Button } from 'react-bootstrap';
 
-import '../styles/login.css';
-import '../styles/form.css';
+import '../../styles/login.css';
+import '../../styles/form.css';
 
-import InputField from '../components/UI/InputField';
-import PageTitle from '../components/UI/PageTitle';
+import InputField from '../../components/UI/InputField';
+import PageTitle from '../../components/UI/PageTitle';
 
 const Login = () => {
   const padding = 'py-3';

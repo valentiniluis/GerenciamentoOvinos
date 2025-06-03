@@ -1,12 +1,12 @@
 import { Button, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 
-import '../styles/form.css';
+import '../../styles/form.css';
 
-import PageTitle from '../components/UI/PageTitle';
-import Sidebar from '../components/layout/sidebar/Sidebar';
-import InputField from '../components/UI/InputField';
-import FormRow from '../components/UI/FormRow';
+import PageTitle from '../../components/UI/PageTitle';
+import Sidebar from '../../components/layout/sidebar/Sidebar';
+import InputField from '../../components/UI/InputField';
+import FormRow from '../../components/UI/FormRow';
 
 const PerfilUsuario = () => {
   const [userData, setUserData] = useState({});

@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import Sidebar from '../components/layout/sidebar/Sidebar';
-import PageTitle from '../components/UI/PageTitle';
-import EventModal from '../components/layout/modal/EventModal';
+import Sidebar from '../../components/layout/sidebar/Sidebar';
+import PageTitle from '../../components/UI/PageTitle';
+import EventModal from '../../components/layout/modal/EventModal';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import ptBrLocales from '@fullcalendar/core/locales/pt-br';
 import InteractionPlugin from '@fullcalendar/interaction';
 
-import '../styles/calendar.css';
+import '../../styles/calendar.css';
 
 const Calendar = () => {
   const [eventos, setEventos] = useState([]);

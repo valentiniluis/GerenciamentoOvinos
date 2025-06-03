@@ -1,8 +1,8 @@
 import { Form, Button } from 'react-bootstrap';
-import Sidebar from "../components/layout/sidebar/Sidebar";
-import PageTitle from "../components/UI/PageTitle";
-import FormRow from '../components/UI/FormRow';
-import InputField from '../components/UI/InputField';
+import Sidebar from "../../components/layout/sidebar/Sidebar";
+import PageTitle from "../../components/UI/PageTitle";
+import FormRow from '../../components/UI/FormRow';
+import InputField from '../../components/UI/InputField';
 import { useEffect, useState } from 'react';
 
 const Relatorio = () => {

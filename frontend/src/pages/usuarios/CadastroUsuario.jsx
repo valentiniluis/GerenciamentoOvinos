@@ -1,11 +1,11 @@
 import { Button, Form } from 'react-bootstrap';
 
-import '../styles/form.css';
+import '../../styles/form.css';
 
-import PageTitle from '../components/UI/PageTitle';
-import Sidebar from '../components/layout/sidebar/Sidebar';
-import InputField from '../components/UI/InputField';
-import FormRow from '../components/UI/FormRow';
+import PageTitle from '../../components/UI/PageTitle';
+import Sidebar from '../../components/layout/sidebar/Sidebar';
+import InputField from '../../components/UI/InputField';
+import FormRow from '../../components/UI/FormRow';
 
 const CadastroUsuario = () => {
   const rowPadding = 'py-3';
