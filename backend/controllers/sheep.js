@@ -11,6 +11,16 @@ exports.getSheep = async (req, res, next) => {
     }
 }
 
+// desenvolver select com left join em pesagens...
+exports.getOneSheep = async (req, res, next) => {
+    const { brinco } = req.params;
+    try {
+        console.log(brinco);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 exports.postSheep = async (req, res, next) => {
     try {
         const { num_brinco, raca, sexo, data_nasc, finalidade, peso_nasc } = req.body;
@@ -28,8 +38,8 @@ exports.postSheep = async (req, res, next) => {
 }
 
 exports.postWeighIn = async (req, res, next) => {
-    const { num_brinco, etapa, peso, data_pesagem, observacao } = req.body;
     try {
+        const { num_brinco, etapa, peso, data_pesagem, observacao } = req.body;
         await db.none(
             "INSERT INTO pesagem(brinco_ovino, peso, etapa_vida, data_pesagem, observacao) \
             VALUES ($1, $2, $3, $4, $5);",

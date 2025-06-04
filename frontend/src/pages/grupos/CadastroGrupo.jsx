@@ -7,69 +7,67 @@ import FormRow from '../../components/UI/FormRow';
 
 import api from '../../api/request';
 
-const CadastroUsuario = () => {
+const CadastroGrupo = () => {
   const rowPadding = 'py-3';
   const rows = [
     {
-      label: 'Nome',
+      label: 'Nome do Grupo',
       size: 'medium-input',
       element: (
         <Form.Control
           id="nome"
           type="text"
           name="nome"
-          placeholder="Ex. João da Silva"
-          required
-        />
-      ),
-    },
-    {
-      label: 'E-Mail',
-      size: 'medium-input',
-      element: (
-        <Form.Control
-          id="email"
-          type="email"
-          name="email"
-          placeholder="email@exemplo.com"
-          required
-        />
-      ),
-    },
-    {
-      label: 'Grupo',
-      size: 'medium-input',
-      element: (
-        <Form.Control
-          id="grupo"
-          type="text"
-          name="grupo"
           placeholder="Ex. Administradores"
-        />
-      ),
-    },
-    {
-      label: 'Senha',
-      size: 'small-input',
-      element: (
-        <Form.Control
-          id="senha"
-          type="password"
-          name="senha"
           required
         />
       ),
     },
     {
-      label: 'Confirmação Senha',
-      size: 'small-input',
+      label: 'Descrição',
+      size: 'medium-input',
       element: (
         <Form.Control
-          id="confirmacao_senha"
-          type="password"
-          name="confirmacao_senha"
-          required
+          id="descricao"
+          type="descricao"
+          name="descricao"
+          placeholder="Descrição Opcional"
         />
+      ),
+    },
+    {
+      label: 'Permissões',
+      size: 'small-input',
+      element: (
+        <Form.Group id="permissoes" name="permissoes">
+          <Form.Check
+            label="Acesso a Dados"
+            id="acesso_dados"
+            type="checkbox"
+            name="acesso_dados"
+            defaultChecked
+          />
+          <Form.Check
+            label="Acesso ao Rebanho"
+            id="acesso_rebanho"
+            type="checkbox"
+            name="acesso_rebanho"
+            defaultChecked
+          />
+          <Form.Check
+            label="Acesso aos Usuários"
+            id="acesso_usuarios"
+            type="checkbox"
+            name="acesso_usuarios"
+          />
+          <Form.Check
+            label="Acesso aos Grupos"
+            id="acesso_grupos"
+            type="checkbox"
+            name="acesso_grupos"
+          />
+
+        </Form.Group>
       ),
     },
   ];
@@ -79,8 +77,8 @@ const CadastroUsuario = () => {
     try {
       const formData = new FormData(event.target);
       const jsonData = Object.fromEntries(formData.entries());
-      const postData = {...jsonData, data_cadastro: new Date()};
-      const result = await api.post('/usuarios', postData);
+      const postData = { ...jsonData, data_criacao: new Date() };
+      const result = await api.post('/grupos', postData);
       console.log(result);
     } catch (err) {
       console.log(err);
@@ -89,9 +87,9 @@ const CadastroUsuario = () => {
 
   return (
     <div className="row m-0">
-      <Sidebar user="Emerson" currentPage={'Usuários'} />
+      <Sidebar user="Emerson" currentPage={'Grupos'} />
       <main className="col cont px-5">
-        <PageTitle title="Cadastrar Usuário" />
+        <PageTitle title="Cadastrar Grupo" />
         <div className="form-cont px-4 flex-center">
           <form onSubmit={handleSubmit}>
             {rows.map((row, index) => (
@@ -115,4 +113,4 @@ const CadastroUsuario = () => {
   );
 };
 
-export default CadastroUsuario;
+export default CadastroGrupo;

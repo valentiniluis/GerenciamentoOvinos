@@ -1,13 +1,12 @@
+import '../../styles/form.css';
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
-import api from '../../api/request';
-
-import '../../styles/form.css';
-
 import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
 import InputField from '../../components/UI/InputField';
 import FormRow from '../../components/UI/FormRow';
+
+import api from '../../api/request';
 
 const CadastroRebanho = () => {
   const [comprado, setComprado] = useState(false);
@@ -165,6 +164,7 @@ const CadastroRebanho = () => {
       const formData = new FormData(event.target);
       const jsonData = Object.fromEntries(formData.entries());
       const result = await api.post('/rebanho', jsonData);
+      console.log(result);
     } catch (err) {
       console.log(err);
     }

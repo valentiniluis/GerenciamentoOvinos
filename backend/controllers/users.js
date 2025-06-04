@@ -9,6 +9,22 @@ exports.getUsers = async (req, res, next) => {
     }
 }
 
+
+exports.createUser = async (req, res, next) => {
+    try {
+        const { nome, email, grupo, senha, data_cadastro } = req.body;
+        await db.none(
+            "INSERT INTO usuario(email, nome, senha, grupo, data_cadastro) \
+            VALUES ($1, $2, $3, $4, $5)",
+            [email, nome, senha, grupo, data_cadastro]
+        );
+        res.status(201).json({success: true});
+    } catch (err) {
+        console.log(err);
+    } 
+}
+
+
 exports.getUser = async (req, res, next) => {
     const { email } = req.params;
     try {
@@ -18,4 +34,3 @@ exports.getUser = async (req, res, next) => {
         console.log(err);
     }
 }
-

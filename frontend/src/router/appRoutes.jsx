@@ -8,6 +8,7 @@ import CadastroUsuario from '../pages/usuarios/CadastroUsuario.jsx';
 import ListagemUsuarios from '../pages/usuarios/ListagemUsuarios.jsx';
 import PerfilUsuario from '../pages/usuarios/PerfilUsuario.jsx';
 import ListagemGrupos from '../pages/grupos/ListagemGrupos.jsx';
+import CadastroGrupo from '../pages/grupos/CadastroGrupo.jsx';
 import Relatorio from '../pages/relatorio/Relatorio.jsx';
 import Calendario from '../pages/calendario/Calendario.jsx';
 import Dashboard from '../pages/dashboard/Dashboard.jsx';
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
   { path: '/usuario/:id', element: <PerfilUsuario /> },
   { path: '/grupo/listar', element: <ListagemGrupos /> },
+  { path: '/grupo/cadastrar', element: <CadastroGrupo /> },
   { path: '*', element: <PaginaNaoEncontrada /> }
 ]);
 
