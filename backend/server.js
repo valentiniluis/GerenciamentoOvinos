@@ -3,6 +3,8 @@ const app = express();
 
 const SERVER_PORT = 3000;
 
+app.use(express.json());
+
 const authRoutes = require('./routes/auth');
 const animalRoutes = require('./routes/sheep');
 const userRoutes = require('./routes/users');
@@ -10,6 +12,8 @@ const userRoutes = require('./routes/users');
 // função temporária para permitir requests vindas da port do front-end
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header("Access-Control-Allow-Methods", "*");
     next();
 });
 

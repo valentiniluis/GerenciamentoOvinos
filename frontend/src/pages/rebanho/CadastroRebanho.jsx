@@ -1,5 +1,6 @@
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import api from '../../api/request';
 
 import '../../styles/form.css';
 
@@ -90,7 +91,7 @@ const CadastroRebanho = () => {
               id='macho'
               type="radio"
               name="sexo"
-              value="macho"
+              value="M"
               label="Macho"
               required
             />
@@ -99,7 +100,7 @@ const CadastroRebanho = () => {
               id='femea'
               type="radio"
               name="sexo"
-              value="femea"
+              value="F"
               label="Fêmea"
             />
           </div>
@@ -155,25 +156,18 @@ const CadastroRebanho = () => {
         label: 'Peso Nascimento (kg)',
         size: 'small-input',
       },
-    ],
-    [
-      {
-        element: (
-          <Form.Control
-            id="observacao"
-            type="text"
-            name="observacao"
-            placeholder="Observações Opcionais"
-          />
-        ),
-        label: 'Observação',
-        size: 'large-input',
-      },
-    ],
+    ]
   ];
 
-  const submitForm = (formData) => {
-    console.log(formData);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.target);
+      const jsonData = Object.fromEntries(formData.entries());
+      const result = await api.post('/rebanho', jsonData);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -182,7 +176,7 @@ const CadastroRebanho = () => {
       <main className="col cont px-5">
         <PageTitle title="Cadastrar Ovino" />
         <div className="form-cont flex-center">
-          <form action={submitForm}>
+          <form onSubmit={handleSubmit}>
             <h4 className="py-1">Informações</h4>
             {rows.map((row, i) => (
               <FormRow padding={rowPadding} key={`Form Row ${i + 1}`}>

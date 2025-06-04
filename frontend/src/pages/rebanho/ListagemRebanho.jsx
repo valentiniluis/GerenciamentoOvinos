@@ -7,6 +7,8 @@ import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
 import { useEffect, useState } from 'react';
 
+import api from '../../api/request';
+
 // ADICIONAR A FUNCIONALIDADE DOS FILTROS
 
 const ListagemRebanho = () => {
@@ -23,15 +25,9 @@ const ListagemRebanho = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const headers = { 'Content-Type': 'application/json' };
       try {
-        const response = await fetch('http://localhost:3000/rebanho', headers);
-        if (!response.ok)
-          throw new Error(
-            `Could not fetch the data. Response status: ${response.status}`,
-          );
-
-        const data = await response.json();
+        const response = await api.get('/rebanho');
+        const data = response.data;
         const linkedData = data.map((obj) => {
           obj['mais_detalhes'] = (
             <Link className="my-link" to={`/rebanho/${obj['num_brinco']}`}>

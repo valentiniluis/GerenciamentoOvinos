@@ -12,11 +12,11 @@ exports.getSheep = async (req, res, next) => {
 }
 
 exports.postSheep = async (req, res, next) => {
-    const { num_brinco, raca, sexo, data_nasc, finalidade, peso_nasc, observacao } = req.body;
-    const brinco_mae = (req.body.comprado) ? req.body.brinco_mae : null;
-    const abatido = false;
     try {
-        await db.none(
+        const { num_brinco, raca, sexo, data_nasc, finalidade, peso_nasc } = req.body;
+        const brinco_mae = (!req.body.comprado) ? req.body.brinco_mae : null;
+        const abatido = false;
+            await db.none(
             "INSERT INTO ovino(num_brinco, brinco_mae, raca, sexo, peso_nasc, data_nasc, finalidade, abatido) \
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8);",
             [num_brinco, brinco_mae, raca, sexo, peso_nasc, data_nasc, finalidade, abatido]

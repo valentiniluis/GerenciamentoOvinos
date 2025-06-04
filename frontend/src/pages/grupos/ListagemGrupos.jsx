@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
-import { useEffect, useState } from 'react';
+
+import api from '../../api/request';
 
 const ListagemUsuarios = () => {
   const schema = [
@@ -16,12 +18,8 @@ const ListagemUsuarios = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const url = 'http://localhost:3000/grupos';
-        const headers = { 'Content-Type': 'application/json' };
-        const response = await fetch(url, headers);
-        if (!response.ok)
-          throw new Error('Não foi possível consultar os dados');
-        const data = await response.json();
+        const response = await api.get('/grupos');
+        const data = response.data;
         setGroupsData(data);
       } catch (err) {
         console.log(err);
