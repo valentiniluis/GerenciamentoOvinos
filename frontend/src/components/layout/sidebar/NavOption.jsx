@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 
-const NavOption = ({ name, icon, active, callback, path, submenu }) => {
+const NavOption = ({ name, icon, active, callback, path, submenu, onSubmenuClick }) => {
   return (
     <div className="row w-100 mx-0 px-0">
       <div className={`row justify-content-center w-100 m-0 p-0 ${active ? 'active' : undefined}`}>
@@ -19,7 +19,12 @@ const NavOption = ({ name, icon, active, callback, path, submenu }) => {
       {active && submenu !== undefined && (
         <div className="submenu text-center">
           {submenu.map((sub) => (
-            <Link key={sub.name} className="submenu-item no-decoration d-block m-0" to={`${path}/${sub.path}`}>
+            <Link
+              key={sub.name}
+              className="submenu-item no-decoration d-block m-0"
+              to={`${path}/${sub.path}`}
+              onClick={onSubmenuClick}
+            >
               {sub.name}
             </Link>
           ))}
