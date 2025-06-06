@@ -30,9 +30,7 @@ const CadastroPesagem = () => {
           id="etapa"
           name="etapa"
           required
-          onInvalid={(e) =>
-            e.target.setCustomValidity('Escolha uma etapa válida')
-          }
+          onInvalid={(e) => e.target.setCustomValidity('Escolha uma etapa válida')}
           onInput={(e) => e.target.setCustomValidity('')}
         >
           <option value="" hidden>Selecione a etapa</option>

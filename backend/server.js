@@ -8,6 +8,7 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 const animalRoutes = require('./routes/sheep');
 const userRoutes = require('./routes/users');
+const groupRoutes = require('./routes/groups');
 
 // função temporária para permitir requests vindas da port do front-end
 app.use((req, res, next) => {
@@ -20,5 +21,6 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use('/rebanho', animalRoutes);
 app.use('/usuarios', userRoutes);
+app.use('/grupos', groupRoutes);
 
 app.listen(SERVER_PORT, () => console.log(`Servidor sendo executado na porta ${SERVER_PORT}...`))

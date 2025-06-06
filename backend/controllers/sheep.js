@@ -3,7 +3,13 @@ const db = require('../model/database');
 exports.getSheep = async (req, res, next) => {
     try {
         const data = await db.manyOrNone(
-            "SELECT * FROM ovino"
+            "SELECT \
+                num_brinco, brinco_mae, raca, sexo, finalidade, peso_nasc, \
+                TO_CHAR(data_nasc, 'DD/MM/YYYY') AS data_nasc, \
+                CASE \
+                    WHEN abatido = true THEN 'Sim' ELSE 'Não' \
+                END AS abatido \
+            FROM ovino;"
         );
         res.status(200).json(data);
     } catch (err) {

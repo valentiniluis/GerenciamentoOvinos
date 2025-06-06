@@ -20,6 +20,7 @@ const ListagemRebanho = () => {
     ['raca', 'Raça'],
     ['sexo', 'Sexo'],
     ['finalidade', 'Finalidade'],
+    ['abatido', 'Abatido'],
     ['mais_detalhes', 'Mais Detalhes'],
   ];
 
@@ -28,6 +29,7 @@ const ListagemRebanho = () => {
       try {
         const response = await api.get('/rebanho');
         const data = response.data;
+        console.log(data);
         const linkedData = data.map((obj) => {
           obj['mais_detalhes'] = (
             <Link className="my-link" to={`/rebanho/${obj['num_brinco']}`}>

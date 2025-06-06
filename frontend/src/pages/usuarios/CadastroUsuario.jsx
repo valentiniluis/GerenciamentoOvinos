@@ -1,4 +1,5 @@
 import '../../styles/form.css';
+import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
@@ -9,6 +10,17 @@ import api from '../../api/request';
 
 const CadastroUsuario = () => {
   const rowPadding = 'py-3';
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await api.get('/grupos');
+      const data = response.data;
+      setGroups(data);
+    }
+    fetchData();
+  }, []);
+
   const rows = [
     {
       label: 'Nome',
@@ -40,12 +52,12 @@ const CadastroUsuario = () => {
       label: 'Grupo',
       size: 'medium-input',
       element: (
-        <Form.Control
-          id="grupo"
-          type="text"
-          name="grupo"
-          placeholder="Ex. Administradores"
-        />
+        <Form.Select id="grupo" type="text" name="grupo" required>
+          <option value="" hidden>Selecione o Grupo</option>
+          {groups.map(group => (
+            <option key={group.nome} value={group.nome}>{group.nome}</option>
+          ))}
+        </Form.Select>
       ),
     },
     {
@@ -103,7 +115,7 @@ const CadastroUsuario = () => {
                 />
               </FormRow>
             ))}
-            <div className="row pt-5 mt-5 justify-content-center">
+            <div className="row pt-5 justify-content-center">
               <Button className="form-btn" variant="primary" type="submit">
                 Cadastrar
               </Button>

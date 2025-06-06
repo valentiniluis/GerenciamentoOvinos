@@ -9,7 +9,8 @@ import dashboardIcon from '/dashboard.svg';
 import sheepIcon from '/sheep_icon.svg';
 import calendarIcon from '/calendar.svg';
 import reportIcon from '/report.svg';
-import usersIcon from '/users.svg';
+import userIcon from '/user.svg';
+import groupIcon from '/group.svg';
 
 // Adicionar prop 'group'
 const Sidebar = ({ user, currentPage }) => {
@@ -39,13 +40,13 @@ const Sidebar = ({ user, currentPage }) => {
     },
     {
       name: 'Usuários',
-      icon: usersIcon,
+      icon: userIcon,
       basepath: '/usuario',
       submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }],
     },
     {
       name: 'Grupos',
-      icon: usersIcon,
+      icon: groupIcon,
       basepath: '/grupo',
       submenu: [{ name: 'Cadastrar', path: 'cadastrar' }, { name: 'Listar', path: 'listar' }]
     }

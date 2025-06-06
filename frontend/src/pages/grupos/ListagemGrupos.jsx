@@ -7,10 +7,10 @@ import api from '../../api/request';
 
 const ListagemUsuarios = () => {
   const schema = [
-    ['nome_grupo', 'Nome do Grupo'],
+    ['nome', 'Nome do Grupo'],
+    ['descricao', 'Descrição'],
     ['data_criacao', 'Data de Criação'],
-    ['num_membros', 'Nº de Membros'],
-    ['permissoes', 'Permissões']
+    ['membros', 'Nº de Membros']
   ];
 
   const [groupsData, setGroupsData] = useState([]);
@@ -35,7 +35,7 @@ const ListagemUsuarios = () => {
         <PageTitle title="Grupos de Usuários" />
         <div className="row py-3">
           {groupsData.length > 0 ? (
-            <CustomTable schema={schema} data={groupsData} uniqueCol={'nome_grupo'} />
+            <CustomTable schema={schema} data={groupsData} uniqueCol={'nome'} />
           ) : (
             <h3 className="text-center">Nenhuma informação cadastrada</h3>
           )}

@@ -1,3 +1,16 @@
+CREATE TABLE IF NOT EXISTS grupo (
+    nome VARCHAR(255) NOT NULL,
+    descricao VARCHAR(255) NULL,
+    data_criacao DATE NOT NULL,
+    perm_visual_dados BOOLEAN NOT NULL,
+    perm_visual_rebanho BOOLEAN NOT NULL,
+    perm_visual_calendario BOOLEAN NOT NULL,
+    perm_visual_grupos BOOLEAN NOT NULL,
+    perm_alter_rebanho BOOLEAN NOT NULL,
+    perm_alter_calendario BOOLEAN NOT NULL,
+    perm_alter_grupos BOOLEAN NOT NULL,
+    CONSTRAINT pk_grupo PRIMARY KEY (nome)
+);
 
 CREATE TABLE IF NOT EXISTS usuario (
     email VARCHAR(255) NOT NULL,
@@ -5,7 +18,8 @@ CREATE TABLE IF NOT EXISTS usuario (
     senha VARCHAR(255) NOT NULL,
     grupo VARCHAR(255) NOT NULL,
     data_cadastro DATE NOT NULL,
-    CONSTRAINT pk_usuario PRIMARY KEY (email)
+    CONSTRAINT pk_usuario PRIMARY KEY (email),
+    CONSTRAINT fk_usuario_grupo FOREIGN KEY (grupo) REFERENCES grupo(nome)
 );
 
 

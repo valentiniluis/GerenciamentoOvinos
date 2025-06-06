@@ -21,7 +21,7 @@ const CadastroGrupo = () => {
           placeholder="Ex. Administradores"
           required
         />
-      ),
+      )
     },
     {
       label: 'Descrição',
@@ -33,43 +33,76 @@ const CadastroGrupo = () => {
           name="descricao"
           placeholder="Descrição Opcional"
         />
-      ),
+      )
     },
     {
       label: 'Permissões',
-      size: 'small-input',
+      size: 'large-input',
       element: (
-        <Form.Group id="permissoes" name="permissoes">
+        <Form.Group id="permissoes" name="permissoes" className='text-nowrap'>
           <Form.Check
-            label="Acesso a Dados"
-            id="acesso_dados"
+            className='py-1'
+            label="Visualização de Dados (Relatórios e Gráficos)"
+            id="visualizar_dados"
             type="checkbox"
-            name="acesso_dados"
+            name="visualizar_dados"
+            value={true}
             defaultChecked
           />
           <Form.Check
-            label="Acesso ao Rebanho"
-            id="acesso_rebanho"
+            className='py-1'
+            label="Visualização do Rebanho"
+            id="visualizar_rebanho"
             type="checkbox"
-            name="acesso_rebanho"
+            name="visualizar_rebanho"
+            value={true}
             defaultChecked
           />
           <Form.Check
-            label="Acesso aos Usuários"
-            id="acesso_usuarios"
+            className='py-1'
+            label="Visualização do Calendário"
+            id="visualizar_calendario"
             type="checkbox"
-            name="acesso_usuarios"
+            name="visualizar_calendario"
+            value={true}
+            defaultChecked
           />
           <Form.Check
-            label="Acesso aos Grupos"
-            id="acesso_grupos"
+            className='py-1'
+            label="Visualização de Usuários e Grupos"
+            id="visualizar_grupos"
             type="checkbox"
-            name="acesso_grupos"
+            name="visualizar_grupos"
+            value={true}
+            defaultChecked
           />
-
+          <Form.Check
+            className='py-1'
+            label="Alteração do Rebanho"
+            id="alterar_rebanho"
+            type="checkbox"
+            name="alterar_rebanho"
+            value={true}
+          />
+          <Form.Check
+            className='py-1'
+            label="Alteração de Eventos no Calendário"
+            id="alterar_calendario"
+            type="checkbox"
+            name="alterar_calendario"
+            value={true}
+          />
+          <Form.Check
+            className='py-1'
+            label="Alteração de Usuários e Grupos"
+            id="alterar_grupos"
+            type="checkbox"
+            name="alterar_grupos"
+            value={true}
+          />
         </Form.Group>
-      ),
-    },
+      )
+    }
   ];
 
   const handleSubmit = async (event) => {
@@ -91,7 +124,7 @@ const CadastroGrupo = () => {
       <main className="col cont px-5">
         <PageTitle title="Cadastrar Grupo" />
         <div className="form-cont px-4 flex-center">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className='medium-input'>
             {rows.map((row, index) => (
               <FormRow padding={rowPadding} key={`Form Row ${index + 1}`}>
                 <InputField
@@ -101,7 +134,7 @@ const CadastroGrupo = () => {
                 />
               </FormRow>
             ))}
-            <div className="row pt-5 mt-5 justify-content-center">
+            <div className="row pt-5 justify-content-center">
               <Button className="form-btn" variant="primary" type="submit">
                 Cadastrar
               </Button>

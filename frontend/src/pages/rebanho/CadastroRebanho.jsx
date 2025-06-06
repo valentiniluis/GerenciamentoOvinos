@@ -176,7 +176,7 @@ const CadastroRebanho = () => {
       <main className="col cont px-5">
         <PageTitle title="Cadastrar Ovino" />
         <div className="form-cont flex-center">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className='large-input'>
             <h4 className="py-1">Informações</h4>
             {rows.map((row, i) => (
               <FormRow padding={rowPadding} key={`Form Row ${i + 1}`}>
@@ -191,7 +191,7 @@ const CadastroRebanho = () => {
                 ))}
               </FormRow>
             ))}
-            <div className="row pt-5 justify-content-center">
+            <div className="row pt-5 mt-2 justify-content-center">
               <Button className="form-btn" variant="primary" type="submit">
                 Cadastrar
               </Button>

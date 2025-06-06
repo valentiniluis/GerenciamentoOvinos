@@ -1,11 +1,20 @@
+INSERT INTO grupo(
+    nome,
+    data_criacao, 
+    perm_visual_dados, 
+    perm_visual_rebanho, 
+    perm_visual_calendario, 
+    perm_visual_grupos,
+    perm_alter_rebanho,
+    perm_alter_calendario,
+    perm_alter_grupos
+)
+VALUES
+('Administrador', '2024-12-06', true, true, true, true, true, true, true);
+
 INSERT INTO usuario(email, nome, senha, grupo, data_cadastro)
 VALUES
-('usuarioum@gmail.com', 'Usuário Um', 'Senha1', 'Administradores', '2022-01-01'),
-('usuariodois@yahoo.com', 'Usuário Dois', 'Senha2', 'Fiscais', '2023-01-01'),
-('usuariotres@hotmail.com', 'Usuário Três', 'Senha3', 'Administradores', '2024-12-01'),
-('usuarioquatro@outlook.com', 'Usuário Quatro', 'Senha4', 'Auxiliares', '2024-12-25'),
-('usuariocinco@aol.com', 'Usuário Cinco', 'Senha5', 'Auxiliares', '2025-01-01');
-
+('admin@admin.com', 'Admin', 'senhaAdmin', 'Administrador', '2022-01-01');
 
 INSERT INTO ovino(num_brinco, brinco_mae, raca, sexo, peso_nasc, data_nasc, finalidade, abatido)
 VALUES
