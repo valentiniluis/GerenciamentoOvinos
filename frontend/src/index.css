@@ -1,0 +1,45 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.cont, .sidebar {
+  font-family: "DM Sans";
+}
+
+.page-title {
+  font-size: 2.6rem;
+}
+
+img {
+  max-width: 100%;
+}
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.my-select {
+  max-width: 140px;
+}
+
+.my-paragraph {
+  font-size: 1.1rem;
+  text-align: justify;
+}
+
+.limit-600 {
+  max-width: 600px;
+}
+
+.sla {
+  border: solid black 2px;
+}

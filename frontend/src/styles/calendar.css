@@ -1,0 +1,17 @@
+.calendario-container {
+  height: calc(100vh - 20px); 
+  overflow: hidden; 
+  padding-bottom: 1rem;
+}
+
+.fc {
+  height: calc(85vh - 80px) !important; 
+}
+
+.fc-view {
+  overflow: hidden;
+}
+
+.fc-toolbar-title {
+  font-size: 1.5em !important;
+}

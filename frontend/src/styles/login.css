@@ -1,0 +1,17 @@
+.cont {
+  height: 100vh;
+  background-color: #F1F3FC;
+  margin: 0;
+  /* SUBSTITUIR POR FONTE QUE VAMOS USAR
+  font-family: Verdana, Geneva, Tahoma, sans-serif; */
+}
+
+.my-form {
+  border-radius: 6px;
+  box-shadow: 0px 2px 3px grey;
+}
+
+.pg-title {
+  font-weight: bold;
+  font-size: 3.2rem;
+}
