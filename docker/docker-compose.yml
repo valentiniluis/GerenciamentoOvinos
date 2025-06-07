@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - ./dados_postgres:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
 
   pgadmin:
     image: dpage/pgadmin4
@@ -34,12 +35,13 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_NAME=${POSTGRES_DB}
     ports:
-      - "3001:3001"
+      - "3000:3000"
     depends_on:
       - db
     working_dir: /app
     volumes:
       - ../backend:/app
+      - /app/node_modules
 
   frontend:
     build:
@@ -53,4 +55,4 @@ services:
     working_dir: /app
     volumes:
       - ../frontend:/app
-      
+      - /app/node_modules

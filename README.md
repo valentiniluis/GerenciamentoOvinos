@@ -39,7 +39,7 @@
 3. **Subindo o ambiente:**
    ```bash
    cd docker
-   docker-compose up --build -d
+   docker compose up --build -d
    ```
 
 4. **Acessos:**
@@ -54,7 +54,7 @@
 
 5. **Parar tudo:**
    ```bash
-   docker-compose down
+   docker compose down
    ```
 
 **Os dados do banco são persistidos em `docker/dados_postgres`.**

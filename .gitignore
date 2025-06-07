@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs/
+*.log
+
+# dotenv environment files
+*.env
+
+# Docker volumes e dados
+docker/dados_postgres/
+docker/pgdata/
+*.pid
+
+# Build output
+dist/
+build/
+out/
+
+# VS Code settings
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Frontend 
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Backend
+backend/node_modules/
+backend/dist/
+backend/build/
