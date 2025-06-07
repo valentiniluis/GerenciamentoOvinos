@@ -38,3 +38,7 @@ frontend/build/
 backend/node_modules/
 backend/dist/
 backend/build/
+
+
+# Documentação 
+backend/doc/*.json

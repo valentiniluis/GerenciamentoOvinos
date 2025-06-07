@@ -1,8 +1,12 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./doc/swagger_output.json');
+
 const app = express();
 
 const SERVER_PORT = 3000;
 
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(express.json());
 
 const authRoutes = require('./routes/auth');
