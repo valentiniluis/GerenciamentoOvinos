@@ -4,10 +4,17 @@ import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
 import InputField from '../../components/UI/InputField';
 import FormRow from '../../components/UI/FormRow';
+import ApiAlert from '../../components/UI/ApiAlert';
 
 import api from '../../api/request';
+import { useState } from 'react';
 
 const CadastroGrupo = () => {
+
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccesMsg] = useState(null);
+
+
   const rowPadding = 'py-3';
   const rows = [
     {
@@ -107,14 +114,27 @@ const CadastroGrupo = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrorMsg(null);
+    setSuccesMsg(null);
+
     try {
       const formData = new FormData(event.target);
       const jsonData = Object.fromEntries(formData.entries());
       const postData = { ...jsonData, data_criacao: new Date() };
       const result = await api.post('/grupos', postData);
       console.log(result);
+
+      setSuccesMsg('Grupo cadastrado com sucesso');
+
+      event.target.reset();
     } catch (err) {
-      console.log(err);
+      console.log(err)
+
+      if (err.response.data.error) {
+        setErrorMsg(err.response.data.error);
+      } else {
+        setErrorMsg('Erro inesperado. Tente novamente mais tarde');
+      }
     }
   }
 
@@ -141,6 +161,8 @@ const CadastroGrupo = () => {
             </div>
           </form>
         </div>
+        <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
+        <ApiAlert variant="success" message={successMsg} onClose={() => setSuccesMsg(null)} />
       </main>
     </div>
   );
