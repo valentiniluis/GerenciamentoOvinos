@@ -1,5 +1,6 @@
 import { Button, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import '../../styles/form.css';
 
@@ -11,9 +12,9 @@ import FormRow from '../../components/UI/FormRow';
 const PerfilUsuario = () => {
   const [userData, setUserData] = useState({});
   const [readMode, setReadMode] = useState(true);
+  const { email } = useParams();
 
   useEffect(() => {
-    const email = 'usuarioum@gmail.com';
     async function fetchData() {
       try {
         const url = `http://localhost:3000/usuarios/${email}`;
@@ -28,7 +29,7 @@ const PerfilUsuario = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [email]);
 
 
   const rowPadding = 'py-2';

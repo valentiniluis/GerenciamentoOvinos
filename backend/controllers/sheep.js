@@ -17,15 +17,22 @@ exports.getSheep = async (req, res, next) => {
     }
 }
 
-// desenvolver select com left join em pesagens...
+
 exports.getOneSheep = async (req, res, next) => {
     const { brinco } = req.params;
     try {
-        console.log(brinco);
+        const data =  await db.manyOrNone(
+            "SELECT brinco_ovino, etapa_vida, peso, observacao, \
+            TO_CHAR(data_pesagem, 'DD/MM/YYYY') AS data_pesagem \
+            FROM pesagem WHERE brinco_ovino = $1;",
+            [brinco]
+        );
+        res.status(201).json(data);
     } catch (err) {
         console.log(err);
     }
 }
+
 
 exports.postSheep = async (req, res, next) => {
     try {
@@ -42,6 +49,7 @@ exports.postSheep = async (req, res, next) => {
         console.log(err);
     }
 }
+
 
 exports.postWeighIn = async (req, res, next) => {
     try {

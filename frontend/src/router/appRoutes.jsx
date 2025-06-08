@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   { path: '/relatorio', element: <Relatorio /> },
   { path: '/usuario/cadastrar', element: <CadastroUsuario /> },
   { path: '/usuario/listar', element: <ListagemUsuarios /> },
-  { path: '/usuario/:id', element: <PerfilUsuario /> },
+  { path: '/usuario/:email', element: <PerfilUsuario /> },
   { path: '/grupo/listar', element: <ListagemGrupos /> },
   { path: '/grupo/cadastrar', element: <CadastroGrupo /> },
   { path: '*', element: <PaginaNaoEncontrada /> }
