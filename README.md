@@ -1,5 +1,10 @@
 # Sistema para Gerenciamento de Rebanho de Ovelhas
 
+Alunos - Matrícula
+Emerson Henrique Comar - 2221101007
+Grégory Steffani dos Santos - 1911100026
+Luís Fernando Cerutti Valentini - 20230001310
+
 ## Requisitos da Aplicação
 
 A documentação completa contendo todos os requisitos da aplicação está em `requisitos_aplicacao/documentacao.pdf`
