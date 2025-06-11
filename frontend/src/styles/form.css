@@ -28,8 +28,14 @@
   background-color: rgb(209, 209, 209);
 }
 
+.my-input:read-only {
+  background-color: transparent;
+  border: solid 1px rgb(201, 201, 201);
+}
+
 .my-label {
   padding: 0.5rem 1px;
+  margin: 0;
 }
 
 .large-input {

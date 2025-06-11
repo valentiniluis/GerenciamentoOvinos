@@ -1,29 +1,11 @@
-import { Form, Button } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
 import Sidebar from "../../components/layout/sidebar/Sidebar";
 import PageTitle from "../../components/UI/PageTitle";
-import FormRow from '../../components/UI/FormRow';
-import InputField from '../../components/UI/InputField';
-import { useEffect, useState } from 'react';
+import FormRelatorio from '../../components/layout/forms/FormRelatorio';
+
 
 const Relatorio = () => {
   const [queryParams, setQueryParams] = useState('');
-
-  const formFields = [
-    {
-      label: 'Data de Início',
-      size: 'small-input',
-      element: (
-        <Form.Control id='inicio' name='inicio' type='date' />
-      )
-    },
-    {
-      label: 'Data Final',
-      size: 'small-input',
-      element: (
-        <Form.Control id='fim' name='fim' type='date' />
-      )
-    }
-  ]
 
   useEffect(() => {
     console.log(queryParams);
@@ -49,18 +31,7 @@ const Relatorio = () => {
             Selecione a data de início, a data final do relatório e então poderá gerar
             um PDF com informações sobre nascimentos, doenças diagnosticadas e mais.
           </p>
-          <form onSubmit={handleSubmit}>
-            {formFields.map(field => (
-              <FormRow padding={'py-3'} key={field.label} >
-                <InputField label={field.label} input={field.element} size={field.size} />
-              </FormRow>
-            ))}
-            <div className="row pt-5 justify-content-center">
-              <Button className="form-btn" variant="primary" type="submit">
-                Gerar Relatório
-              </Button>
-            </div>
-          </form>
+          <FormRelatorio onSubmit={handleSubmit} />
         </div>
       </main>
     </div>
