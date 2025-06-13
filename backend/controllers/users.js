@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator');
 const db = require('../model/database');
 
 exports.getUsers = async (req, res, next) => {
@@ -15,6 +16,14 @@ exports.getUsers = async (req, res, next) => {
 
 
 exports.createUser = async (req, res, next) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        return res.status(422).json({
+            success: false,
+            errorMsg: result.array()[0].msg
+        });
+    }
+
     try {
         const { nome, email, grupo, senha, data_cadastro } = req.body;
         await db.none(
