@@ -9,10 +9,10 @@ router.get('/', usersControllers.getUsers);
 router.post('/', [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
-  // validar se o grupo existe também
+  userValidation.checkGroupExists('grupo'),
   userValidation.validatePassword('senha'),
-  userValidation.matchingPasswords('confirmacao_senha', 'senha')
-], usersControllers.createUser);
+  userValidation.matchingPasswords('confirmacao_senha', 'senha')],
+  usersControllers.createUser);
 
 router.get('/:email', usersControllers.getUser);
 

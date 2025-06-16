@@ -27,4 +27,11 @@ app.use('/rebanho', animalRoutes);
 app.use('/usuarios', userRoutes);
 app.use('/grupos', groupRoutes);
 
+app.use((error, req, res, next) => {
+    console.log(error);
+    const httpStatusCode = error.statusCode || 500;
+    const message = error.message;
+    res.status(httpStatusCode).json({ success: false, message });
+})
+
 app.listen(SERVER_PORT, () => console.log(`Servidor sendo executado na porta ${SERVER_PORT}...`))

@@ -1,4 +1,6 @@
+const { validationResult } = require('express-validator');
 const db = require('../model/database');
+
 
 exports.getGroups = async (req, res, next) => {
     try {
@@ -17,30 +19,28 @@ exports.getGroups = async (req, res, next) => {
         );
         res.status(200).json(data);
     } catch (err) {
-        console.log(err);
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
     }
 }
 
 
 exports.createGroup = async (req, res, next) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const error = new Error(result.array()[0].msg)
+        error.statusCode = 422;
+        throw error;
+    }
+
     try {
-        const { nome, descricao=null, data_criacao, visualizar_dados=false, visualizar_rebanho=false,
-                visualizar_calendario=false, visualizar_grupos=false, alterar_rebanho=false,
-                alterar_calendario=false, alterar_grupos=false } = req.body;
+        const { nome, data_criacao, permissoes } = req.body;
+        let { descricao } = req.body;
+        if (!descricao || descricao.length === 0) descricao = null;
 
-        // validação para o nome não estar vazio e somente com espaços 
-        if (!nome || nome.trim() === '') {
-            return res.status(400).json({ error: "Campo nome é obrigatório" });
-        }
-
-        const validarNomeGrupo = await db.oneOrNone(`
-            SELECT nome FROM grupo WHERE nome = $1;
-            `, [nome]);
-
-        //validar se o nome do banco já está no servidor
-        if (validarNomeGrupo) {
-            return res.status(400).json({ error: "Nome do grupo já existe" });
-        }
+        const { visualizar_dados = false, visualizar_rebanho = false, visualizar_calendario = false, 
+            visualizar_grupos = false, alterar_rebanho = false, alterar_calendario = false, 
+            alterar_grupos = false } = permissoes;
 
         await db.none(
             "INSERT INTO grupo (nome, descricao, data_criacao, perm_visual_dados, \
@@ -54,7 +54,7 @@ exports.createGroup = async (req, res, next) => {
         );
         res.status(201).json({ success: true });
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({error: "Erro interno no servidor"});
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
     }
 }
