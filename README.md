@@ -1,15 +1,15 @@
 # Sistema para Gerenciamento de Rebanho de Ovelhas
 
-Alunos - Matrícula
-Emerson Henrique Comar - 2221101007
-
-Grégory Steffani dos Santos - 1911100026
-
-Luís Fernando Cerutti Valentini - 20230001310
+| Aluno | Matrícula |
+| ------ | --------- |
+| Emerson Henrique Comar | 2221101007 |
+| Grégory Steffani dos Santos | 1911100026 |
+| Luís Fernando Cerutti Valentini | 20230001310 |
 
 ## Requisitos da Aplicação
 
-A documentação completa contendo todos os requisitos da aplicação está em `requisitos_aplicacao/documentacao.pdf`
+- A documentação completa contendo todos os requisitos da aplicação está em `requisitos_aplicacao/documentacao.pdf`
+- O modelo conceitual está em `requisitos_aplicacao/modelo_conceitual/`
 
 ## Como executar o projeto com Docker
 
