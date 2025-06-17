@@ -72,11 +72,14 @@ exports.postWeighIn = async (req, res, next) => {
     }
 
     try {
-        const { num_brinco, etapa, peso, data_pesagem, observacao } = req.body;
+        const { num_brinco, etapa_vida, peso, data_pesagem } = req.body;
+        let { observacao } = req.body;
+        if (!observacao || observacao.length === 0) observacao = null;
+
         await db.none(
             "INSERT INTO pesagem(brinco_ovino, peso, etapa_vida, data_pesagem, observacao) \
             VALUES ($1, $2, $3, $4, $5);",
-            [num_brinco, peso, etapa, data_pesagem, observacao]
+            [num_brinco, peso, etapa_vida, data_pesagem, observacao]
         );
         res.status(201).json({ success: true });
     } catch (err) {

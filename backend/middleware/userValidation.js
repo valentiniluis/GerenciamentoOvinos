@@ -14,9 +14,7 @@ exports.validateEmail = (fieldName) => {
 exports.checkUserNotExists = (fieldName) => {
   return body(fieldName)
     .custom(async (value) => {
-      // checar se a lógica está correta
-      const user = await db.none('SELECT email FROM usuario WHERE email = $1', value);
-      return user === null;
+      return await db.none('SELECT email FROM usuario WHERE email = $1', value);
     })
     .withMessage('O e-mail inserido já está em uso')
 }

@@ -24,11 +24,17 @@ exports.checkOptionalExistingId = (fieldName) => {
 }
 
 
-exports.checkExistingId = (fieldName) => {
-  return body(fieldName, 'Brinco de ovino não está cadastrado')
-    .custom(async value => {
-      return await db.one('SELECT num_brinco FROM ovino WHERE num_brinco = $1;', value)
-    });
+exports.checkExistingId = (fieldName, message) => {
+  return body(fieldName)
+    .custom(async value => await db.one('SELECT num_brinco FROM ovino WHERE num_brinco = $1;', value))
+    .withMessage(message);
+}
+
+
+exports.checkIdNotExists = (fieldName) => {
+  return body(fieldName)
+    .custom(async value => await db.none('SELECT num_brinco FROM ovino WHERE num_brinco = $1;', value))
+    .withMessage('Ovino com esse brinco já foi cadastrado')
 }
 
 
@@ -72,6 +78,7 @@ exports.validateWeight = (fieldName) => {
 exports.validateObservation = (fieldName) => {
   return body(fieldName, `Observação deve ser sequência de ${config.MIN_OBSERVATION_LENGTH} até ${config.MAX_OBSERVATION_LENGTH} caracteres`)
     .optional()
+    .trim()
     .isString()
     .isLength({
       min: config.MIN_OBSERVATION_LENGTH,
@@ -91,4 +98,16 @@ exports.validatePermissions = (fieldName) => {
     body(fieldName, 'Nenhuma permissão foi inserida').isObject(),
     body(`${fieldName}.*`, 'Permissões inseridas são inválidas').optional().isBoolean()
   ];
+}
+
+// O validador a seguir checa se o ovino cuja pesagem será cadastrada já não
+// possui registro de pesagem para a data da pesagem definida.
+// É importante que não haja duas pesagens ocorridas no mesmo dia para um mesmo ovino
+exports.validateWeighInConstraint = (sheepNumber, dateField) => {
+  return body(sheepNumber)
+    .custom(async (value, { req }) => {
+      const dataPesagem = req.body[dateField];
+      return await db.none('SELECT * FROM pesagem WHERE brinco_ovino = $1 AND data_pesagem = $2;', [value, dataPesagem]);
+    })
+    .withMessage('O ovino inserido já tem uma pesagem cadastrada nesse dia');
 }
