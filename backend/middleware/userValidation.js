@@ -1,5 +1,5 @@
 const { body } = require('express-validator');
-const config = require('./validation-config');
+const config = require('./config/validation-config');
 const db = require('../model/database');
 
 

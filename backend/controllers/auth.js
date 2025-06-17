@@ -1,10 +1,12 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
+const hashConfig = require('../settings/hashConfig');
+const jwtConfig = require('../settings/jwtConfig');
 
-
-const SALT_ROUNDS = 12;
-
+const { SALT_ROUNDS } = hashConfig;
+const { JWT_SECRET, JWT_EXPIRE_TIME } = jwtConfig;
 
 exports.postStartAccount = async (req, res, next) => {
   const result = validationResult(req);
@@ -55,8 +57,13 @@ exports.postLogin = async (req, res, next) => {
       throw error;
     }
 
-    // terminar login...
-    res.json({ success: true });
+    const token = jwt.sign(
+      { email: userData.email },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRE_TIME }
+    );
+
+    res.status(200).json({ success: true, token, userEmail: userData.email });
 
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
