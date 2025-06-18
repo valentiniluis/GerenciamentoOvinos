@@ -1,10 +1,14 @@
 import '../../../styles/form.css';
 import RenderFields from './RenderFields';
 import { Button } from 'react-bootstrap';
+import { useState } from 'react';
+import ApiAlert from '../../UI/ApiAlert';
 
 import api from '../../../api/request';
 
 const FormPesagem = () => {
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
   const rowPadding = 'py-3';
   const fields = [
     {
@@ -28,8 +32,8 @@ const FormPesagem = () => {
       },
       inputProps: {
         label: 'Etapa da Vida',
-        id: "etapa",
-        name: "etapa",
+        id: "etapa_vida",
+        name: "etapa_vida",
         required: true,
         onInvalid: (e) => e.target.setCustomValidity('Escolha uma etapa válida'),
         onInput: (e) => e.target.setCustomValidity(''),
@@ -94,8 +98,11 @@ const FormPesagem = () => {
       const postData = { ...jsonData, observacao: jsonData.observacao || null };
       const result = await api.post('/rebanho/pesagem', postData);
       console.log(result);
+    setSuccessMsg(result.data.message);
+      event.target.reset();
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      setErrorMsg(err.response.data.message || 'Erro inesperado. Tente novamente mais tarde');
     }
   }
 
@@ -107,6 +114,8 @@ const FormPesagem = () => {
           Cadastrar
         </Button>
       </div>
+       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
+      <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
     </form>
   );
 }

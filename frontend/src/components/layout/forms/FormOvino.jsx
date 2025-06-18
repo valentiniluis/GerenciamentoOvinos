@@ -1,14 +1,18 @@
 import '../../../styles/form.css';
 import { Button } from 'react-bootstrap';
+import { useState } from 'react';
 import FormRow from '../../UI/FormRow';
 import InputField from '../../UI/InputField';
 import FieldWrapper from '../../UI/FieldWrapper';
 import OvinoComprado from '../../UI/OvinoComprado';
 import SelectField from '../../UI/SelectField';
+import ApiAlert from '../../UI/ApiAlert';
 
 import api from '../../../api/request';
 
 const FormOvino = () => {
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
   const rowPadding = 'py-3';
   const rows = [
     [
@@ -125,8 +129,11 @@ const FormOvino = () => {
       const jsonData = Object.fromEntries(formData.entries());
       const result = await api.post('/rebanho', jsonData);
       console.log(result);
+      setSuccessMsg(result.data.message);
+      event.target.reset();
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      setErrorMsg(err.response.data.message || 'Erro inesperado. Tente novamente mais tarde');
     }
   }
 
@@ -151,6 +158,8 @@ const FormOvino = () => {
           Cadastrar
         </Button>
       </div>
+      <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
+      <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
     </form>
   );
 }

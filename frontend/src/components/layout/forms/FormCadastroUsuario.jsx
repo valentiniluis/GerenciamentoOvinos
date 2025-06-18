@@ -2,12 +2,15 @@ import '../../../styles/form.css';
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import RenderFields from './RenderFields';
+import ApiAlert from '../../UI/ApiAlert';
 
 import api from '../../../api/request';
 
 const FormCadastroUsuario = () => {
   const rowPadding = 'py-3';
   const [groups, setGroups] = useState([]);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,11 +97,15 @@ const FormCadastroUsuario = () => {
     try {
       const formData = new FormData(event.target);
       const jsonData = Object.fromEntries(formData.entries());
-      const postData = { ...jsonData, data_cadastro: new Date() };
+      const now = new Date().toISOString().split('T')[0];
+      const postData = { ...jsonData, data_cadastro: now };
       const result = await api.post('/usuarios', postData);
       console.log(result);
+      setSuccessMsg(result.data.message);
+      event.target.reset();
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      setErrorMsg(err.response.data.message || 'Erro inesperado. Tente novamente mais tarde');
     }
   }
 
@@ -110,6 +117,8 @@ const FormCadastroUsuario = () => {
           Cadastrar
         </Button>
       </div>
+      <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
+      <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
     </form>
   )
 }

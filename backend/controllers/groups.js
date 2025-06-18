@@ -52,7 +52,7 @@ exports.createGroup = async (req, res, next) => {
                 visualizar_grupos, alterar_rebanho, alterar_calendario, alterar_grupos
             ]
         );
-        res.status(201).json({ success: true });
+        res.status(201).json({ success: true, message: "Grupo criado com sucesso" });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

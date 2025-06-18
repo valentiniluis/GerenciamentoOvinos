@@ -38,7 +38,7 @@ exports.createUser = async (req, res, next) => {
             VALUES ($1, $2, $3, $4, $5);",
             [email, nome, hashedPassword, grupo, data_cadastro]
         );
-        res.status(201).json({ success: true });
+        res.status(201).json({ success: true, message: "Usuário criado com sucesso" });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

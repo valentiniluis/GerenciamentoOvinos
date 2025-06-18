@@ -55,7 +55,7 @@ exports.postSheep = async (req, res, next) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8);",
             [num_brinco, brinco_mae, raca, sexo, peso_nasc, data_nasc, finalidade, abatido]
         );
-        res.status(201).json({ success: true });
+        res.status(201).json({ success: true, message: "Ovino cadastrado com sucesso" });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -81,7 +81,7 @@ exports.postWeighIn = async (req, res, next) => {
             VALUES ($1, $2, $3, $4, $5);",
             [num_brinco, peso, etapa_vida, data_pesagem, observacao]
         );
-        res.status(201).json({ success: true });
+        res.status(201).json({ success: true, message: "Pesagem cadastrada com sucesso" });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

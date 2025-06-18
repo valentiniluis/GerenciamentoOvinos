@@ -173,18 +173,11 @@ const FormCadastroGrupo = () => {
       console.log(postData);
       const result = await api.post('/grupos', postData);
       console.log(result);
-
-      setSuccessMsg('Grupo cadastrado com sucesso');
-
+      setSuccessMsg(result.data.message);
       event.target.reset();
     } catch (err) {
       console.log(err)
-
-      if (err.response.data.error) {
-        setErrorMsg(err.response.data.error);
-      } else {
-        setErrorMsg('Erro inesperado. Tente novamente mais tarde');
-      }
+      setErrorMsg(err.response.data.message || 'Erro inesperado. Tente novamente mais tarde');
     }
   }
 
