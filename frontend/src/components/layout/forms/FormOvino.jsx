@@ -1,5 +1,4 @@
 import '../../../styles/form.css';
-import RenderFields from './RenderFields';
 import { Button } from 'react-bootstrap';
 import FormRow from '../../UI/FormRow';
 import InputField from '../../UI/InputField';
@@ -10,7 +9,7 @@ import SelectField from '../../UI/SelectField';
 import api from '../../../api/request';
 
 const FormOvino = () => {
-  const rowPadding = 'py-2';
+  const rowPadding = 'py-3';
   const rows = [
     [
       {
@@ -46,34 +45,22 @@ const FormOvino = () => {
     ],
     [
       {
-        // label: 'Sexo',
-        // <div className="d-flex gap-3">
         padding: rowPadding,
         wrapper: {
           class: 'small-input'
         },
         inputProps: {
-          label: "Macho",
-          inline: true,
-          id: 'macho',
-          type: "radio",
+          label: 'Sexo',
+          id: "sexo",
           name: "sexo",
-          value: "M",
-          required: true
-        }
-      },
-      {
-        padding: rowPadding,
-        wrapper: {
-          class: 'small-input'
-        },
-        inputProps: {
-          label: "Fêmea",
-          inline: true,
-          id: 'femea',
-          type: "radio",
-          name: "sexo",
-          value: "F"
+          required: true,
+          onInvalid: (e) => e.target.setCustomValidity('Selecione uma finalidade válida'),
+          onInput: (e) => e.target.setCustomValidity(''),
+          options: [
+            { value: "", disabled: true, hidden: true, name: 'Selecione o sexo' },
+            { value: "M", name: 'Macho' },
+            { value: "F", name: 'Fêmea' }
+          ]
         }
       },
       {
@@ -142,7 +129,6 @@ const FormOvino = () => {
       console.log(err);
     }
   }
-
 
   return (
     <form onSubmit={handleSubmit} className='large-input'>

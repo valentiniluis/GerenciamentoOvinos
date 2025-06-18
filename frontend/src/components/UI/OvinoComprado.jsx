@@ -31,7 +31,7 @@ const OvinoComprado = () => {
     },
     {
       wrapper: {
-        class: 'small-input'
+        class: 'small-input d-flex flex-column-reverse align-items-center justify-content-end'
       },
       inputProps: {
         label: 'Ovino Comprado',
@@ -40,8 +40,6 @@ const OvinoComprado = () => {
         name: "comprado",
         onChange: changeComprado,
         value: true,
-        className: "text-center",
-        labelClass: 'w-100 text-center d-block',
       }
     }
   ]

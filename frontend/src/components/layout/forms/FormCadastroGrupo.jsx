@@ -45,7 +45,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -60,7 +60,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -75,7 +75,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -90,7 +90,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -105,7 +105,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -119,7 +119,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -133,7 +133,7 @@ const CHECKBOX_FIELDS = [
   {
     padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input'
+      class: 'large-input d-flex gap-3'
     },
     inputProps: {
       className: 'text-nowrap',
