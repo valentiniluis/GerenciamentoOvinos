@@ -8,8 +8,11 @@ const RenderFields = ({ fields }) => {
     <>
       {
         fields.map(field => (
-          <FormRow padding={field.padding} key={`${field.inputProps.id} Row`}>
-            <FieldWrapper wrapperClass={field.wrapper.class}>
+          <FormRow key={`${field.inputProps.id} Row`}>
+            <FieldWrapper 
+              wrapperClass={field.wrapper.class}
+              fieldSize={field.wrapper.size}
+              >
               {field.inputProps.options !== undefined
                 ? <SelectField {...field.inputProps} />
                 : <InputField {...field.inputProps} />

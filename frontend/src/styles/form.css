@@ -39,17 +39,20 @@
 }
 
 .large-input {
-  width: 40rem;
+  width: 100%;
+  max-width: 40rem;
   padding: 0px;
 }
 
 .medium-input {
-  width: 20rem;
+  max-width: 25rem;
+  width: 100%;
   padding: 0px;
 }
 
 .small-input {
-  width: 12.5rem;
+  min-width: 18rem;
+  width: 100%;
   padding: 0px;
 }
 

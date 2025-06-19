@@ -2,11 +2,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
-const hashConfig = require('../settings/hashConfig');
-const jwtConfig = require('../settings/jwtConfig');
+require('dotenv').config();
 
-const { SALT_ROUNDS } = hashConfig;
-const { JWT_SECRET, JWT_EXPIRE_TIME } = jwtConfig;
+const SALT_ROUNDS = process.env.SALT_ROUNDS;
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRE_TIME = process.env.JWT_EXPIRE_TIME;
+
 
 exports.postStartAccount = async (req, res, next) => {
   const result = validationResult(req);

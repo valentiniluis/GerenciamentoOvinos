@@ -1,8 +1,8 @@
 import '../../../styles/form.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import RenderFields from './RenderFields';
+import FormBtn from '../../UI/FormBtn';
 
 import api from '../../../api/request';
 
@@ -28,9 +28,9 @@ const FormPerfilUsuario = () => {
   const rowPadding = 'py-2';
   const fields = [
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input',
+        size: 'large-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Nome',
@@ -45,9 +45,9 @@ const FormPerfilUsuario = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input',
+        size: 'large-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'E-Mail',
@@ -61,9 +61,9 @@ const FormPerfilUsuario = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input',
+        size: 'large-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Grupo',
@@ -85,16 +85,17 @@ const FormPerfilUsuario = () => {
     setReadMode(prevMode => !prevMode);
   }
 
+  const editBtnText = readMode ? 'Editar Dados' : 'Salvar Alterações';
+  const editBtnType = readMode ? 'button' : 'submit';
+
   return (
-    <form onSubmit={handleEdit}>
+    <form onSubmit={handleEdit} className='medium-input'>
       <RenderFields fields={fields} />
-      <div className="row pt-5 mt-5 justify-content-evenly">
-        <Button type={readMode ? 'button' : 'submit'} onClick={toggleReadMode} className="form-btn me-3" variant="primary">
-          {readMode ? 'Editar Dados' : 'Salvar Alterações'}
-        </Button>
-        <Button className="form-btn ms-3" variant="primary" type="button">
-          Alterar Senha
-        </Button>
+      <div className="row py-5 justify-content-center">
+        <FormBtn text={editBtnText} onClick={toggleReadMode} type={editBtnType} />
+      </div>
+      <div className="row pb-5 justify-content-center">
+        <FormBtn text="Alterar Minha Senha" />
       </div>
     </form>
   );

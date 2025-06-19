@@ -17,7 +17,8 @@ const OvinoComprado = () => {
   const input = [
     {
       wrapper: {
-        class: 'medium-input',
+        size: 'medium-input',
+        class: 'py-2'
       },
       inputProps: {
         label: 'Nº Brinco Mãe',
@@ -31,7 +32,8 @@ const OvinoComprado = () => {
     },
     {
       wrapper: {
-        class: 'small-input d-flex flex-column-reverse align-items-center justify-content-end'
+        size: 'medium-input',
+        class: 'd-flex flex-column-reverse align-items-center justify-content-end'
       },
       inputProps: {
         label: 'Ovino Comprado',
@@ -45,9 +47,13 @@ const OvinoComprado = () => {
   ]
 
   return (
-    <FormRow padding="py-2">
+    <FormRow>
       {input.map(field => (
-        <FieldWrapper key={field.inputProps.id} wrapperClass={field.wrapper.class}>
+        <FieldWrapper 
+          key={field.inputProps.id} 
+          wrapperClass={field.wrapper.class}
+          fieldSize={field.wrapper.size}
+        >
           <InputField {...field.inputProps} />
         </FieldWrapper>
       ))}

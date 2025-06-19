@@ -1,5 +1,4 @@
 import '../../../styles/form.css';
-import { Button } from 'react-bootstrap';
 import { useState } from 'react';
 import FormRow from '../../UI/FormRow';
 import InputField from '../../UI/InputField';
@@ -7,6 +6,7 @@ import FieldWrapper from '../../UI/FieldWrapper';
 import OvinoComprado from '../../UI/OvinoComprado';
 import SelectField from '../../UI/SelectField';
 import ApiAlert from '../../UI/ApiAlert';
+import FormBtn from '../../UI/FormBtn';
 
 import api from '../../../api/request';
 
@@ -17,9 +17,9 @@ const FormOvino = () => {
   const rows = [
     [
       {
-        padding: rowPadding,
         wrapper: {
-          class: 'medium-input'
+          size: 'medium-input',
+          class: rowPadding
         },
         inputProps: {
           label: 'Nº do Brinco',
@@ -33,9 +33,9 @@ const FormOvino = () => {
     ],
     [
       {
-        padding: rowPadding,
         wrapper: {
-          class: 'medium-input'
+          size: 'medium-input',
+          class: rowPadding
         },
         inputProps: {
           label: 'Raça',
@@ -49,9 +49,9 @@ const FormOvino = () => {
     ],
     [
       {
-        padding: rowPadding,
         wrapper: {
-          class: 'small-input'
+          size: 'small-input',
+          class: rowPadding
         },
         inputProps: {
           label: 'Sexo',
@@ -68,9 +68,9 @@ const FormOvino = () => {
         }
       },
       {
-        padding: rowPadding,
         wrapper: {
-          class: 'small-input'
+          size: 'small-input',
+          class: rowPadding
         },
         inputProps: {
           label: 'Data de Nascimento',
@@ -83,9 +83,9 @@ const FormOvino = () => {
     ],
     [
       {
-        padding: rowPadding,
         wrapper: {
-          class: 'small-input'
+          size: 'small-input',
+          class: rowPadding,
         },
         inputProps: {
           label: 'Finalidade',
@@ -104,9 +104,9 @@ const FormOvino = () => {
         }
       },
       {
-        padding: rowPadding,
         wrapper: {
-          class: 'small-input'
+          size: 'small-input',
+          class: rowPadding
         },
         inputProps: {
           label: 'Peso Nascimento (kg)',
@@ -142,9 +142,13 @@ const FormOvino = () => {
       <h4 className="py-1">Informações</h4>
       <OvinoComprado />
       {rows.map((row, i) => (
-        <FormRow padding={rowPadding} key={`Form Row ${i + 1}`}>
+        <FormRow key={`Form Row ${i + 1}`}>
           {row.map(field => (
-            <FieldWrapper key={`${field.inputProps.id} Field`} wrapperClass={field.wrapper.class}>
+            <FieldWrapper
+              key={`${field.inputProps.id} Field`}
+              wrapperClass={field.wrapper.class}
+              fieldSize={field.wrapper.size}
+            >
               {field.inputProps.options !== undefined
                 ? <SelectField {...field.inputProps} />
                 : <InputField {...field.inputProps} />
@@ -153,10 +157,8 @@ const FormOvino = () => {
           ))}
         </FormRow>
       ))}
-      <div className="row pt-5 mt-2 justify-content-center">
-        <Button className="form-btn" variant="primary" type="submit">
-          Cadastrar
-        </Button>
+      <div className="row py-5 justify-content-center">
+        <FormBtn text="Cadastrar" />
       </div>
       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
       <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />

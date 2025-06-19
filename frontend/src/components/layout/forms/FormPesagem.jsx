@@ -1,8 +1,8 @@
 import '../../../styles/form.css';
-import RenderFields from './RenderFields';
-import { Button } from 'react-bootstrap';
 import { useState } from 'react';
 import ApiAlert from '../../UI/ApiAlert';
+import RenderFields from './RenderFields';
+import FormBtn from '../../UI/FormBtn';
 
 import api from '../../../api/request';
 
@@ -12,9 +12,9 @@ const FormPesagem = () => {
   const rowPadding = 'py-3';
   const fields = [
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input',
+        size: 'medium-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Nº do Brinco',
@@ -26,9 +26,9 @@ const FormPesagem = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input',
+        size: 'medium-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Etapa da Vida',
@@ -47,9 +47,9 @@ const FormPesagem = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'small-input',
+        size: 'small-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Peso (kg)',
@@ -63,9 +63,9 @@ const FormPesagem = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'small-input',
+        size: 'small-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Data Pesagem',
@@ -76,9 +76,9 @@ const FormPesagem = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'large-input',
+        size: 'large-input',
+        class: rowPadding
       },
       inputProps: {
         label: 'Observação',
@@ -98,7 +98,7 @@ const FormPesagem = () => {
       const postData = { ...jsonData, observacao: jsonData.observacao || null };
       const result = await api.post('/rebanho/pesagem', postData);
       console.log(result);
-    setSuccessMsg(result.data.message);
+      setSuccessMsg(result.data.message);
       event.target.reset();
     } catch (err) {
       console.log(err)
@@ -107,14 +107,12 @@ const FormPesagem = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='large-input'>
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
-        <Button className="form-btn" variant="primary" type="submit">
-          Cadastrar
-        </Button>
+        <FormBtn text="Cadastrar" />
       </div>
-       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
+      <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
       <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
     </form>
   );

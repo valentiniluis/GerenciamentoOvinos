@@ -1,19 +1,20 @@
 import '../../../styles/form.css';
 import { useState } from 'react';
 import RenderFields from './RenderFields';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import FormRow from '../../UI/FormRow';
+import FormBtn from '../../UI/FormBtn';
 import ApiAlert from '../../UI/ApiAlert';
 
 import api from '../../../api/request';
 
 
-const TEXT_PADDING = 'py-3';
+const TEXT_PADDING = 'py-2';
 const TEXT_FIELDS = [
   {
-    padding: TEXT_PADDING,
     wrapper: {
-      class: 'medium-input'
+      class: TEXT_PADDING,
+      size: 'large-input'
     },
     inputProps: {
       label: 'Nome do Grupo',
@@ -25,9 +26,9 @@ const TEXT_FIELDS = [
     }
   },
   {
-    padding: TEXT_PADDING,
     wrapper: {
-      class: 'medium-input'
+      class: TEXT_PADDING,
+      size: 'large-input'
     },
     inputProps: {
       label: 'Descrição',
@@ -43,9 +44,9 @@ const TEXT_FIELDS = [
 const CHECKBOX_PADDING = 'py-1';
 const CHECKBOX_FIELDS = [
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -58,9 +59,9 @@ const CHECKBOX_FIELDS = [
     }
   },
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -73,9 +74,9 @@ const CHECKBOX_FIELDS = [
     }
   },
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -88,9 +89,9 @@ const CHECKBOX_FIELDS = [
     }
   },
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -103,9 +104,9 @@ const CHECKBOX_FIELDS = [
     }
   },
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -117,9 +118,9 @@ const CHECKBOX_FIELDS = [
     }
   },
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -131,9 +132,9 @@ const CHECKBOX_FIELDS = [
     }
   },
   {
-    padding: CHECKBOX_PADDING,
     wrapper: {
-      class: 'large-input d-flex gap-3'
+      class: CHECKBOX_PADDING + ' d-flex gap-3',
+      size: 'large-input'
     },
     inputProps: {
       className: 'text-nowrap',
@@ -182,16 +183,14 @@ const FormCadastroGrupo = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='medium-input'>
+    <form onSubmit={handleSubmit} className='medium-input sla'>
       <RenderFields fields={TEXT_FIELDS} />
       <FormRow padding="pt-3">
         <Form.Label className='my-label'>Permissões</Form.Label>
       </FormRow>
       <RenderFields fields={CHECKBOX_FIELDS} />
-      <div className="row pt-5 justify-content-center">
-        <Button className="form-btn" variant="primary" type="submit">
-          Cadastrar
-        </Button>
+      <div className="row py-5 justify-content-center">
+        <FormBtn text="Cadastrar" />
       </div>
       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
       <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />

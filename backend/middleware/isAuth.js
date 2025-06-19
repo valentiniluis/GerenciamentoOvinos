@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const jwtConfig = require('../settings/jwtConfig');
+require('dotenv').config();
 
-const { JWT_SECRET } = jwtConfig;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 module.exports = (req, res, next) => {
   try {

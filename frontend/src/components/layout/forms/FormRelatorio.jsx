@@ -1,6 +1,6 @@
 import '../../../styles/form.css';
 import RenderFields from './RenderFields';
-import { Button } from 'react-bootstrap';
+import FormBtn from '../../UI/FormBtn';
 
 const FormRelatorio = ({ onSubmit }) => {
   const rowPadding = 'py-2';
@@ -34,10 +34,8 @@ const FormRelatorio = ({ onSubmit }) => {
   return (
     <form onSubmit={onSubmit}>
       <RenderFields fields={fields} />
-      <div className="row pt-5 justify-content-center">
-        <Button className="form-btn" variant="primary" type="submit">
-          Gerar Relatório
-        </Button>
+      <div className="row py-5 justify-content-center">
+        <FormBtn text="Gerar Relatório" />
       </div>
     </form>
   );

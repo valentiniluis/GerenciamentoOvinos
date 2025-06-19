@@ -1,0 +1,22 @@
+
+.auth-navbar {
+  padding: 25px 0px;
+}
+
+.auth-navbar menu {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.navbar-button {
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+  transition: all ease-in-out .2s;
+}
+
+.navbar-button:hover {
+  color: rgb(95, 95, 95);
+}

@@ -4,19 +4,6 @@ import FormPesagem from '../../components/layout/forms/FormPesagem';
 
 
 const CadastroPesagem = () => {
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const formData = new FormData(event.target);
-  //     const jsonData = Object.fromEntries(formData.entries());
-  //     const postData = { ...jsonData, observacao: jsonData.observacao || null };
-  //     const result = await api.post('/rebanho/pesagem', postData);
-  //     console.log(result);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
   return (
     <div className="row m-0">
       <Sidebar user="Luís" currentPage="Rebanho" />

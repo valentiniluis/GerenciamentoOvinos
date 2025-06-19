@@ -1,8 +1,8 @@
 import '../../../styles/form.css';
 import { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
 import RenderFields from './RenderFields';
 import ApiAlert from '../../UI/ApiAlert';
+import FormBtn from '../../UI/FormBtn';
 
 import api from '../../../api/request';
 
@@ -25,9 +25,9 @@ const FormCadastroUsuario = () => {
 
   const fields = [
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input'
+        class: rowPadding,
+        size: 'large-input'
       },
       inputProps: {
         label: 'Nome',
@@ -40,9 +40,9 @@ const FormCadastroUsuario = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input'
+        class: rowPadding,
+        size: 'large-input'
       },
       inputProps: {
         label: 'E-Mail',
@@ -54,9 +54,9 @@ const FormCadastroUsuario = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input'
+        class: rowPadding,
+        size: 'large-input'
       },
       inputProps: {
         label: 'Grupo',
@@ -67,9 +67,9 @@ const FormCadastroUsuario = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'small-input'
+        class: rowPadding,
+        size: 'medium-input'
       },
       inputProps: {
         label: 'Senha',
@@ -79,9 +79,9 @@ const FormCadastroUsuario = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'small-input'
+        class: rowPadding,
+        size: 'medium-input'
       },
       inputProps: {
         label: 'Confirmação Senha',
@@ -110,12 +110,10 @@ const FormCadastroUsuario = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='medium-input'>
       <RenderFields fields={fields} />
-      <div className="row pt-5 justify-content-center">
-        <Button className="form-btn" variant="primary" type="submit">
-          Cadastrar
-        </Button>
+      <div className="row py-5 justify-content-center">
+        <FormBtn text="Cadastrar" />
       </div>
       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
       <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
