@@ -38,9 +38,14 @@ exports.createGroup = async (req, res, next) => {
         let { descricao } = req.body;
         if (!descricao || descricao.length === 0) descricao = null;
 
-        const { visualizar_dados = false, visualizar_rebanho = false, visualizar_calendario = false, 
-            visualizar_grupos = false, alterar_rebanho = false, alterar_calendario = false, 
-            alterar_grupos = false } = permissoes;
+        const {
+            visualizar_rebanho = false,
+            visualizar_calendario = false,
+            visualizar_grupos = false,
+            alterar_rebanho = false,
+            alterar_calendario = false,
+            alterar_grupos = false 
+        } = permissoes;
 
         await db.none(
             "INSERT INTO grupo (nome, descricao, data_criacao, perm_visual_rebanho, \

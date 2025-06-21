@@ -190,7 +190,7 @@ const FormCadastroGrupo = () => {
       </FormRow>
       <RenderFields fields={CHECKBOX_FIELDS} />
       <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" />
+        <FormBtn text="Cadastrar" type="submit"/>
       </div>
       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
       <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />

@@ -140,11 +140,9 @@ const FormOvino = () => {
       const formData = new FormData(event.target);
       const jsonData = Object.fromEntries(formData.entries());
       const result = await api.post('/rebanho', jsonData);
-      console.log(result);
       setSuccessMsg(result.data.message);
       event.target.reset();
     } catch (err) {
-      console.log(err);
       setErrorMsg(
         err.response.data.message ||
           'Erro inesperado. Tente novamente mais tarde',
@@ -174,7 +172,7 @@ const FormOvino = () => {
         </FormRow>
       ))}
       <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" />
+        <FormBtn text="Cadastrar" type="submit" />
       </div>
       <ApiAlert
         variant="danger"

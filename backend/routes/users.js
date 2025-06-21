@@ -10,7 +10,7 @@ router.get('/', usersControllers.getUsers);
 router.post('/', [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
-  userValidation.checkGroupExists('grupo'),
+  userValidation.checkGroupExists('grupo_nome'),
   userValidation.validatePassword('senha'),
   userValidation.matchingPasswords('confirmacao_senha', 'senha'),
   dataValidation.validateDate('data_cadastro', 'Data de cadastro'),

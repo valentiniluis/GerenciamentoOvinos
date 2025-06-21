@@ -114,7 +114,7 @@ const FormPesagem = () => {
     <form onSubmit={handleSubmit} className="large-input">
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" />
+        <FormBtn text="Cadastrar" type="submit"/>
       </div>
       <ApiAlert
         variant="danger"
