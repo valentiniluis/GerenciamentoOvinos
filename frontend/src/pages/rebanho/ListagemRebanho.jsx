@@ -13,9 +13,9 @@ import api from '../../api/request';
 const ListagemRebanho = () => {
   const [animalData, setAnimalData] = useState([]);
   const schema = [
-    ['num_brinco', 'Nº do Brinco'],
+    ['brinco_num', 'Nº do Brinco'],
     ['brinco_mae', 'Nº Brinco Mãe'],
-    ['data_nasc', 'Data Nascimento'],
+    ['data_nascimento', 'Data Nascimento'],
     ['raca', 'Raça'],
     ['sexo', 'Sexo'],
     ['finalidade', 'Finalidade'],
@@ -30,7 +30,7 @@ const ListagemRebanho = () => {
         const data = response.data;
         const linkedData = data.map((obj) => {
           obj['mais_detalhes'] = (
-            <Link className="my-link" to={`/rebanho/${obj['num_brinco']}`}>
+            <Link className="my-link" to={`/rebanho/${obj['brinco_num']}`}>
               Acessar
             </Link>
           );
@@ -44,7 +44,7 @@ const ListagemRebanho = () => {
     fetchData();
   }, []);
 
-  const handleSubmit = () => { };
+  const handleSubmit = () => {};
 
   return (
     <div className="row m-0">
@@ -57,7 +57,7 @@ const ListagemRebanho = () => {
               <CustomTable
                 schema={schema}
                 data={animalData}
-                uniqueCol={'num_brinco'}
+                uniqueCol={'brinco_num'}
               />
             ) : (
               <h3 className="text-center">Nenhuma informação cadastrada</h3>

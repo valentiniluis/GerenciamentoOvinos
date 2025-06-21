@@ -6,8 +6,8 @@ exports.getSheep = async (req, res, next) => {
     try {
         const data = await db.manyOrNone(
             "SELECT \
-                num_brinco, brinco_mae, raca, sexo, finalidade, peso_nasc, \
-                TO_CHAR(data_nasc, 'DD/MM/YYYY') AS data_nasc, \
+                brinco_num, brinco_mae, raca, sexo, finalidade, peso_nascimento, \
+                TO_CHAR(data_nascimento, 'DD/MM/YYYY') AS data_nascimento, \
                 CASE \
                     WHEN abatido = true THEN 'Sim' ELSE 'Não' \
                 END AS abatido \
@@ -25,9 +25,9 @@ exports.getOneSheep = async (req, res, next) => {
     const { brinco } = req.params;
     try {
         const data = await db.manyOrNone(
-            "SELECT brinco_ovino, etapa_vida, peso, observacao, \
+            "SELECT ovino_brinco, etapa_vida, peso, observacao, \
             TO_CHAR(data_pesagem, 'DD/MM/YYYY') AS data_pesagem \
-            FROM pesagem WHERE brinco_ovino = $1;",
+            FROM pesagem WHERE ovino_brinco = $1;",
             [brinco]
         );
         res.status(201).json(data);
@@ -47,13 +47,13 @@ exports.postSheep = async (req, res, next) => {
     }
 
     try {
-        const { num_brinco, raca, sexo, data_nasc, finalidade, peso_nasc } = req.body;
+        const { brinco_num, raca, sexo, data_nascimento, finalidade, peso_nascimento } = req.body;
         const brinco_mae = (!req.body.comprado) ? req.body.brinco_mae : null;
         const abatido = false;
         await db.none(
-            "INSERT INTO ovino(num_brinco, brinco_mae, raca, sexo, peso_nasc, data_nasc, finalidade, abatido) \
+            "INSERT INTO ovino(brinco_num, brinco_mae, raca, sexo, peso_nascimento, data_nascimento, finalidade, abatido) \
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8);",
-            [num_brinco, brinco_mae, raca, sexo, peso_nasc, data_nasc, finalidade, abatido]
+            [brinco_num, brinco_mae, raca, sexo, peso_nascimento, data_nascimento, finalidade, abatido]
         );
         res.status(201).json({ success: true, message: "Ovino cadastrado com sucesso" });
     } catch (err) {
@@ -72,14 +72,14 @@ exports.postWeighIn = async (req, res, next) => {
     }
 
     try {
-        const { num_brinco, etapa_vida, peso, data_pesagem } = req.body;
+        const { brinco_num, etapa_vida, peso, data_pesagem } = req.body;
         let { observacao } = req.body;
         if (!observacao || observacao.length === 0) observacao = null;
 
         await db.none(
-            "INSERT INTO pesagem(brinco_ovino, peso, etapa_vida, data_pesagem, observacao) \
+            "INSERT INTO pesagem(ovino_brinco, peso, etapa_vida, data_pesagem, observacao) \
             VALUES ($1, $2, $3, $4, $5);",
-            [num_brinco, peso, etapa_vida, data_pesagem, observacao]
+            [brinco_num, peso, etapa_vida, data_pesagem, observacao]
         );
         res.status(201).json({ success: true, message: "Pesagem cadastrada com sucesso" });
     } catch (err) {

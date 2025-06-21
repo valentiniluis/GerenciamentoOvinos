@@ -9,33 +9,47 @@ const FormCadastro = () => {
     {
       padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: 'medium-input m-auto',
       },
       inputProps: {
         label: 'Nome',
         id: 'nome',
         name: 'nome',
         type: 'text',
-        className: 'form-input m-auto'
-      }
+        className: 'form-input m-auto',
+      },
     },
     {
       padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: 'medium-input m-auto',
       },
       inputProps: {
         label: 'E-Mail',
         id: 'email',
         name: 'email',
         type: 'email',
-        className: 'form-input'
-      }
+        className: 'form-input',
+      },
     },
     {
       padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: 'medium-input m-auto',
+      },
+      inputProps: {
+        label: 'Grupo',
+        id: 'grupo_nome',
+        name: 'grupo_nome',
+        type: 'text',
+        className: 'form-input',
+        placeholder: 'Nome do grupo',
+      },
+    },
+    {
+      padding: rowPadding,
+      wrapper: {
+        class: 'medium-input m-auto',
       },
       inputProps: {
         label: 'Senha',
@@ -43,12 +57,12 @@ const FormCadastro = () => {
         name: 'senha',
         type: 'password',
         className: 'form-input',
-      }
+      },
     },
     {
       padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: 'medium-input m-auto',
       },
       inputProps: {
         label: 'Confirmação da senha',
@@ -56,11 +70,9 @@ const FormCadastro = () => {
         name: 'confirmacao_senha',
         type: 'password',
         className: 'form-input',
-      }
-    }
-
+      },
+    },
   ];
-
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -72,11 +84,13 @@ const FormCadastro = () => {
     } catch (err) {
       console.log(err);
     }
-  }
-
+  };
 
   return (
-    <form className="col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form" onSubmit={handleLogin}>
+    <form
+      className="col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form"
+      onSubmit={handleLogin}
+    >
       <div className="row py-4">
         <h2 className="text-center">Criar Conta</h2>
       </div>
@@ -90,7 +104,6 @@ const FormCadastro = () => {
       </div>
     </form>
   );
-}
-
+};
 
 export default FormCadastro;

@@ -14,79 +14,80 @@ const FormPesagem = () => {
     {
       wrapper: {
         size: 'medium-input',
-        class: rowPadding
+        class: rowPadding,
       },
       inputProps: {
         label: 'Nº do Brinco',
-        type: "text",
-        id: "num_brinco",
-        name: "num_brinco",
+        type: 'text',
+        id: 'brinco_num',
+        name: 'brinco_num',
         required: true,
-        placeholder: "Ex. 1N123"
-      }
+        placeholder: 'Ex. 1N123',
+      },
     },
     {
       wrapper: {
         size: 'medium-input',
-        class: rowPadding
+        class: rowPadding,
       },
       inputProps: {
         label: 'Etapa da Vida',
-        id: "etapa_vida",
-        name: "etapa_vida",
+        id: 'etapa_vida',
+        name: 'etapa_vida',
         required: true,
-        onInvalid: (e) => e.target.setCustomValidity('Escolha uma etapa válida'),
+        onInvalid: (e) =>
+          e.target.setCustomValidity('Escolha uma etapa válida'),
         onInput: (e) => e.target.setCustomValidity(''),
         options: [
-          { value: "", hidden: true, name: "Selecione a etapa" },
-          { value: "Desmame", name: "Desmame" },
-          { value: "Engorda", name: "Engorda" },
-          { value: "Abate", name: "Abate" },
-          { value: "Reprodução", name: "Reprodução" }
-        ]
-      }
+          { value: '', hidden: true, name: 'Selecione a etapa' },
+          { value: 'Desmame', name: 'Desmame' },
+          { value: 'Engorda', name: 'Engorda' },
+          { value: 'Abate', name: 'Abate' },
+          { value: 'Reprodução', name: 'Reprodução' },
+        ],
+      },
     },
     {
       wrapper: {
         size: 'small-input',
-        class: rowPadding
+        class: rowPadding,
       },
       inputProps: {
         label: 'Peso (kg)',
-        type: "number",
-        id: "peso",
-        name: "peso",
+        type: 'number',
+        id: 'peso',
+        name: 'peso',
         step: 0.001,
         min: 0,
         required: true,
-        placeholder: "Ex. 3,500"
-      }
+        placeholder: 'Ex. 3,500',
+      },
     },
     {
       wrapper: {
         size: 'small-input',
-        class: rowPadding
+        class: rowPadding,
       },
       inputProps: {
         label: 'Data Pesagem',
-        type: "date",
-        id: "data_pesagem",
-        name: "data_pesagem",
-        required: true
-      }
+        type: 'date',
+        id: 'data_pesagem',
+        name: 'data_pesagem',
+        required: true,
+      },
     },
     {
       wrapper: {
         size: 'large-input',
-        class: rowPadding
+        class: rowPadding,
       },
       inputProps: {
         label: 'Observação',
-        type: "text",
-        id: "observacao",
-        name: "observacao",
-        placeholder: "Observações adicionais"
-      }
+        type: 'text',
+        id: 'observacao',
+        name: 'observacao',
+        placeholder: 'Observações adicionais',
+      },
     },
   ];
 
@@ -101,21 +102,32 @@ const FormPesagem = () => {
       setSuccessMsg(result.data.message);
       event.target.reset();
     } catch (err) {
-      console.log(err)
-      setErrorMsg(err.response.data.message || 'Erro inesperado. Tente novamente mais tarde');
+      console.log(err);
+      setErrorMsg(
+        err.response?.data?.message ||
+          'Erro inesperado. Tente novamente mais tarde',
+      );
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className='large-input'>
+    <form onSubmit={handleSubmit} className="large-input">
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
         <FormBtn text="Cadastrar" />
       </div>
-      <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
-      <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
+      <ApiAlert
+        variant="danger"
+        message={errorMsg}
+        onClose={() => setErrorMsg(null)}
+      />
+      <ApiAlert
+        variant="success"
+        message={successMsg}
+        onClose={() => setSuccessMsg(null)}
+      />
     </form>
   );
-}
+};
 
 export default FormPesagem;
