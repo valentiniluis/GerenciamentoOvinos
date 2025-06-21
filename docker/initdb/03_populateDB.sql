@@ -48,24 +48,13 @@ INSERT INTO pesagem (
 ('1N125', 70.100, 'Engorda', '2024-01-01', NULL),
 ('1N125', 80.800, 'Abate', '2024-06-01', NULL);
 
-INSERT INTO medicamento (
-    nome_produto
+INSERT INTO tarefa (
+    data_criacao, 
+    tarefa_nome, 
+    descricao, 
+    usuario_email
 ) VALUES
-('Vacina 1'),
-('Medicamento 1'),
-('Vacina 2'),
-('Antibiótico'),
-('Vacinação'),
-('Anti-helmíntico');
-
-INSERT INTO aplicacao_medicamento (
-    usuario_email, 
-    medicamento_nome, 
-    data_aplicacao, 
-    grupo_aplicacao
-) VALUES
-('admin@admin.com', 'Medicamento 1', '2024-12-01', 'Ovinos Adultos'),
-('admin@admin.com', 'Vacina 2', '2025-04-01', 'Ovinos Filhotes');
+('2024-01-01', 'Vacinação', 'Vacinar os ovinos contra a Peste Suína Clássica', 'admin@admin.com');
 
 INSERT INTO historico_medico (
     doenca_nome, 

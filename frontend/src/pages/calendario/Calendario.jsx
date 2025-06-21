@@ -9,6 +9,7 @@ import ptBrLocales from '@fullcalendar/core/locales/pt-br';
 import InteractionPlugin from '@fullcalendar/interaction';
 
 import '../../styles/calendar.css';
+import { all } from 'axios';
 
 const Calendar = () => {
   const [eventos, setEventos] = useState([]);
@@ -22,14 +23,13 @@ const Calendar = () => {
 
   const handleClose = () => setShowModal(false);
 
-  const handleSave = ({ titulo, start, end, allDay }) => {
+  const handleSave = ({ titulo }) => {
     setEventos((prev) => [
       ...prev,
       {
         title: titulo,
-        start,
-        end,
-        allDay,
+        start: selectedDate,
+        allDay: true
       },
     ]);
     setShowModal(false);

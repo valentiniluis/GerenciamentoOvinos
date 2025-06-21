@@ -21,19 +21,13 @@ CREATE TABLE IF NOT EXISTS usuario (
   CONSTRAINT fk_usuario_grupo FOREIGN KEY (grupo_nome) REFERENCES grupo(nome)
 );
 
-CREATE TABLE IF NOT EXISTS medicamento (
-  nome_produto VARCHAR(255) NOT NULL,
-  CONSTRAINT pk_medicamento PRIMARY KEY (nome_produto)
-);
-
-CREATE TABLE IF NOT EXISTS aplicacao_medicamento (
+CREATE TABLE IF NOT EXISTS tarefa (
+  data_criacao DATE NOT NULL,
+  tarefa_nome VARCHAR(255) NOT NULL,
+  descricao VARCHAR(255) NULL,
   usuario_email VARCHAR(255) NOT NULL,
-  medicamento_nome VARCHAR(255) NOT NULL,
-  data_aplicacao DATE NOT NULL,
-  grupo_aplicacao VARCHAR(255) NOT NULL,
-  CONSTRAINT pk_aplicacao_medicamento PRIMARY KEY (data_aplicacao),
-  CONSTRAINT fk_aplicacao_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email),
-  CONSTRAINT fk_aplicacao_medicamento FOREIGN KEY (medicamento_nome) REFERENCES medicamento(nome_produto)
+  CONSTRAINT pk_tarefa PRIMARY KEY (data_criacao, tarefa_nome),
+  CONSTRAINT fk_tarefa_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email)
 );
 
 CREATE TABLE IF NOT EXISTS ovino (
