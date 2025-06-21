@@ -1,6 +1,6 @@
-import '../../../styles/form.css';
-import RenderFields from './RenderFields';
-import FormBtn from '../../UI/FormBtn';
+import '../../../../styles/form.css';
+import RenderFields from '../RenderFields';
+import FormBtn from '../../../UI/FormBtn';
 
 const FormRelatorio = ({ onSubmit }) => {
   const rowPadding = 'py-2';
@@ -8,27 +8,27 @@ const FormRelatorio = ({ onSubmit }) => {
     {
       padding: rowPadding,
       wrapper: {
-        class: 'small-input'
+        class: 'small-input',
       },
       inputProps: {
         label: 'Data de Início',
         id: 'inicio',
         name: 'inicio',
-        type: 'date'
-      }
+        type: 'date',
+      },
     },
     {
       padding: rowPadding,
       wrapper: {
-        class: 'small-input'
+        class: 'small-input',
       },
       inputProps: {
         label: 'Data Final',
         id: 'fim',
         name: 'fim',
-        type: 'date'
-      }
-    }
+        type: 'date',
+      },
+    },
   ];
 
   return (
@@ -39,6 +39,6 @@ const FormRelatorio = ({ onSubmit }) => {
       </div>
     </form>
   );
-}
+};
 
 export default FormRelatorio;

@@ -1,10 +1,10 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState } from 'react';
-import ApiAlert from '../../UI/ApiAlert';
-import RenderFields from './RenderFields';
-import FormBtn from '../../UI/FormBtn';
+import ApiAlert from '../../../UI/ApiAlert';
+import RenderFields from '../RenderFields';
+import FormBtn from '../../../UI/FormBtn';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormPesagem = () => {
   const [errorMsg, setErrorMsg] = useState(null);

@@ -1,7 +1,7 @@
 import '../../styles/form.css';
 import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
-import FormPerfilUsuario from '../../components/layout/forms/FormPerfilUsuario';
+import FormPerfilUsuario from '../../components/layout/forms/usuarios/FormPerfilUsuario';
 
 
 const PerfilUsuario = () => {

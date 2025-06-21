@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
-import RenderFields from './RenderFields';
+import RenderFields from '../RenderFields';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormCadastro = () => {
   const rowPadding = 'py-3';

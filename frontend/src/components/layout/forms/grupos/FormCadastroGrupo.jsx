@@ -1,12 +1,12 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState } from 'react';
-import RenderFields from './RenderFields';
+import RenderFields from '../RenderFields';
 import { Form } from 'react-bootstrap';
-import FormRow from '../../UI/FormRow';
-import FormBtn from '../../UI/FormBtn';
-import ApiAlert from '../../UI/ApiAlert';
+import FormRow from '../../../UI/FormRow';
+import FormBtn from '../../../UI/FormBtn';
+import ApiAlert from '../../../UI/ApiAlert';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 
 const TEXT_PADDING = 'py-2';

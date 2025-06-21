@@ -1,10 +1,10 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import RenderFields from './RenderFields';
-import FormBtn from '../../UI/FormBtn';
+import RenderFields from '../RenderFields';
+import FormBtn from '../../../UI/FormBtn';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormPerfilUsuario = () => {
   const [userData, setUserData] = useState({});

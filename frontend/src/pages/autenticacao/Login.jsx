@@ -1,7 +1,7 @@
 import '../../styles/login.css';
 import '../../styles/form.css';
 import PageTitle from '../../components/UI/PageTitle';
-import FormLogin from '../../components/layout/forms/FormLogin';
+import FormLogin from '../../components/layout/forms/login/FormLogin';
 
 const Login = () => {
   return (

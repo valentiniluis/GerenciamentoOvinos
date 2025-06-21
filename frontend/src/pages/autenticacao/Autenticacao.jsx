@@ -1,10 +1,10 @@
 import './BackgroundImage.css';
 import './AuthNav.css';
 
-import FormCadastro from '../../components/layout/forms/FormCadastro';
+import FormCadastro from '../../components/layout/forms/login/FormCadastro';
 
 import { useState } from 'react';
-import FormLogin from '../../components/layout/forms/FormLogin';
+import FormLogin from '../../components/layout/forms/login/FormLogin';
 const AuthenticationForm = ({ authMode }) => {
   return (
     <div className='d-flex justify-content-center'>

@@ -1,14 +1,14 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState } from 'react';
-import FormRow from '../../UI/FormRow';
-import InputField from '../../UI/InputField';
-import FieldWrapper from '../../UI/FieldWrapper';
-import OvinoComprado from '../../UI/OvinoComprado';
-import SelectField from '../../UI/SelectField';
-import ApiAlert from '../../UI/ApiAlert';
-import FormBtn from '../../UI/FormBtn';
+import FormRow from '../../../UI/FormRow';
+import InputField from '../../../UI/InputField';
+import FieldWrapper from '../../../UI/FieldWrapper';
+import OvinoComprado from '../../../UI/OvinoComprado';
+import SelectField from '../../../UI/SelectField';
+import ApiAlert from '../../../UI/ApiAlert';
+import FormBtn from '../../../UI/FormBtn';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormOvino = () => {
   const [errorMsg, setErrorMsg] = useState(null);

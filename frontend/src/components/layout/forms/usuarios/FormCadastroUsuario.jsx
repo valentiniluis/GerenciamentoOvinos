@@ -1,10 +1,10 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState, useEffect } from 'react';
-import RenderFields from './RenderFields';
-import ApiAlert from '../../UI/ApiAlert';
-import FormBtn from '../../UI/FormBtn';
+import RenderFields from '../RenderFields';
+import ApiAlert from '../../../UI/ApiAlert';
+import FormBtn from '../../../UI/FormBtn';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormCadastroUsuario = () => {
   const rowPadding = 'py-3';

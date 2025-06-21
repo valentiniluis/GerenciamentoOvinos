@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import FormRow from '../../UI/FormRow';
-import RenderFields from './RenderFields';
-import FormBtn from '../../UI/FormBtn';
+import FormRow from '../../../UI/FormRow';
+import RenderFields from '../RenderFields';
+import FormBtn from '../../../UI/FormBtn';
 
-
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormLogin = () => {
   const rowPadding = 'py-3';
@@ -12,20 +11,20 @@ const FormLogin = () => {
     {
       padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: 'medium-input m-auto',
       },
       inputProps: {
         label: 'E-Mail',
         id: 'email',
         name: 'email',
         type: 'email',
-        className: 'form-input'
-      }
+        className: 'form-input',
+      },
     },
     {
       padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: 'medium-input m-auto',
       },
       inputProps: {
         label: 'Senha',
@@ -33,10 +32,9 @@ const FormLogin = () => {
         name: 'senha',
         type: 'password',
         className: 'form-input',
-      }
-    }
+      },
+    },
   ];
-
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -48,11 +46,13 @@ const FormLogin = () => {
     } catch (err) {
       console.log(err);
     }
-  }
-
+  };
 
   return (
-    <form className="col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form" onSubmit={handleLogin}>
+    <form
+      className="col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form"
+      onSubmit={handleLogin}
+    >
       <div className="row py-4">
         <h2 className="text-center">Acessar Sistema</h2>
       </div>
@@ -69,7 +69,6 @@ const FormLogin = () => {
       </div>
     </form>
   );
-}
-
+};
 
 export default FormLogin;
