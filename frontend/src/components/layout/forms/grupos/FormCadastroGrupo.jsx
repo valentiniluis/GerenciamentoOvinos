@@ -52,21 +52,6 @@ const CHECKBOX_FIELDS = [
       className: 'text-nowrap',
       type: 'checkbox',
       value: true,
-      label: "Visualização de Dados (Relatórios e Gráficos)",
-      id: "visualizar_dados",
-      name: "visualizar_dados",
-      defaultChecked: true
-    }
-  },
-  {
-    wrapper: {
-      class: CHECKBOX_PADDING + ' d-flex gap-3',
-      size: 'large-input'
-    },
-    inputProps: {
-      className: 'text-nowrap',
-      type: 'checkbox',
-      value: true,
       label: "Visualização do Rebanho",
       id: "visualizar_rebanho",
       name: "visualizar_rebanho",
