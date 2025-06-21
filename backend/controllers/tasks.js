@@ -4,9 +4,13 @@ const db = require('../model/database');
 exports.getTarefas = async (req, res, next) => {
     try {
       const data = await db.manyOrNone(
-        `SELECT * from tarefa`
+        `SELECT *, TO_CHAR(data_criacao, 'YYYY-MM-DD') as data_criacao_formatada from tarefa`
       );
-      res.status(200).json(data);
+      const dataFormatada = data.map(evento => ({
+        ...evento,
+        data_criacao: evento.data_criacao_formatada
+      }));
+      res.status(200).json(dataFormatada);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -24,7 +28,7 @@ exports.postTarefas = async (req, res, next) => {
         const { data_criacao, tarefa_nome, usuario_email } = req.body;
         let descricao = req.body.tarefa_descricao || null;
         await db.none(
-            "INSERT INT tarefa (data_criacao, tarefa_nome, descricao, usuario_email) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO tarefa (data_criacao, tarefa_nome, descricao, usuario_email) VALUES ($1, $2, $3, $4)",
             [data_criacao, tarefa_nome, descricao, usuario_email]
         );
         res.status(201).json({ success: true, message: "Tarefa criada com sucesso" });

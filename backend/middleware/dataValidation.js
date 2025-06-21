@@ -111,3 +111,24 @@ exports.validateWeighInConstraint = (sheepNumber, dateField) => {
     })
     .withMessage('O ovino inserido já tem uma pesagem cadastrada nesse dia');
 }
+
+exports.validateDescriptionTask = (fieldName) => {
+  return body(fieldName, 'Descrição da tarefa deve ser uma sequência de caracteres')
+    .optional()
+    .trim()
+    .isString()
+    .isLength({
+      max: config.MAX_TASK_DESCRIPTION_LENGTH
+    })
+    .withMessage(`Descrição da tarefa deve conter no máximo ${config.MAX_TASK_DESCRIPTION_LENGTH} caracteres`);
+}
+exports.validateTaskName = (fieldName) => {
+  return body(fieldName, 'Nome da tarefa deve ser uma sequência de caracteres')
+    .trim()
+    .isString()
+    .isLength({
+      min: config.MIN_TASK_NAME_LENGTH,
+      max: config.MAX_TASK_NAME_LENGTH
+    })
+    .withMessage(`Nome da tarefa deve conter de ${config.MIN_TASK_NAME_LENGTH} até ${config.MAX_TASK_NAME_LENGTH} caracteres`);
+}

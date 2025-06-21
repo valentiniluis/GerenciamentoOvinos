@@ -6,11 +6,12 @@ const dataValidation = require('../middleware/dataValidation');
 
 router.get('/', tarefaControllers.getTarefas);
 
-// router.post('/',
-//   dataValidation.validateTitleTask('tarefa_nome'),
-//   dataValidation.validateDescriptionTask('tarefa_descricao'),
-//   dataValidation.validateDateTask('data_criacao'),
-//   tarefaControllers.postTarefas
-// );
+router.post('/', [
+  dataValidation.validateDate('data_criacao'),
+  dataValidation.validateDescriptionTask('tarefa_descricao'),
+  dataValidation.validateTaskName('tarefa_nome'),
+],
+  tarefaControllers.postTarefas
+);
 
 module.exports = router;
