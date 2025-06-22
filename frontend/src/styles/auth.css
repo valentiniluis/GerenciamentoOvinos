@@ -43,7 +43,7 @@
 
 .bg-image-container {
   background-color: rgb(184, 199, 182);
-  background-image: url("../../assets/sheepBgResized.jpg");
+  background-image: url("../assets/sheepBg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center left;

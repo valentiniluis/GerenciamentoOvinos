@@ -1,4 +1,4 @@
-import './auth.css';
+import '../../styles/auth.css';
 import { useState } from 'react';
 import FormCadastro from '../../components/layout/forms/login/FormCadastro';
 import FormLogin from '../../components/layout/forms/login/FormLogin';
