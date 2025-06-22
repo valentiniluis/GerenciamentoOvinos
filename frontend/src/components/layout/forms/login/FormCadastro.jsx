@@ -1,6 +1,5 @@
-import { Button } from 'react-bootstrap';
-import RenderFields from './RenderFields';
-import FormBtn from '../../UI/FormBtn';
+import RenderFields from '../RenderFields';
+import FormBtn from '../../../UI/FormBtn';
 
 import api from '../../../../api/request';
 

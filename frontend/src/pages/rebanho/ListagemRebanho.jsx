@@ -1,7 +1,4 @@
 import { Link } from 'react-router-dom';
-import Sidebar from '../../components/layout/sidebar/Sidebar';
-import FormRow from '../../components/UI/FormRow';
-import InputField from '../../components/UI/InputField';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
 import { useEffect, useState } from 'react';
@@ -44,28 +41,25 @@ const ListagemRebanho = () => {
     fetchData();
   }, []);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => { };
 
   return (
-    <div className="row m-0">
-      <Sidebar user="Luís" currentPage="Rebanho" />
-      <main className="col cont px-5">
-        <PageTitle title="Listagem Rebanho" />
-        <form action={handleSubmit}>
-          <div className="row py-3">
-            {animalData.length > 0 ? (
-              <CustomTable
-                schema={schema}
-                data={animalData}
-                uniqueCol={'brinco_num'}
-              />
-            ) : (
-              <h3 className="text-center">Nenhuma informação cadastrada</h3>
-            )}
-          </div>
-        </form>
-      </main>
-    </div>
+    <>
+      <PageTitle title="Listagem Rebanho" />
+      <form action={handleSubmit}>
+        <div className="row py-3">
+          {animalData.length > 0 ? (
+            <CustomTable
+              schema={schema}
+              data={animalData}
+              uniqueCol={'brinco_num'}
+            />
+          ) : (
+            <h3 className="text-center">Nenhuma informação cadastrada</h3>
+          )}
+        </div>
+      </form>
+    </>
   );
 };
 

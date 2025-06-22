@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Sidebar from "../../components/layout/sidebar/Sidebar";
 import PageTitle from "../../components/UI/PageTitle";
 import FormRelatorio from '../../components/layout/forms/relatorio/FormRelatorio';
 
@@ -21,20 +20,17 @@ const Relatorio = () => {
   }
 
   return (
-    <div className="row m-0">
-      <Sidebar user="Luís" currentPage="Relatório" />
-      <main className="col cont px-5">
-        <PageTitle title="Geração de Relatórios" />
-        <div className="form-cont limit-600 m-auto">
-          <p className='my-paragraph py-3'>
-            Gere relatórios informativos sobre o rebanho de acordo com o período de tempo desejado.
-            Selecione a data de início, a data final do relatório e então poderá gerar
-            um PDF com informações sobre nascimentos, doenças diagnosticadas e mais.
-          </p>
-          <FormRelatorio onSubmit={handleSubmit} />
-        </div>
-      </main>
-    </div>
+    <>
+      <PageTitle title="Geração de Relatórios" />
+      <div className="form-cont limit-600 m-auto">
+        <p className='my-paragraph py-3'>
+          Gere relatórios informativos sobre o rebanho de acordo com o período de tempo desejado.
+          Selecione a data de início, a data final do relatório e então poderá gerar
+          um PDF com informações sobre nascimentos, doenças diagnosticadas e mais.
+        </p>
+        <FormRelatorio onSubmit={handleSubmit} />
+      </div>
+    </>
   );
 }
 

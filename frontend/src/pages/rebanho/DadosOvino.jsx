@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Sidebar from '../../components/layout/sidebar/Sidebar';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
 import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario';
@@ -34,25 +33,22 @@ const DadosOvino = () => {
   }, [brinco]);
 
   return (
-    <div className="row m-0">
-      <Sidebar user="Emerson" currentPage={'Rebanho'} />
-      <main className="col cont px-5">
-        <PageTitle title={`Dados Ovino Nº ${brinco}`} />
-        <section className="row py-4">
-          <h2>Pesagens</h2>
-          {sheepData.length > 0 ? (
-            <CustomTable
-              schema={schema}
-              data={sheepData}
-              uniqueCol={'data_pesagem'}
-            />
-          ) : (
-            <h3 className="text-center">Nenhuma informação cadastrada</h3>
-          )}
-        </section>
-        <GanhoPesoDiario data={sheepData}/>
-      </main>
-    </div>
+    <>
+      <PageTitle title={`Dados Ovino Nº ${brinco}`} />
+      <section className="row py-4">
+        <h2>Pesagens</h2>
+        {sheepData.length > 0 ? (
+          <CustomTable
+            schema={schema}
+            data={sheepData}
+            uniqueCol={'data_pesagem'}
+          />
+        ) : (
+          <h3 className="text-center">Nenhuma informação cadastrada</h3>
+        )}
+      </section>
+      <GanhoPesoDiario data={sheepData} />
+    </>
   );
 }
 

@@ -1,5 +1,4 @@
-import { use, useEffect, useState } from 'react';
-import Sidebar from '../../components/layout/sidebar/Sidebar';
+import { useEffect, useState } from 'react';
 import PageTitle from '../../components/UI/PageTitle';
 import EventModal from '../../components/layout/modal/EventModal';
 
@@ -39,8 +38,7 @@ const Calendar = () => {
 
   useEffect(() => {
     fetchEventos();
-  }
-  , []);
+  }, []);
 
   const handleClose = () => setShowModal(false);
 
@@ -57,37 +55,32 @@ const Calendar = () => {
   };
 
   return (
-    <div className="row m-0">
-      <Sidebar user="Luís" currentPage="Calendário" />
-      <main className="col cont px-5 calendario-container">
-        <PageTitle title="Tarefas agendadas" />
-
-        <div className="calendar-wrapper">
-          <FullCalendar
-            plugins={[dayGridPlugin, InteractionPlugin]}
-            initialView="dayGridMonth"
-            selectable={true}
-            locale={ptBrLocales}
-            height="auto"
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: '',
-            }}
-            eventColor="#009099"
-            events={eventos}
-            dateClick={handleDateClick}
-          />
-        </div>
-
-        <EventModal
-          show={showModal}
-          onClose={handleClose}
-          onSave={handleSave}
-          initialDate={selectedDate}
+    <section className="calendario-container">
+      <PageTitle title="Tarefas agendadas" />
+      <div className="calendar-wrapper">
+        <FullCalendar
+          plugins={[dayGridPlugin, InteractionPlugin]}
+          initialView="dayGridMonth"
+          selectable={true}
+          locale={ptBrLocales}
+          height="auto"
+          headerToolbar={{
+            left: 'prev,next today',
+            center: 'title',
+            right: '',
+          }}
+          eventColor="#009099"
+          events={eventos}
+          dateClick={handleDateClick}
         />
-      </main>
-    </div>
+      </div>
+      <EventModal
+        show={showModal}
+        onClose={handleClose}
+        onSave={handleSave}
+        initialDate={selectedDate}
+      />
+    </section>
   );
 };
 

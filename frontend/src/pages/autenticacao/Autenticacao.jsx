@@ -1,7 +1,7 @@
 import './auth.css';
 import { useState } from 'react';
-import FormCadastro from '../../components/layout/forms/FormCadastro';
-import FormLogin from '../../components/layout/forms/FormLogin';
+import FormCadastro from '../../components/layout/forms/login/FormCadastro';
+import FormLogin from '../../components/layout/forms/login/FormLogin';
 
 
 const AuthenticationForm = ({ authMode }) => {
