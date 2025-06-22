@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Sidebar from "../../components/layout/sidebar/Sidebar";
 import PageTitle from "../../components/UI/PageTitle";
-import FormRelatorio from '../../components/layout/forms/FormRelatorio';
+import FormRelatorio from '../../components/layout/forms/relatorio/FormRelatorio';
 
 
 const Relatorio = () => {

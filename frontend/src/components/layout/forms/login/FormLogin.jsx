@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import FormRow from '../../UI/FormRow';
-import RenderFields from './RenderFields';
-import FormBtn from '../../UI/FormBtn';
+import FormRow from '../../../UI/FormRow';
+import RenderFields from '../RenderFields';
+import FormBtn from '../../../UI/FormBtn';
 
-
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormLogin = () => {
   const rowPadding = 'py-3';
@@ -19,8 +18,8 @@ const FormLogin = () => {
         id: 'email',
         name: 'email',
         type: 'email',
-        className: 'form-input'
-      }
+        className: 'form-input',
+      },
     },
     {
       wrapper: {
@@ -33,10 +32,9 @@ const FormLogin = () => {
         name: 'senha',
         type: 'password',
         className: 'form-input',
-      }
-    }
+      },
+    },
   ];
-
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -48,8 +46,7 @@ const FormLogin = () => {
     } catch (err) {
       console.log(err);
     }
-  }
-
+  };
 
   return (
     <form className="col-xl-7 col-lg-8 col-md-9 col-sm-11 col-12 my-form" onSubmit={handleLogin}>
@@ -69,7 +66,6 @@ const FormLogin = () => {
       </div>
     </form>
   );
-}
-
+};
 
 export default FormLogin;

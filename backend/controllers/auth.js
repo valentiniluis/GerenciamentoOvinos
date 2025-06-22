@@ -22,7 +22,7 @@ exports.postStartAccount = async (req, res, next) => {
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(senha, salt);
     await db.none(
-      "INSERT INTO usuario(email, nome, senha, grupo, data_cadastro) \
+      "INSERT INTO usuario(email, nome, senha, grupo_nome, data_cadastro) \
             VALUES ($1, $2, $3, $4, $5);",
       [email, nome, hashedPassword, "Administrador", data_cadastro]
     );

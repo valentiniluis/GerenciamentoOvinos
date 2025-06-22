@@ -13,6 +13,8 @@ const authRoutes = require('./routes/auth');
 const animalRoutes = require('./routes/sheep');
 const userRoutes = require('./routes/users');
 const groupRoutes = require('./routes/groups');
+const taskRoutes = require('./routes/tasks');
+const dashRoutes = require('./routes/dash');
 
 // função para permitir requests vindas da port do front-end
 app.use((req, res, next) => {
@@ -26,6 +28,8 @@ app.use(authRoutes);
 app.use('/rebanho', animalRoutes);
 app.use('/usuarios', userRoutes);
 app.use('/grupos', groupRoutes);
+app.use('/tarefas', taskRoutes);
+app.use('/dash', dashRoutes);
 
 app.use((error, req, res, next) => {
     console.log(error);

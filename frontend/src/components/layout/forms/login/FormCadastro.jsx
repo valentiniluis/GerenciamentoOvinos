@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import RenderFields from './RenderFields';
 import FormBtn from '../../UI/FormBtn';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormCadastro = () => {
   const rowPadding = 'py-3';
@@ -17,8 +17,8 @@ const FormCadastro = () => {
         id: 'nome',
         name: 'nome',
         type: 'text',
-        className: 'form-input m-auto'
-      }
+        className: 'form-input m-auto',
+      },
     },
     {
       wrapper: {
@@ -30,8 +30,8 @@ const FormCadastro = () => {
         id: 'email',
         name: 'email',
         type: 'email',
-        className: 'form-input'
-      }
+        className: 'form-input',
+      },
     },
     {
       wrapper: {
@@ -44,7 +44,7 @@ const FormCadastro = () => {
         name: 'senha',
         type: 'password',
         className: 'form-input',
-      }
+      },
     },
     {
       wrapper: {
@@ -61,7 +61,6 @@ const FormCadastro = () => {
     }
   ];
 
-
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -72,8 +71,7 @@ const FormCadastro = () => {
     } catch (err) {
       console.log(err);
     }
-  }
-
+  };
 
   return (
     <form className="col-xl-7 col-lg-8 col-md-9 col-sm-11 col-12 my-form" onSubmit={handleLogin}>
@@ -88,7 +86,6 @@ const FormCadastro = () => {
       </div>
     </form>
   );
-}
-
+};
 
 export default FormCadastro;

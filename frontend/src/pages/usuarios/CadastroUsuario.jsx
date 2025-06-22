@@ -1,6 +1,6 @@
 import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
-import FormCadastroUsuario from '../../components/layout/forms/FormCadastroUsuario';
+import FormCadastroUsuario from '../../components/layout/forms/usuarios/FormCadastroUsuario';
 
 const CadastroUsuario = () => {
   // const handleSubmit = async (event) => {

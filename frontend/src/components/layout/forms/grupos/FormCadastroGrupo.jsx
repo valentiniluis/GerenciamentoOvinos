@@ -1,12 +1,12 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState } from 'react';
-import RenderFields from './RenderFields';
+import RenderFields from '../RenderFields';
 import { Form } from 'react-bootstrap';
-import FormRow from '../../UI/FormRow';
-import FormBtn from '../../UI/FormBtn';
-import ApiAlert from '../../UI/ApiAlert';
+import FormRow from '../../../UI/FormRow';
+import FormBtn from '../../../UI/FormBtn';
+import ApiAlert from '../../../UI/ApiAlert';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 
 const TEXT_PADDING = 'py-2';
@@ -43,21 +43,6 @@ const TEXT_FIELDS = [
 
 const CHECKBOX_PADDING = 'py-1';
 const CHECKBOX_FIELDS = [
-  {
-    wrapper: {
-      class: CHECKBOX_PADDING + ' d-flex gap-3',
-      size: 'large-input'
-    },
-    inputProps: {
-      className: 'text-nowrap',
-      type: 'checkbox',
-      value: true,
-      label: "Visualização de Dados (Relatórios e Gráficos)",
-      id: "visualizar_dados",
-      name: "visualizar_dados",
-      defaultChecked: true
-    }
-  },
   {
     wrapper: {
       class: CHECKBOX_PADDING + ' d-flex gap-3',
@@ -190,7 +175,7 @@ const FormCadastroGrupo = () => {
       </FormRow>
       <RenderFields fields={CHECKBOX_FIELDS} />
       <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" />
+        <FormBtn text="Cadastrar" type="submit"/>
       </div>
       <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
       <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />

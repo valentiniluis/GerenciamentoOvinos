@@ -1,10 +1,10 @@
-import '../../../styles/form.css';
+import '../../../../styles/form.css';
 import { useState, useEffect } from 'react';
-import RenderFields from './RenderFields';
-import ApiAlert from '../../UI/ApiAlert';
-import FormBtn from '../../UI/FormBtn';
+import RenderFields from '../RenderFields';
+import ApiAlert from '../../../UI/ApiAlert';
+import FormBtn from '../../../UI/FormBtn';
 
-import api from '../../../api/request';
+import api from '../../../../api/request';
 
 const FormCadastroUsuario = () => {
   const rowPadding = 'py-3';
@@ -17,79 +17,83 @@ const FormCadastroUsuario = () => {
       const response = await api.get('/grupos');
       const data = response.data;
       setGroups(data);
-    }
+    };
     fetchData();
   }, []);
 
-  const grupos = groups.map(group => ({ name: group.nome, value: group.nome }));
+  const grupos = groups.map((group) => ({
+    name: group.nome,
+    value: group.nome,
+  }));
 
   const fields = [
     {
       wrapper: {
         class: rowPadding,
-        size: 'large-input'
+        size: 'large-input',
       },
       inputProps: {
         label: 'Nome',
-        id: "nome",
-        type: "text",
-        name: "nome",
-        placeholder: "Ex. João da Silva",
-        required: true
-
-      }
+        id: 'nome',
+        type: 'text',
+        name: 'nome',
+        placeholder: 'Ex. João da Silva',
+        required: true,
+      },
     },
     {
       wrapper: {
         class: rowPadding,
-        size: 'large-input'
+        size: 'large-input',
       },
       inputProps: {
         label: 'E-Mail',
-        id: "email",
-        type: "email",
-        name: "email",
-        placeholder: "email@exemplo.com",
-        required: true
-      }
+        id: 'email',
+        type: 'email',
+        name: 'email',
+        placeholder: 'email@exemplo.com',
+        required: true,
+      },
     },
     {
       wrapper: {
         class: rowPadding,
-        size: 'large-input'
+        size: 'large-input',
       },
       inputProps: {
         label: 'Grupo',
-        id: 'grupo',
-        name: 'grupo',
+        id: 'grupo_nome',
+        name: 'grupo_nome',
         required: true,
-        options: [{ name: 'Selecione um grupo', value: "", hidden: true }].concat(grupos)
-      }
+        options: [
+          { name: 'Selecione um grupo', value: '', hidden: true },
+        ].concat(grupos),
+      },
     },
     {
       wrapper: {
         class: rowPadding,
-        size: 'medium-input'
+        size: 'medium-input',
       },
       inputProps: {
         label: 'Senha',
-        id: "senha",
-        type: "password",
-        name: "senha"
-      }
+        id: 'senha',
+        type: 'password',
+        name: 'senha',
+      },
     },
     {
       wrapper: {
         class: rowPadding,
-        size: 'medium-input'
+        size: 'medium-input',
       },
       inputProps: {
         label: 'Confirmação Senha',
-        id: "confirmacao_senha",
-        type: "password",
-        name: "confirmacao_senha"
-      }
-    }
+        id: 'confirmacao_senha',
+        type: 'password',
+        name: 'confirmacao_senha',
+      },
+    },
   ];
 
   const handleSubmit = async (event) => {
@@ -104,21 +108,32 @@ const FormCadastroUsuario = () => {
       setSuccessMsg(result.data.message);
       event.target.reset();
     } catch (err) {
-      console.log(err)
-      setErrorMsg(err.response.data.message || 'Erro inesperado. Tente novamente mais tarde');
+      console.log(err);
+      setErrorMsg(
+        err.response.data.message ||
+          'Erro inesperado. Tente novamente mais tarde',
+      );
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className='medium-input'>
+    <form onSubmit={handleSubmit} className="medium-input">
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" />
+        <FormBtn text="Cadastrar" type="submit"/>
       </div>
-      <ApiAlert variant="danger" message={errorMsg} onClose={() => setErrorMsg(null)} />
-      <ApiAlert variant="success" message={successMsg} onClose={() => setSuccessMsg(null)} />
+      <ApiAlert
+        variant="danger"
+        message={errorMsg}
+        onClose={() => setErrorMsg(null)}
+      />
+      <ApiAlert
+        variant="success"
+        message={successMsg}
+        onClose={() => setSuccessMsg(null)}
+      />
     </form>
-  )
-}
+  );
+};
 
 export default FormCadastroUsuario;

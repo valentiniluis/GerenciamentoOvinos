@@ -19,21 +19,21 @@ exports.checkOptionalExistingId = (fieldName) => {
   return body(fieldName, 'Brinco de ovino mãe não está cadastrado')
     .optional()
     .custom(async value => {
-      return await db.one('SELECT num_brinco FROM ovino WHERE num_brinco = $1;', value)
+      return await db.one('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value)
     });
 }
 
 
 exports.checkExistingId = (fieldName, message) => {
   return body(fieldName)
-    .custom(async value => await db.one('SELECT num_brinco FROM ovino WHERE num_brinco = $1;', value))
+    .custom(async value => await db.one('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value))
     .withMessage(message);
 }
 
 
 exports.checkIdNotExists = (fieldName) => {
   return body(fieldName)
-    .custom(async value => await db.none('SELECT num_brinco FROM ovino WHERE num_brinco = $1;', value))
+    .custom(async value => await db.none('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value))
     .withMessage('Ovino com esse brinco já foi cadastrado')
 }
 
@@ -107,7 +107,28 @@ exports.validateWeighInConstraint = (sheepNumber, dateField) => {
   return body(sheepNumber)
     .custom(async (value, { req }) => {
       const dataPesagem = req.body[dateField];
-      return await db.none('SELECT * FROM pesagem WHERE brinco_ovino = $1 AND data_pesagem = $2;', [value, dataPesagem]);
+      return await db.none('SELECT * FROM pesagem WHERE ovino_brinco = $1 AND data_pesagem = $2;', [value, dataPesagem]);
     })
     .withMessage('O ovino inserido já tem uma pesagem cadastrada nesse dia');
+}
+
+exports.validateDescriptionTask = (fieldName) => {
+  return body(fieldName, 'Descrição da tarefa deve ser uma sequência de caracteres')
+    .optional()
+    .trim()
+    .isString()
+    .isLength({
+      max: config.MAX_TASK_DESCRIPTION_LENGTH
+    })
+    .withMessage(`Descrição da tarefa deve conter no máximo ${config.MAX_TASK_DESCRIPTION_LENGTH} caracteres`);
+}
+exports.validateTaskName = (fieldName) => {
+  return body(fieldName, 'Nome da tarefa deve ser uma sequência de caracteres')
+    .trim()
+    .isString()
+    .isLength({
+      min: config.MIN_TASK_NAME_LENGTH,
+      max: config.MAX_TASK_NAME_LENGTH
+    })
+    .withMessage(`Nome da tarefa deve conter de ${config.MIN_TASK_NAME_LENGTH} até ${config.MAX_TASK_NAME_LENGTH} caracteres`);
 }

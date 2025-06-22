@@ -1,7 +1,7 @@
 import '../../styles/form.css';
 import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
-import FormOvino from '../../components/layout/forms/FormOvino';
+import FormOvino from '../../components/layout/forms/rebanho/FormOvino';
 
 const CadastroRebanho = () => {
   return (

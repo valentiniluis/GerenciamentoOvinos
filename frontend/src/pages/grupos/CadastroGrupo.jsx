@@ -1,7 +1,7 @@
 import '../../styles/form.css';
 import PageTitle from '../../components/UI/PageTitle';
 import Sidebar from '../../components/layout/sidebar/Sidebar';
-import FormCadastroGrupo from '../../components/layout/forms/FormCadastroGrupo';
+import FormCadastroGrupo from '../../components/layout/forms/grupos/FormCadastroGrupo';
 
 
 const CadastroGrupo = () => {

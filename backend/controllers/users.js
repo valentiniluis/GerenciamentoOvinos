@@ -10,7 +10,7 @@ exports.getUsers = async (req, res, next) => {
     try {
         const data = await db.manyOrNone(
             "SELECT \
-                nome, email, grupo, TO_CHAR(data_cadastro, 'DD/MM/YYYY') AS data_cadastro \
+                nome, email, grupo_nome, TO_CHAR(data_cadastro, 'DD/MM/YYYY') AS data_cadastro \
             FROM usuario;"
         );
         res.status(200).json(data);
@@ -30,13 +30,13 @@ exports.createUser = async (req, res, next) => {
     }
 
     try {
-        const { nome, email, grupo, senha, data_cadastro } = req.body;
+        const { nome, email, grupo_nome, senha, data_cadastro } = req.body;
         const salt = await bcrypt.genSalt(SALT_ROUNDS);
         const hashedPassword = await bcrypt.hash(senha, salt);
         await db.none(
-            "INSERT INTO usuario(email, nome, senha, grupo, data_cadastro) \
+            "INSERT INTO usuario(email, nome, senha, grupo_nome, data_cadastro) \
             VALUES ($1, $2, $3, $4, $5);",
-            [email, nome, hashedPassword, grupo, data_cadastro]
+            [email, nome, hashedPassword, grupo_nome, data_cadastro]
         );
         res.status(201).json({ success: true, message: "Usuário criado com sucesso" });
     } catch (err) {

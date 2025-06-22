@@ -1,6 +1,6 @@
 import Sidebar from '../../components/layout/sidebar/Sidebar';
 import PageTitle from '../../components/UI/PageTitle';
-import FormPesagem from '../../components/layout/forms/FormPesagem';
+import FormPesagem from '../../components/layout/forms/pesagem/FormPesagem';
 
 
 const CadastroPesagem = () => {

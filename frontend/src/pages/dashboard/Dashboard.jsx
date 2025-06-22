@@ -5,18 +5,34 @@ import CardEstadoSaude from '../../components/layout/cards/cardEstadoSaude';
 import CardTiposFuncao from '../../components/layout/cards/cardTiposFuncao';
 import CardTotalAnimais from '../../components/layout/cards/cardTotalAnimais';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
+import api from '../../api/request';
+
 const Dashboard = () => {
+
   
+
   // Usei esse no gáfico Animais por finalidade
-  const [pieData, setPieData] = useState([
-    { value: 10, label: 'Abate' },
-    { value: 15, label: 'Leite' },
-    { value: 20, label: 'Lã' },
-    { value: 23, label: 'Reprodução' },
-  ]);
+  const [pieData, setPieData] = useState([]);
+
+  useEffect(() => {
+    const fetchPieData = async () => {
+      try {
+        const response = await api.get('/dash');
+        console.log('Dados do gráfico de pizza:', response.data);
+        setPieData(response.data.map(item => ({
+          value: parseInt(item.count, 10),
+          label: item.finalidade,
+        })));
+      } catch (error) {
+        console.error('Erro ao buscar dados do gráfico de pizza:', error);
+      }
+    };
+
+    fetchPieData();
+  }, []);
 
   // Esse foi para o Saúde animal
   const [barLabels, setBarLabels] = useState(['group A', 'group B', 'group C']);
