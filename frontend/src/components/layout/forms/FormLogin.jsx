@@ -10,9 +10,9 @@ const FormLogin = () => {
   const rowPadding = 'py-3';
   const inputs = [
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: rowPadding + ' m-auto',
+        size: 'large-input'
       },
       inputProps: {
         label: 'E-Mail',
@@ -23,9 +23,9 @@ const FormLogin = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        class: rowPadding + ' m-auto',
+        size: 'large-input'
       },
       inputProps: {
         label: 'Senha',
@@ -52,20 +52,20 @@ const FormLogin = () => {
 
 
   return (
-    <form className="col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form" onSubmit={handleLogin}>
+    <form className="col-xl-7 col-lg-8 col-md-9 col-sm-11 col-12 my-form" onSubmit={handleLogin}>
       <div className="row py-4">
         <h2 className="text-center">Acessar Sistema</h2>
       </div>
-      <section className="medium-input m-auto">
+      <section className="medium-input login-input-wrapper">
         <RenderFields fields={inputs} />
       </section>
-      <FormRow padding="py-4 my-2">
-        <Link className="text-center my-link" to="...">
+      <FormRow>
+        <Link id="forgot-pw-link" className="text-center my-link pt-4" to="...">
           Esqueci Minha Senha
         </Link>
       </FormRow>
       <div className="row py-5 justify-content-center">
-        <FormBtn text="Acessar" />
+        <FormBtn text="Acessar" className="auth-btn" />
       </div>
     </form>
   );

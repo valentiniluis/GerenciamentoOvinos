@@ -1,0 +1,98 @@
+.beige {
+  background-color: #fdf5ed;
+}
+
+.my-form {
+  border: solid 1px black;
+  border-radius: 6px;
+  box-shadow: 0px 2px 3px grey;
+  max-width: 600px;
+}
+
+.pg-title {
+  font-weight: bold;
+  font-size: 3.2rem;
+}
+
+.auth-navbar {
+  padding: 25px 0px;
+}
+
+.auth-navbar menu {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.navbar-button {
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+  text-underline-offset: 0.4rem;
+  transition: all ease-in-out .2s;
+  color: black;
+}
+
+.navbar-button:hover {
+  color: rgb(95, 95, 95);
+}
+
+.auth-navbar button.active {
+  text-decoration: underline;
+
+}
+
+.bg-image-container {
+  background-color: rgb(184, 199, 182);
+  background-image: url("../../assets/sheepBgResized.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center left;
+  background-blend-mode: multiply;
+}
+
+.bg-image-container .background-image {
+  object-fit: fill;
+  width: 100%;
+}
+
+.login-input-wrapper {
+  max-width: 350px;
+  width: 70%;
+  margin: auto;
+}
+
+.form-input {
+  background-color: #ffffff;
+  outline: none;
+  border-radius: 4px;
+}
+
+#forgot-pw-link {
+  color: #2c332b;
+  transition: all ease-in-out .2s;
+}
+
+#forgot-pw-link:hover {
+  color: #4e664d;
+}
+
+.auth-btn {
+  background-color: #798777;
+  transition: all ease-in-out .3s;
+}
+
+.auth-btn:hover {
+  background-color: #385537;
+}
+
+.form-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  min-height: 100vh;
+  height: 100%;
+}

@@ -1,13 +1,12 @@
-import './BackgroundImage.css';
-import './AuthNav.css';
-
-import FormCadastro from '../../components/layout/forms/FormCadastro';
-
+import './auth.css';
 import { useState } from 'react';
+import FormCadastro from '../../components/layout/forms/FormCadastro';
 import FormLogin from '../../components/layout/forms/FormLogin';
+
+
 const AuthenticationForm = ({ authMode }) => {
   return (
-    <div className='d-flex justify-content-center'>
+    <div className='form-container'>
       {authMode === 'Login'
         ? <FormLogin />
         : <FormCadastro />
@@ -16,14 +15,18 @@ const AuthenticationForm = ({ authMode }) => {
   );
 }
 
-const AuthNav = ({ onChangeMode }) => {
+const AuthNav = ({ currentMode, onChangeMode }) => {
   return (
     <nav className="auth-navbar">
       <menu>
-        <button onClick={() => onChangeMode('Login')} className='navbar-button'>
+        <button 
+          onClick={() => onChangeMode('Login')} 
+          className={`navbar-button ${currentMode === 'Login' ? 'active' : ''}`}>
           Login
         </button>
-        <button onClick={() => onChangeMode('Cadastro')} className='navbar-button'>
+        <button 
+          onClick={() => onChangeMode('Cadastro')} 
+          className={`navbar-button ${currentMode === 'Cadastro' ? 'active' : ''}`}>
           Cadastro
         </button>
       </menu>
@@ -36,7 +39,7 @@ const AuthSection = () => {
 
   return (
     <>
-      <AuthNav onChangeMode={setAuthMode} />
+      <AuthNav onChangeMode={setAuthMode} currentMode={authMode} />
       <AuthenticationForm authMode={authMode} />
     </>
   );
@@ -45,10 +48,10 @@ const AuthSection = () => {
 
 const Autenticacao = () => {
   return (
-    <div className="row cont">
-      <section className="col p-0 bg-image-container">
+    <div className="row cont beige">
+      <section className="col-xxl-6 col-0 p-0 bg-image-container">
       </section>
-      <main className="col p-0 h-100">
+      <main className="col p-0 auth-container">
         <AuthSection />
       </main>
     </div>

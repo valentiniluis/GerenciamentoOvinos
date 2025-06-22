@@ -1,8 +1,11 @@
 import { Button } from 'react-bootstrap';
 
-const FormBtn = ({ text, ...props }) => {
+const FormBtn = ({ text, className, ...props }) => {
+  let buttonCssClass = 'form-btn';
+  if (className !== undefined) buttonCssClass += ' ' + className;
+
   return (
-    <Button className="form-btn" variant="primary" {...props}>
+    <Button className={buttonCssClass} variant="primary" {...props}>
       {text}
     </Button>
   );

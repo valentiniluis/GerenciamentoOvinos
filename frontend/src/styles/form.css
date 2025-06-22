@@ -38,6 +38,10 @@
   margin: 0;
 }
 
+.standalone-label {
+  padding: 0px 12px;
+}
+
 .large-input {
   width: 100%;
   max-width: 40rem;

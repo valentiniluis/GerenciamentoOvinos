@@ -183,10 +183,10 @@ const FormCadastroGrupo = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='medium-input sla'>
+    <form onSubmit={handleSubmit} className='medium-input'>
       <RenderFields fields={TEXT_FIELDS} />
       <FormRow padding="pt-3">
-        <Form.Label className='my-label'>Permissões</Form.Label>
+        <Form.Label className='my-label standalone-label pt-3'>Permissões</Form.Label>
       </FormRow>
       <RenderFields fields={CHECKBOX_FIELDS} />
       <div className="row py-5 justify-content-center">

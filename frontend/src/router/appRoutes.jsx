@@ -12,13 +12,11 @@ import CadastroGrupo from '../pages/grupos/CadastroGrupo.jsx';
 import Relatorio from '../pages/relatorio/Relatorio.jsx';
 import Calendario from '../pages/calendario/Calendario.jsx';
 import Dashboard from '../pages/dashboard/Dashboard.jsx';
-import Login from '../pages/autenticacao/Login.jsx';
 import Autenticacao from '../pages/autenticacao/Autenticacao.jsx';
 import PaginaNaoEncontrada from '../pages/PaginaNaoEncontrada.jsx';
 
 const router = createBrowserRouter([
-  { path: '/autenticacao', element: <Autenticacao /> },
-  { path: '/login', element: <Login /> },
+  { path: '/login', element: <Autenticacao /> },
   { path: '/', element: <Dashboard /> },
   { path: '/rebanho/cadastrar', element: <CadastroRebanho /> },
   { path: '/rebanho/listar', element: <ListarRebanho /> },

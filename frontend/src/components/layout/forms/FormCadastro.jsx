@@ -1,5 +1,6 @@
 import { Button } from 'react-bootstrap';
 import RenderFields from './RenderFields';
+import FormBtn from '../../UI/FormBtn';
 
 import api from '../../../api/request';
 
@@ -7,9 +8,9 @@ const FormCadastro = () => {
   const rowPadding = 'py-3';
   const inputs = [
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        size: 'large-input',
+        class: rowPadding + ' m-auto'
       },
       inputProps: {
         label: 'Nome',
@@ -20,9 +21,9 @@ const FormCadastro = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        size: 'large-input',
+        class: rowPadding + ' m-auto'
       },
       inputProps: {
         label: 'E-Mail',
@@ -33,9 +34,9 @@ const FormCadastro = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        size: 'large-input',
+        class: rowPadding + ' m-auto'
       },
       inputProps: {
         label: 'Senha',
@@ -46,9 +47,9 @@ const FormCadastro = () => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'medium-input m-auto'
+        size: 'large-input',
+        class: rowPadding + ' m-auto'
       },
       inputProps: {
         label: 'Confirmação da senha',
@@ -58,7 +59,6 @@ const FormCadastro = () => {
         className: 'form-input',
       }
     }
-
   ];
 
 
@@ -76,17 +76,15 @@ const FormCadastro = () => {
 
 
   return (
-    <form className="col-xl-6 col-lg-7 col-md-8 col-sm-10 col-12 bg-white my-form" onSubmit={handleLogin}>
+    <form className="col-xl-7 col-lg-8 col-md-9 col-sm-11 col-12 my-form" onSubmit={handleLogin}>
       <div className="row py-4">
         <h2 className="text-center">Criar Conta</h2>
       </div>
-      <section className="medium-input m-auto">
+      <section className="medium-input login-input-wrapper">
         <RenderFields fields={inputs} />
       </section>
       <div className="row py-5 justify-content-center">
-        <Button className="form-btn" variant="primary" type="submit">
-          Cadastrar
-        </Button>
+        <FormBtn text="Cadastrar" className="auth-btn" />
       </div>
     </form>
   );

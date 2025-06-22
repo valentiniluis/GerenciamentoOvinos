@@ -6,9 +6,9 @@ const FormRelatorio = ({ onSubmit }) => {
   const rowPadding = 'py-2';
   const fields = [
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'small-input'
+        class: rowPadding,
+        size: 'small-input'
       },
       inputProps: {
         label: 'Data de Início',
@@ -18,9 +18,9 @@ const FormRelatorio = ({ onSubmit }) => {
       }
     },
     {
-      padding: rowPadding,
       wrapper: {
-        class: 'small-input'
+        class: rowPadding,
+        size: 'small-input'
       },
       inputProps: {
         label: 'Data Final',
