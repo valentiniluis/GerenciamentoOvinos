@@ -1,5 +1,11 @@
 # Sistema para Gerenciamento de Rebanho de Ovelhas
 
+| Aluno | Matrícula |
+| ------ | --------- |
+| Emerson Henrique Comar | 2221101007 |
+| Grégory Steffani dos Santos | 1911100026 |
+| Luís Fernando Cerutti Valentini | 20230001310 |
+
 ## Documentação
 - A documentação do projeto pode ser visualizada no `requisitos_aplicacao/documentacao.pdf`
 
