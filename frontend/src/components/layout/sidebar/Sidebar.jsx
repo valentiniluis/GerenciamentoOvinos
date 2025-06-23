@@ -13,7 +13,6 @@ import reportIcon from '/report.svg';
 import userIcon from '/user.svg';
 import groupIcon from '/group.svg';
 
-// Adicionar prop 'group'
 const Sidebar = ({ user, currentPage }) => {
   const [actPage, setActPage] = useState(currentPage);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -74,7 +73,7 @@ const Sidebar = ({ user, currentPage }) => {
         {/* Sidebar padrão para telas médias/grandes */}
         <div>
           <SidebarHeader user={user} profilePicture={'/Group_2.png'} />
-          <div className="row pt-3 m-0">
+          <div id="nav-options-container" className="row pt-3 m-0">
             {optNavegacao.map((option) => (
               <NavOption
                 key={option.name}
@@ -93,7 +92,7 @@ const Sidebar = ({ user, currentPage }) => {
 
       {/* Navbar responsivo para telas pequenas */}
       <nav className="navbar-mobile d-flex d-md-none align-items-center justify-content-between px-3 py-2">
-        <img src={menuIcon} alt="Abrir menu" className="menu-icon" onClick={() => setMenuOpen(!menuOpen)} />
+        <img src={menuIcon} alt="Abrir menu" className="menu-icon" onClick={() => setMenuOpen(prevOpen => !prevOpen)} />
         <span className="navbar-mobile-title">Menu</span>
         <img
           className="profile-picture-two"

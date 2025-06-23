@@ -28,30 +28,36 @@
   background-color: rgb(209, 209, 209);
 }
 
+.my-input:read-only {
+  background-color: transparent;
+  border: solid 1px rgb(201, 201, 201);
+}
+
 .my-label {
   padding: 0.5rem 1px;
+  margin: 0;
+}
+
+.standalone-label {
+  padding: 0px 12px;
 }
 
 .large-input {
-  width: 40rem;
+  width: 100%;
+  max-width: 40rem;
   padding: 0px;
 }
 
 .medium-input {
-  width: 20rem;
+  max-width: 25rem;
+  width: 100%;
   padding: 0px;
 }
 
 .small-input {
-  width: 12.5rem;
+  min-width: 18rem;
+  width: 100%;
   padding: 0px;
-}
-
-.filter-btn {
-  background-color: #009099;
-  padding: 0.3em 2em;
-  border-radius: 100px;
-  border: none;
 }
 
 .my-link {

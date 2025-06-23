@@ -14,16 +14,15 @@
   border-radius: 100%;
 }
 
-.profile-picture-two {
-  max-width: 60px;
-  border-radius: 100%;
+.option-text,
+.submenu-item {
+  text-decoration: none;
 }
 
 .option-text {
   margin: 0;
-  padding: 1rem 0;
+  padding: 0;
   font-size: 1.25rem;
-  text-decoration: none;
   color: #27002b;
 }
 
@@ -44,8 +43,8 @@
   transform: translateX(5px);
 }
 
-.active {
-  background-color: #009099;
+#nav-options-container .active-nav {
+  background-color: #93BFCF;
   color: white;
 }
 
@@ -67,77 +66,62 @@
   background-color: #e0f7f8;
 }
 
+.submenu a.active-sub {
+  font-weight: bold;
+}
+
 .opt-cont {
-  max-width: 200px;
+  max-width: 170px;
 }
 
-@media (max-width: 1000px) and (min-width: 769px) {
-  .sidebar {
-    max-width: 220px;
-    min-width: 180px;
-  }
-  .opt-cont {
-    max-width: 140px;
-  }
-  .profile-picture-one {
-    max-width: 70px;
-  }
-  .profile-picture-two {
-    max-width: 40px;
-  }
-  .option-text {
-    font-size: 1rem;
-    padding: 0.7rem 0;
-  }
-  .option-icon {
-    width: 22px;
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1199px) {
   .sidebar {
     display: none !important;
   }
+
   .navbar-mobile {
     display: flex !important;
     position: relative;
     background: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     z-index: 100;
   }
+
   .navbar-mobile-title {
     font-size: 1.3rem;
     font-weight: bold;
     color: #27002b;
   }
+
   .menu-icon {
     width: 36px;
     height: 36px;
     cursor: pointer;
   }
+
   .navbar-mobile-dropdown {
     position: absolute;
-    top: 60px;
+    top: 0;
     left: 0;
+    right: 0;
+    padding: 0;
     width: 100vw;
     background: #fff;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    padding: 1rem 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     z-index: 200;
-    border-radius: 0 0 12px 12px;
   }
+
   .navbar-mobile-dropdown .nav-option {
     padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
   }
+
   .navbar-mobile-dropdown .submenu {
     background: #f5f5f5;
     margin-bottom: 0.5rem;
   }
-}
 
-@media (min-width: 769px) {
-  .navbar-mobile {
-    display: none !important;
+  .profile-picture-two {
+    max-width: 70px;
+    border-radius: 100%;
   }
 }

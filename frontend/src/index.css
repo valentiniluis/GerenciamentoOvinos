@@ -4,8 +4,16 @@ body, html {
   box-sizing: border-box;
 }
 
-.cont, .sidebar {
+body {
   font-family: "DM Sans";
+  min-height: 100vh;
+}
+
+.cont {
+  min-height: 100vh;
+  height: 100%;
+  background-color: #F1F3FC;
+  margin: 0;
 }
 
 .page-title {
