@@ -1,4 +1,5 @@
 const swaggerAutogen = require('swagger-autogen')();
+const path = require('path');
 
 const doc = {
   info: {
@@ -13,7 +14,7 @@ const doc = {
   produces: ['application/json'],
 };
 
-const outputFile = './doc/swagger_output.json'; 
+const outputFile = path.join(__dirname, 'swagger_output.json'); 
 const endpointsFiles = [
   './routes/auth.js',
   './routes/users.js',

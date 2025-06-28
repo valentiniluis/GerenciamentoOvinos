@@ -1,13 +1,28 @@
-import { Form, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import FormRow from '../../components/UI/FormRow';
-import InputField from '../../components/UI/InputField';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
-import FormBtn from '../../components/UI/FormBtn';
 import RenderFields from '../../components/layout/forms/RenderFields';
+import InputFilter from '../../components/layout/forms/InputFilter';
 
 import api from '../../api/request';
+
+const FILTER = {
+  filterProp: 'Nenhuma',
+  filterValue: ''
+};
+
+const FILTER_INPUT_TYPES = {
+  nome: {
+    placeholder: 'Insira um nome...',
+    id: 'nome',
+    name: 'name'
+  },
+  email: {
+    placeholder: 'Insira um e-mail...',
+    id: 'email',
+    name: 'email'
+  }
+}
 
 const ListagemUsuarios = () => {
   const schema = [
@@ -18,13 +33,16 @@ const ListagemUsuarios = () => {
   ];
 
   const [usersData, setUsersData] = useState([]);
-  // const [filterProp, setFilterProp] = useState('');
-  // const [queryParam, setQueryParam] = useState('');
+  const [filter, setFilter] = useState(FILTER);
 
   useEffect(() => {
     async function fetchData() {
+      const { filterProp, filterValue } = filter;
+      if (filterProp !== 'Nenhuma' && !filterValue) return;
       try {
-        const response = await api.get('/usuarios');
+        const queryParam = `?${filterProp}=${filterValue}`;
+        const fullURL = '/usuarios' + queryParam;
+        const response = await api.get(fullURL);
         const data = response.data;
         setUsersData(data);
       } catch (err) {
@@ -32,49 +50,54 @@ const ListagemUsuarios = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [filter]);
 
-  // const handleSelect = (event) => {
-  //   setFilterProp(event.target.value);
-  // };
+  const handleSelect = (event) => {
+    setFilter({ filterProp: event.target.value });
+  };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const formData = new FormData(event.currentTarget);
-  //   const filterValue = formData.get(filterProp);
-  //   setQueryParam(`${filterProp}=${filterValue}`);
-  // }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const filterValue = formData.get(filter.filterProp);
+    setFilter(prevFilter => ({ ...prevFilter, filterValue }));
+  }
 
-  // const inputFilter = [{
-  //   wrapper: {
-  //     size: 'large-input',
+  const inputFilter = [{
+    wrapper: {
+      size: 'large-input'
+    },
+    inputProps: {
+      label: 'Condição de Filtro (Opcional)',
+      id: 'filtro',
+      name: 'filtro',
+      onChange: handleSelect,
+      options: [
+        { value: 'nenhuma', name: 'Nenhuma' },
+        { value: 'email', name: 'E-Mail' },
+        { value: 'nome', name: 'Nome' }
+      ]
+    }
+  }];
 
-  //   },
-  //   inputProps: {
-  //     label: 'Condição de Filtro (Opcional)',
-  //     id: 'filtro',
-  //     name: 'filtro',
-  //     onChange: handleSelect,
-  //     options: [
-  //       { value: 'nenhuma', name: 'Nenhuma' },
-  //       { value: 'email', name: 'E-Mail' },
-  //       { value: 'nome', name: 'Nome' }
-  //     ]
-  //   }
-  // }];
+  const noFilterApplied = filter.filterProp === 'Nenhuma';
+  const inputFilterProps = noFilterApplied ? null
+    : FILTER_INPUT_TYPES[filter.filterProp];
 
   return (
     <>
       <PageTitle title="Listagem de Usuários" />
-      {/* <div className="form-cont flex-center">
+      <div className="form-cont flex-center">
         <form className="medium-input" onSubmit={handleSubmit}>
           <RenderFields fields={inputFilter} />
-          {filterProp === 'nenhuma' ? null : (
-            <>
-            </>
-          )}
+          {noFilterApplied ? null : (
+            <div className="py-4">
+              <InputFilter {...inputFilterProps} />
+            </div>
+          )
+          }
         </form>
-      </div> */}
+      </div>
       <div className="row py-3">
         {usersData.length > 0 ? (
           <CustomTable schema={schema} data={usersData} uniqueCol={'email'} />

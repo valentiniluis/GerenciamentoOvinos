@@ -7,6 +7,9 @@ const SALT_ROUNDS = 12;
 
 
 exports.getUsers = async (req, res, next) => {
+    const filterProps = req.query;
+    console.log(filterProps);
+
     try {
         const data = await db.manyOrNone(
             "SELECT \
