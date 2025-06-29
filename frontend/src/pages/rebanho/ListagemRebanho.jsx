@@ -1,64 +1,52 @@
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
-import { useEffect, useState } from 'react';
+import ErrorParagraph from '../../components/UI/ErrorParagraph';
+import FiltroOvinos from '../../components/layout/forms/rebanho/FiltroOvinos';
 
-import api from '../../api/request';
+// import api from '../../api/request';
 
-// ADICIONAR A FUNCIONALIDADE DOS FILTROS
+const SCHEMA = [
+  ['brinco_num', 'Nº do Brinco'],
+  ['brinco_mae', 'Nº Brinco Mãe'],
+  ['data_nascimento', 'Data Nascimento'],
+  ['raca', 'Raça'],
+  ['sexo', 'Sexo'],
+  ['finalidade', 'Finalidade'],
+  ['abatido', 'Abatido'],
+  ['pesagens', 'Pesagens'],
+];
+
 
 const ListagemRebanho = () => {
   const [animalData, setAnimalData] = useState([]);
-  const schema = [
-    ['brinco_num', 'Nº do Brinco'],
-    ['brinco_mae', 'Nº Brinco Mãe'],
-    ['data_nascimento', 'Data Nascimento'],
-    ['raca', 'Raça'],
-    ['sexo', 'Sexo'],
-    ['finalidade', 'Finalidade'],
-    ['abatido', 'Abatido'],
-    ['mais_detalhes', 'Mais Detalhes'],
-  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get('/rebanho');
-        const data = response.data;
-        const linkedData = data.map((obj) => {
-          obj['mais_detalhes'] = (
-            <Link className="my-link" to={`/rebanho/${obj['brinco_num']}`}>
-              Acessar
-            </Link>
-          );
-          return obj;
-        });
-        setAnimalData(linkedData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+  const updateData = useCallback(data => {
+    const linkedData = data.map(obj => {
+      const updatedData = { ...obj };
+      updatedData['pesagens'] = (
+        <Link className="my-link" to={`../${obj['brinco_num']}`} relative='path'>
+          Acessar
+        </Link>
+      );
+      return updatedData;
+    });
+    setAnimalData(linkedData);
   }, []);
-
-  const handleSubmit = () => { };
 
   return (
     <>
       <PageTitle title="Listagem Rebanho" />
-      <form action={handleSubmit}>
-        <div className="row py-3">
-          {animalData.length > 0 ? (
-            <CustomTable
-              schema={schema}
-              data={animalData}
-              uniqueCol={'brinco_num'}
-            />
-          ) : (
-            <h3 className="text-center">Nenhuma informação cadastrada</h3>
-          )}
-        </div>
-      </form>
+      <section className="form-cont flex-center">
+        <FiltroOvinos updateSheepData={updateData} />
+      </section>
+      <div className="row py-3">
+        {animalData.length > 0
+          ? <CustomTable schema={SCHEMA} data={animalData} uniqueCol="brinco_num" />
+          : <ErrorParagraph error={{ message: "Nenhum ovino cadastrado" }} />
+        }
+      </div>
     </>
   );
 };

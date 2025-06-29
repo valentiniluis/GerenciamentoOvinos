@@ -1,26 +1,22 @@
 import '../../../../styles/form.css';
-import { useState, useEffect } from 'react';
-import RenderFields from '../RenderFields';
-import ApiAlert from '../../../UI/ApiAlert';
-import FormBtn from '../../../UI/FormBtn';
+import { useLoaderData } from 'react-router-dom';
+import { useState } from 'react';
+import RenderFields from '../RenderFields.jsx';
+import ApiAlert from '../../../UI/ApiAlert.jsx';
+import FormBtn from '../../../UI/FormBtn.jsx';
+import ErrorParagraph from '../../../UI/ErrorParagraph.jsx';
 
 import api from '../../../../api/request';
 
 const FormCadastroUsuario = () => {
   const rowPadding = 'py-3';
-  const [groups, setGroups] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await api.get('/grupos');
-      const data = response.data;
-      setGroups(data);
-    };
-    fetchData();
-  }, []);
-
+  const response = useLoaderData();
+  if (response.isError) return <ErrorParagraph error={response} />
+  
+  const groups = response.data;
   const grupos = groups.map((group) => ({
     name: group.nome,
     value: group.nome,

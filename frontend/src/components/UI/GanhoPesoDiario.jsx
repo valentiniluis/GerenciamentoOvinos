@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { calculateWeightChange } from '../../util/utils';
-import RenderFields from '../../components/layout/forms/RenderFields';
+import { calculateWeightChange } from '../../util/gpd.js';
+import RenderFields from '../../components/layout/forms/RenderFields.jsx';
+import ErrorParagraph from './ErrorParagraph.jsx';
 
 
 const GanhoPesoDiario = ({ data }) => {
   const [periodIndexes, setPeriodIndexes] = useState({});
-  
+
   const changeWeightData = (event) => {
     const index = event.target.selectedOptions[0].id;
     const period = (event.target.name === 'inicio') ? 'startIdx' : 'endIdx';
@@ -59,21 +60,18 @@ const GanhoPesoDiario = ({ data }) => {
   }
 
   return (
-    <section className="limit-600">
-      <h2>Ganho de Peso Diário</h2>
-      <p className='my-paragraph'>Selecione a data inicial e data final para obter o valor do GPD do Ovino durante o período especificado.</p>
+    <>
       <RenderFields fields={pageInputs} />
-      {result === undefined ? '' : result.erro === undefined ? (
+      {result === undefined ? null : result.erro === undefined ? (
         <>
           <p className='my-paragraph'>Dias passados: {result.diasPassados}</p>
           <p className='my-paragraph'>Peso inicial: {result.pesoInicial}kg</p>
           <p className='my-paragraph'>Peso final: {result.pesoFinal}kg</p>
           <p className='my-paragraph'>Ganho de Peso por Dia: {result.GPD}kg</p>
         </>
-      ) : (
-        <p className='my-paragraph'>{result.erro}</p>
-      )}
-    </section>
+      ) : <ErrorParagraph error={{ message: result.erro }} />
+      }
+    </>
   );
 }
 
