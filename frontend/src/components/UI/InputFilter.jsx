@@ -1,5 +1,5 @@
-import searchIcon from '../../../../public/search_icon.svg';
-import classes from '../../../styles/Filter.module.css';
+import searchIcon from '/search_icon.svg';
+import classes from '../../styles/Filter.module.css';
 
 const InputFilter = ({ className, ...inputProps }) => {
 

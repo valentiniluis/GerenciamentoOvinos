@@ -1,18 +1,31 @@
 import '../../../../styles/form.css';
-import { useState } from 'react';
-import FormRow from '../../../UI/FormRow';
-import InputField from '../../../UI/InputField';
-import FieldWrapper from '../../../UI/FieldWrapper';
-import OvinoComprado from '../../../UI/OvinoComprado';
-import SelectField from '../../../UI/SelectField';
-import ApiAlert from '../../../UI/ApiAlert';
-import FormBtn from '../../../UI/FormBtn';
+import { useState, useEffect } from 'react';
+import { useNavigate, Form, useActionData, useSubmit } from 'react-router-dom';
+import FormRow from '../../../UI/FormRow.jsx';
+import InputField from '../../../UI/InputField.jsx';
+import FieldWrapper from '../../../UI/FieldWrapper.jsx';
+import OvinoComprado from '../../../UI/OvinoComprado.jsx';
+import SelectField from '../../../UI/SelectField.jsx';
+import ApiAlert from '../../../UI/ApiAlert.jsx';
+import FormBtn from '../../../UI/FormBtn.jsx';
+import { dateFromLocaleToISO } from '../../../../util/utilFunctions.js';
 
-import api from '../../../../api/request';
 
-const FormOvino = () => {
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
+const FormOvino = ({ dados, metodo }) => {
+  const navigate = useNavigate();
+  const submit = useSubmit();
+  const actionData = useActionData();
+  const [messageProps, setMessageProps] = useState({ message: null, variant: null });
+
+  useEffect(() => {
+    if (!actionData) return;
+    const { isError, message } = actionData;
+    const variant = (isError) ? 'danger' : 'success';
+    setMessageProps({ message, variant });
+  }, [actionData]);
+
+  console.log(actionData);
+
   const rowPadding = 'py-3';
   const rows = [
     [
@@ -28,6 +41,7 @@ const FormOvino = () => {
           name: 'brinco_num',
           required: true,
           placeholder: 'Ex. 1N123',
+          defaultValue: dados?.brinco_num
         },
       },
     ],
@@ -44,6 +58,7 @@ const FormOvino = () => {
           type: 'text',
           required: true,
           placeholder: 'Ex. Santa Inês',
+          defaultValue: dados?.raca
         },
       },
     ],
@@ -61,13 +76,9 @@ const FormOvino = () => {
           onInvalid: (e) =>
             e.target.setCustomValidity('Selecione uma finalidade válida'),
           onInput: (e) => e.target.setCustomValidity(''),
+          defaultValue: dados?.sexo,
           options: [
-            {
-              value: '',
-              disabled: true,
-              hidden: true,
-              name: 'Selecione o sexo',
-            },
+            { value: '', disabled: true, hidden: true, name: 'Selecione o sexo' },
             { value: 'M', name: 'Macho' },
             { value: 'F', name: 'Fêmea' },
           ],
@@ -84,6 +95,9 @@ const FormOvino = () => {
           type: 'date',
           name: 'data_nascimento',
           required: true,
+          defaultValue: (metodo === 'PUT')
+            ? dateFromLocaleToISO(dados.data_nascimento)
+            : undefined
         },
       },
     ],
@@ -101,14 +115,10 @@ const FormOvino = () => {
           onInvalid: (e) =>
             e.target.setCustomValidity('Selecione uma finalidade válida'),
           onInput: (e) => e.target.setCustomValidity(''),
+          defaultValue: dados?.finalidade,
           options: [
-            {
-              value: '',
-              disabled: true,
-              hidden: true,
-              name: 'Selecione a finalidade',
-            },
             { value: 'Reprodução', name: 'Reprodução' },
+            { value: 'Abate', name: 'Abate' },
             { value: 'Venda', name: 'Venda' },
             { value: 'Leite', name: 'Leite' },
             { value: 'Outra', name: 'Outra' },
@@ -129,31 +139,60 @@ const FormOvino = () => {
           step: 0.001,
           required: true,
           placeholder: 'Ex. 3,250',
+          defaultValue: dados?.peso_nascimento
         },
       },
     ],
   ];
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const formData = new FormData(event.target);
-      const jsonData = Object.fromEntries(formData.entries());
-      const result = await api.post('/rebanho', jsonData);
-      setSuccessMsg(result.data.message);
-      event.target.reset();
-    } catch (err) {
-      setErrorMsg(
-        err.response.data.message ||
-          'Erro inesperado. Tente novamente mais tarde',
-      );
+
+  if (metodo === 'PUT') {
+    const abatido = (dados.abatido === "Sim") ? true : false;
+    const abatidoProps = {
+      wrapper: {
+        padding: rowPadding,
+        size: 'large-input'
+      },
+      inputProps: {
+        label: 'Abatido',
+        id: 'abatido',
+        name: 'abatido',
+        required: true,
+        defaultValue: abatido,
+        options: [
+          { value: '', hidden: true, name: "Ovino foi abatido?" },
+          { value: true, name: 'Sim' },
+          { value: false, name: 'Não' },
+        ]
+      }
     }
-  };
+    rows.push([abatidoProps]);
+  }
+
+  let formButtons = (
+    <div className="row py-5 justify-content-center">
+      <FormBtn text="Cadastrar" type="submit" />
+    </div>
+  );
+
+  if (metodo === 'PUT') {
+    const handleCancel = () => navigate('/rebanho/listar');
+    const handleDelete = () => {
+      submit(null, { action: `/rebanho/${dados.brinco_num}/excluir`, method: 'DELETE' });
+    };
+    formButtons = (
+      <div className="row py-5 gap-5 justify-content-center">
+        <FormBtn text="Cancelar" type="button" className="cancel-btn" onClick={handleCancel} />
+        <FormBtn text="Salvar" type="submit" />
+        <FormBtn text="Excluir Ovino" type="button" className="delete-btn" onClick={handleDelete} />
+      </div>
+    )
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="large-input">
+    <Form method={metodo} className="large-input">
       <h4 className="py-1">Informações</h4>
-      <OvinoComprado />
+      <OvinoComprado dados={{ brinco_mae: dados?.brinco_mae }} metodo={metodo} />
       {rows.map((row, i) => (
         <FormRow key={`Form Row ${i + 1}`}>
           {row.map((field) => (
@@ -171,20 +210,13 @@ const FormOvino = () => {
           ))}
         </FormRow>
       ))}
-      <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" type="submit" />
-      </div>
+      {formButtons}
       <ApiAlert
-        variant="danger"
-        message={errorMsg}
-        onClose={() => setErrorMsg(null)}
+        variant={messageProps.variant}
+        message={messageProps.message}
+        onClose={() => setMessageProps({ message: null, variant: null })}
       />
-      <ApiAlert
-        variant="success"
-        message={successMsg}
-        onClose={() => setSuccessMsg(null)}
-      />
-    </form>
+    </Form>
   );
 };
 

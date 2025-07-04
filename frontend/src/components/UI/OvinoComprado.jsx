@@ -4,8 +4,11 @@ import InputField from './InputField';
 import FieldWrapper from './FieldWrapper';
 
 
-const OvinoComprado = () => {
-  const [comprado, setComprado] = useState(false);
+const OvinoComprado = ({ dados, metodo }) => {
+  const modoEdicao = (metodo === 'PUT');
+  const brinco_mae = dados?.brinco_mae;
+  const compradoInicial = (modoEdicao && !brinco_mae);
+  const [comprado, setComprado] = useState(compradoInicial);
 
   const changeComprado = (event) => {
     // se o checkbox estiver marcardo, o state 'comprado' será = true.
@@ -28,6 +31,7 @@ const OvinoComprado = () => {
         placeholder: (!comprado ? "Ex. 1N123" : ""),
         disabled: (comprado === true),
         required: (!comprado),
+        defaultValue: brinco_mae
       }
     },
     {
@@ -41,10 +45,12 @@ const OvinoComprado = () => {
         type: "checkbox",
         name: "comprado",
         onChange: changeComprado,
+        checked: comprado,
         value: true,
       }
     }
   ]
+  
 
   return (
     <FormRow>

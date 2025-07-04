@@ -98,11 +98,9 @@ const FormPesagem = () => {
       const jsonData = Object.fromEntries(formData.entries());
       const postData = { ...jsonData, observacao: jsonData.observacao || null };
       const result = await api.post('/rebanho/pesagem', postData);
-      console.log(result);
       setSuccessMsg(result.data.message);
       event.target.reset();
     } catch (err) {
-      console.log(err);
       setErrorMsg(
         err.response?.data?.message ||
           'Erro inesperado. Tente novamente mais tarde',

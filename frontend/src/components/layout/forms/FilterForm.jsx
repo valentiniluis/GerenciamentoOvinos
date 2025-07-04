@@ -1,9 +1,10 @@
 import RenderFields from "./RenderFields";
-import InputFilter from "./InputFilter";
+import InputFilter from "../../UI/InputFilter";
+import SelectField from "../../UI/SelectField";
 
 
 const FilterForm = ({ defaultFields, setFilter, filterProps }) => {
-  const { name: filterProp } = filterProps;
+  const { name: filterProp, options } = filterProps;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,7 +20,10 @@ const FilterForm = ({ defaultFields, setFilter, filterProps }) => {
       <RenderFields fields={defaultFields} />
       {noFilterApplied ? null : (
         <div className="py-4">
-          <InputFilter {...filterProps} />
+          {options === undefined 
+            ? <InputFilter {...filterProps} />
+            : <SelectField {...filterProps} />
+          }
         </div>
       )
       }

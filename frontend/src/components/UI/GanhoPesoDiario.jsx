@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { calculateWeightChange } from '../../util/gpd.js';
+import { calculateWeightChange } from '../../util/utilFunctions.js';
 import RenderFields from '../../components/layout/forms/RenderFields.jsx';
 import ErrorParagraph from './ErrorParagraph.jsx';
 

@@ -43,7 +43,6 @@ const FiltroOvinos = ({ updateSheepData }) => {
         }
         const response = await api.get(url);
         const data = response.data;
-        console.log(data);
         updateSheepData(data);
       } catch (err) {
         console.log(err);

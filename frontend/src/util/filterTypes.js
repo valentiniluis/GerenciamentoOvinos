@@ -31,19 +31,34 @@ const FILTER_TYPES = {
     name: 'raca',
   },
   sexo: {
-    placeholder: 'Insira um M ou F...',
     id: 'sexo',
     name: 'sexo',
+    options: [
+      { value: "", hidden: true, name: "Selecione o sexo..." },
+      { value: "F", name: "Macho" },
+      { value: "M", name: "Fêmea" },
+    ],
   },
   finalidade: {
-    placeholder: 'Insira uma finalidade...',
     id: 'finalidade',
     name: 'finalidade',
+    options: [
+      { value: '', hidden: true, name: 'Selecione a finalidade...' },
+      { value: 'Reprodução', name: 'Reprodução' },
+      { value: 'Abate', name: 'Abate'},
+      { value: 'Venda', name: 'Venda' },
+      { value: 'Leite', name: 'Leite' },
+      { value: 'Outra', name: 'Outra' },
+    ]
   },
   abatido: {
-    placeholder: 'Selecione sim ou não...',
     id: 'abatido',
     name: 'abatido',
+    options: [
+      { value: '', hidden: true, name: 'Selecione uma opção...' },
+      { value: true, name: 'Ovinos Abatidos' },
+      { value: false, name: 'Ovinos Não Abatidos' },
+    ]
   }
 }
 
