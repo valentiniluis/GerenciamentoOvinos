@@ -10,7 +10,7 @@ import api from '../../api/request';
 const EditarOvino = () => {
   const data = useLoaderData();
 
-  if (data.isError) {
+  if (data && data.isError) {
     return <ErrorParagraph error={data} />
   }
 
@@ -34,7 +34,7 @@ export const loader = async ({ params }) => {
   try {
     const queryParam = 'brinco_num=' + brinco;
     const response = await api.get('/rebanho?' + queryParam);
-    const data = response.data;
+    const data = response.data.sheep;
     if (data.length === 0) throw new Error('Ovino não cadastrado');
     return data[0];
   } catch (err) {

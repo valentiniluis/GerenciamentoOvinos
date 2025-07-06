@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS ovino (
   finalidade VARCHAR(255) NOT NULL,
   abatido BOOLEAN NOT NULL,
   CONSTRAINT pk_ovino PRIMARY KEY (brinco_num),
-  CONSTRAINT fk_ovino_mae FOREIGN KEY (brinco_mae) REFERENCES ovino(brinco_num) ON SET NULL,
+  CONSTRAINT fk_ovino_mae FOREIGN KEY (brinco_mae) REFERENCES ovino(brinco_num) ON DELETE SET NULL,
   CONSTRAINT fk_ovino_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email) ON DELETE CASCADE
 );
 

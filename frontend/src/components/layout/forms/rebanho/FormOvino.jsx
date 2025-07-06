@@ -1,6 +1,5 @@
 import '../../../../styles/form.css';
-import { useState, useEffect } from 'react';
-import { useNavigate, Form, useActionData, useSubmit } from 'react-router-dom';
+import { useNavigate, Form, useSubmit } from 'react-router-dom';
 import FormRow from '../../../UI/FormRow.jsx';
 import InputField from '../../../UI/InputField.jsx';
 import FieldWrapper from '../../../UI/FieldWrapper.jsx';
@@ -8,23 +7,13 @@ import OvinoComprado from '../../../UI/OvinoComprado.jsx';
 import SelectField from '../../../UI/SelectField.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
+import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx'
 import { dateFromLocaleToISO } from '../../../../util/utilFunctions.js';
 
 
 const FormOvino = ({ dados, metodo }) => {
   const navigate = useNavigate();
   const submit = useSubmit();
-  const actionData = useActionData();
-  const [messageProps, setMessageProps] = useState({ message: null, variant: null });
-
-  useEffect(() => {
-    if (!actionData) return;
-    const { isError, message } = actionData;
-    const variant = (isError) ? 'danger' : 'success';
-    setMessageProps({ message, variant });
-  }, [actionData]);
-
-  console.log(actionData);
 
   const rowPadding = 'py-3';
   const rows = [
@@ -145,7 +134,6 @@ const FormOvino = ({ dados, metodo }) => {
     ],
   ];
 
-
   if (metodo === 'PUT') {
     const abatido = (dados.abatido === "Sim") ? true : false;
     const abatidoProps = {
@@ -177,17 +165,20 @@ const FormOvino = ({ dados, metodo }) => {
 
   if (metodo === 'PUT') {
     const handleCancel = () => navigate('/rebanho/listar');
-    const handleDelete = () => {
-      submit(null, { action: `/rebanho/${dados.brinco_num}/excluir`, method: 'DELETE' });
-    };
+    const handleDelete = () => submit(null, { action: `/rebanho/${dados.brinco_num}/excluir`, method: 'DELETE' });
     formButtons = (
       <div className="row py-5 gap-5 justify-content-center">
         <FormBtn text="Cancelar" type="button" className="cancel-btn" onClick={handleCancel} />
         <FormBtn text="Salvar" type="submit" />
-        <FormBtn text="Excluir Ovino" type="button" className="delete-btn" onClick={handleDelete} />
+        <DeleteConfirmation
+          buttonText="Excluir Ovino"
+          title="Confirmar Exclusão"
+          text="Excluir um ovino irá também deletar suas pesagens e registros médicos"
+          confirm={handleDelete}
+        />
       </div>
     )
-  }
+  };
 
   return (
     <Form method={metodo} className="large-input">
@@ -211,11 +202,7 @@ const FormOvino = ({ dados, metodo }) => {
         </FormRow>
       ))}
       {formButtons}
-      <ApiAlert
-        variant={messageProps.variant}
-        message={messageProps.message}
-        onClose={() => setMessageProps({ message: null, variant: null })}
-      />
+      <ApiAlert />
     </Form>
   );
 };

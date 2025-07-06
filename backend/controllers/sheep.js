@@ -3,6 +3,9 @@ const db = require('../model/database');
 
 
 exports.getSheep = async (req, res, next) => {
+    const page = req.query.page || 1;
+    const MAX_PER_PAGE = 1;
+
     const queryArgs = [
         "SELECT \
             ov.brinco_num, ov.brinco_mae, ov.raca, ov.sexo, ov.finalidade, ov.peso_nascimento, \
@@ -13,7 +16,7 @@ exports.getSheep = async (req, res, next) => {
         FROM ovino AS ov"
     ];
     const filterProps = req.query;
-    const filters = Object.entries(filterProps);
+    const filters = (Object.entries(filterProps)).filter(param => param[0] !== 'page');
     if (filters.length > 0) {
         let queryValues = [];
         queryArgs[0] += ' WHERE ';
@@ -29,7 +32,13 @@ exports.getSheep = async (req, res, next) => {
 
     try {
         const data = await db.manyOrNone(...queryArgs);
-        res.status(200).json(data);
+        const totalRows = data.length;
+        const startIndex = (page - 1) * MAX_PER_PAGE;
+        const endIndex = startIndex + MAX_PER_PAGE;
+        const paginatedData = data.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
+        res.status(200).json({ sheep: paginatedData, pages: totalPages });
+        // res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -117,7 +126,7 @@ exports.postWeighIn = async (req, res, next) => {
 exports.putSheep = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error(result.array()[0].msg)
+        const error = new Error(errors.array()[0].msg)
         error.statusCode = 422;
         throw error;
     }

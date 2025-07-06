@@ -5,10 +5,10 @@ import FILTER_TYPES from "../../../../util/filterTypes.js";
 import api from '../../../../api/request.js';
 
 
-const FiltroOvinos = ({ updateSheepData }) => {
+const FiltroOvinos = ({ updateSheepData, page, updatePages }) => {
   const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
   const noFilterApplied = (filter.filterProp === 'nenhuma');
-
+  
   const inputFilter = [{
     wrapper: {
       size: 'large-input'
@@ -36,20 +36,21 @@ const FiltroOvinos = ({ updateSheepData }) => {
       const hasFilterSet = (filterProp !== 'nenhuma');
       if (hasFilterSet && !filterValue) return;
       try {
-        let url = '/rebanho';
+        let url = '/rebanho?page=' + page;
         if (hasFilterSet) {
-          const queryParam = `?${filterProp}=${filterValue}`;
+          const queryParam = `&${filterProp}=${filterValue}`;
           url += queryParam;
         }
         const response = await api.get(url);
         const data = response.data;
-        updateSheepData(data);
+        updateSheepData(data.sheep);
+        updatePages(page, data.pages);
       } catch (err) {
         console.log(err);
       }
     }
     fetchData();
-  }, [filter, updateSheepData]);
+  }, [filter, updateSheepData, page, updatePages]);
 
   const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[filter.filterProp]
 

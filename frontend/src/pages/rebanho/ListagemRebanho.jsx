@@ -4,9 +4,8 @@ import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
 import ErrorParagraph from '../../components/UI/ErrorParagraph';
 import FiltroOvinos from '../../components/layout/forms/rebanho/FiltroOvinos';
+import TablePagination from '../../components/layout/table/TablePagination';
 import editIcon from '/edit_icon.svg';
-
-// import api from '../../api/request';
 
 const SCHEMA = [
   ['brinco_num', 'Nº do Brinco'],
@@ -23,6 +22,7 @@ const SCHEMA = [
 
 const ListagemRebanho = () => {
   const [animalData, setAnimalData] = useState([]);
+  const [pages, setPages] = useState({ current: 1, max: null });
 
   const updateData = useCallback(data => {
     const linkedData = data.map(obj => {
@@ -44,15 +44,24 @@ const ListagemRebanho = () => {
     setAnimalData(linkedData);
   }, []);
 
+  const updatePages = useCallback((current, max) => {
+    setPages({ current, max });
+  }, []);
+
   return (
     <>
       <PageTitle title="Listagem Rebanho" />
       <section className="form-cont flex-center">
-        <FiltroOvinos updateSheepData={updateData} />
+        <FiltroOvinos updateSheepData={updateData} page={pages.current} updatePages={updatePages} />
       </section>
       <div className="row py-3">
         {animalData.length > 0
-          ? <CustomTable schema={SCHEMA} data={animalData} uniqueCol="brinco_num" />
+          ? (
+            <>
+              <CustomTable schema={SCHEMA} data={animalData} uniqueCol="brinco_num" />
+              <TablePagination pages={pages} updatePages={updatePages} />
+            </>
+          )
           : <ErrorParagraph error={{ message: "Nenhum ovino cadastrado" }} />
         }
       </div>

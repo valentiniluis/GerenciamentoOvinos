@@ -30,7 +30,7 @@ router.post('/pesagem', [
 
 router.put('/:brinco', [
   dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
-  dataValidation.checkExistingId('brinco_num'),
+  dataValidation.checkExistingId('brinco_num', 'Brinco de Ovino não está cadastrado'),
   dataValidation.validateRace('raca'),
   dataValidation.validateSex('sexo'),
   dataValidation.validateDate('data_nascimento', "Data de nascimento"),
