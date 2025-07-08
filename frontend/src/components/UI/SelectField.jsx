@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 const SelectField = ({ label, options, ...props }) => {
   return (
     <>
-      <Form.Label className='my-label'>{label}</Form.Label>
+      {label ? <Form.Label className='my-label'>{label}</Form.Label> : null}
       <Form.Select {...props}>
         {options.map(option => (
           <option key={option.name} value={option.value} {...option}>{option.name}</option>

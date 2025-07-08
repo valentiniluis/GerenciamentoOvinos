@@ -4,7 +4,7 @@ import Sidebar from '../sidebar/Sidebar';
 const RootLayout = () => {
   return (
     <div className="row m-0">
-      <Sidebar user="Luís" currentPage="Calendário" />
+      <Sidebar user="Luís" />
       <main className="col cont px-5">
         <Outlet />
       </main>

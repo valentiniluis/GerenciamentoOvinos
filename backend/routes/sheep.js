@@ -7,7 +7,7 @@ const dataValidation = require('../middleware/dataValidation');
 router.get('/', sheepControllers.getSheep);
 
 router.post('/', [
-  dataValidation.checkExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
+  dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
   dataValidation.validateId('brinco_num'),
   dataValidation.validateRace('raca'),
   dataValidation.validateSex('sexo'),
@@ -27,6 +27,20 @@ router.post('/pesagem', [
   dataValidation.validateObservation('observacao'),
   dataValidation.validateWeighInConstraint('brinco_num', 'data_pesagem')],
   sheepControllers.postWeighIn);
+
+router.put('/:brinco', [
+  dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
+  dataValidation.checkExistingId('brinco_num', 'Brinco de Ovino não está cadastrado'),
+  dataValidation.validateRace('raca'),
+  dataValidation.validateSex('sexo'),
+  dataValidation.validateDate('data_nascimento', "Data de nascimento"),
+  dataValidation.validateGoal('finalidade'),
+  dataValidation.validateWeight('peso_nascimento')],
+  sheepControllers.putSheep);
+
+router.delete('/:brinco', [
+  dataValidation.validateParamId('brinco', 'Brinco de ovino não está cadastrado')], 
+  sheepControllers.deleteSheep);
 
 
 module.exports = router;

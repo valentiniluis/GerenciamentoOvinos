@@ -25,3 +25,9 @@ export const calculateWeightChange = (weightData) => {
     'GPD': gpd.toFixed(3)
   };
 }
+
+export const dateFromLocaleToISO = (dateString) => {
+  const date = new Date(dateString);
+  const dateISO = date.toISOString().split('T')[0];
+  return dateISO;
+}

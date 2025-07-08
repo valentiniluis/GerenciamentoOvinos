@@ -1,0 +1,13 @@
+
+.ulPages {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pageItems button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}

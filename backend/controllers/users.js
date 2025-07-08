@@ -1,18 +1,27 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const db = require('../model/database');
+require('dotenv').config();
 
-
-const SALT_ROUNDS = 12;
-
+const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 
 exports.getUsers = async (req, res, next) => {
+    // queryArgs[0] corresponde à query
+    // queryArgs[1] são os valores para os filtros que serão aplicados, se houverem
+    const queryArgs = [
+        "SELECT us.nome, us.email, us.grupo_nome, TO_CHAR(us.data_cadastro, 'DD/MM/YYYY') AS data_cadastro \
+        FROM usuario AS us"
+    ];
+    const filterProps = req.query;
+    const filters = Object.entries(filterProps);
+    if (filters.length > 0) {
+        queryArgs[0] += " WHERE $1:name ILIKE '%$2#%';";
+        queryArgs.push(filters[0]);
+    }
+    else queryArgs[0] += ';';
+
     try {
-        const data = await db.manyOrNone(
-            "SELECT \
-                nome, email, grupo_nome, TO_CHAR(data_cadastro, 'DD/MM/YYYY') AS data_cadastro \
-            FROM usuario;"
-        );
+        const data = await db.manyOrNone(...queryArgs);
         res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
