@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
+import TablePagination from '../../components/layout/table/TablePagination';
 import FiltroUsuarios from '../../components/layout/forms/usuarios/FiltroUsuarios';
 import ErrorParagraph from '../../components/UI/ErrorParagraph';
 import editIcon from '/edit_icon.svg';
@@ -9,6 +10,7 @@ import editIcon from '/edit_icon.svg';
 
 const ListagemUsuarios = () => {
   const [usersData, setUsersData] = useState([]);
+  const [pages, setPages] = useState({ current: 1, max: null });
   const [errorMessage, setErrorMessage] = useState();
   const schema = [
     ['nome', 'Nome'],
@@ -18,7 +20,7 @@ const ListagemUsuarios = () => {
     ['editar', 'Editar']
   ];
 
-  const updateUsersData = (data) => {
+  const updateData = useCallback((data) => {
     if (data?.isError) {
       setErrorMessage(data.message);
       return;
@@ -31,7 +33,9 @@ const ListagemUsuarios = () => {
       )
     }));
     setUsersData(updatedUsersData);
-  }
+  }, []);
+
+  const updatePages = useCallback((current, max) => setPages({ current, max }), []);
 
   return (
     <>
@@ -40,17 +44,20 @@ const ListagemUsuarios = () => {
         : (
           <>
             <section className="form-cont flex-center">
-              <FiltroUsuarios updateUsersData={updateUsersData} />
+              <FiltroUsuarios updateData={updateData} page={pages.current} updatePages={updatePages} />
             </section>
             <div className="row py-3">
               {usersData.length > 0 ? (
-                <CustomTable schema={schema} data={usersData} uniqueCol="email" />
-              ) : (
-                <h3 className="text-center">Nenhuma informação cadastrada</h3>
-              )}
+                <>
+                  <CustomTable schema={schema} data={usersData} uniqueCol="email" />
+                  <TablePagination pages={pages} updatePages={updatePages} />
+                </>
+              ) 
+              : <ErrorParagraph error={{ message: 'Nenhum usuário cadastrado' }} /> }
             </div>
           </>
-        )}
+        )
+      }
     </>
   );
 };

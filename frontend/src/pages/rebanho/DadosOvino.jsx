@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useParams, useLoaderData, useFetcher } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
 import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
 import DeleteIcon from '../../components/UI/DeleteIcon.jsx';
+import CustomAlert from '../../components/UI/CustomAlert.jsx';
 
 import api from '../../api/request';
 
@@ -21,10 +23,17 @@ const SCHEMA = [
 const DadosOvino = () => {
   const fetcher = useFetcher();
   const { brinco } = useParams();
+  const [deleteMessage, setDeleteMessage] = useState({ message: null, variant: null });
+
+  useEffect(() => {
+    setDeleteMessage({
+      variant: fetcher.data?.isError ? 'danger' : 'success',
+      message: fetcher.data?.message
+    });
+  }, [fetcher.data]);
 
   const response = useLoaderData();
   if (response.isError) return <ErrorParagraph error={response} />
-
   const data = response.data;
 
   const handleDelete = (dataPesagem) => {
@@ -32,9 +41,11 @@ const DadosOvino = () => {
     fetcher.submit(null, { action: `/rebanho/${brinco}/pesagem/${dataFormatada}`, method: 'DELETE' });
   }
 
+  const handleCloseMessage = () => setDeleteMessage({ variant: null, message: null });
+
   const sheepData = data.map(pesagem => ({
     ...pesagem, excluir: (
-      <DeleteIcon 
+      <DeleteIcon
         confirm={() => handleDelete(pesagem.data_pesagem)}
         disabled={pesagem.etapa_vida === 'Nascimento'}
         modalTitle="Confirmar Exclusão da Pesagem"
@@ -60,6 +71,11 @@ const DadosOvino = () => {
           : <ErrorParagraph error={{ message: 'O ovino não tem o mínimo de 2 pesagens cadastradas para o cálculo do GPD.' }} />
         }
       </section>
+      <CustomAlert
+        variant={deleteMessage.variant}
+        message={deleteMessage.message}
+        onClose={handleCloseMessage}
+      />
     </>
   );
 }

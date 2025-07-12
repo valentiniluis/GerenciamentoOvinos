@@ -179,7 +179,9 @@ exports.validateDeleteWeighIn = (message) => {
   return param('brinco')
     .custom((brinco, { req }) => {
       const { data } = req.params;
-      return db.one('SELECT 1 FROM pesagem AS pe WHERE pe.ovino_brinco = $1 AND pe.data_pesagem = $2;', [brinco, data]);
+      const [dia, mes, ano] = data.split('-');
+      const dataFormatada = [ano, mes, dia].join('-');
+      return db.one('SELECT 1 FROM pesagem AS pe WHERE pe.ovino_brinco = $1 AND pe.data_pesagem = $2;', [brinco, dataFormatada]);
     })
     .withMessage(message);
 }

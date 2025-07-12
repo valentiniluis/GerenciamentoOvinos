@@ -1,9 +1,9 @@
+import { Form } from 'react-router-dom';
 import '../../../../styles/form.css';
 import ApiAlert from '../../../UI/ApiAlert';
 import RenderFields from '../RenderFields';
 import FormBtn from '../../../UI/FormBtn';
 
-import api from '../../../../api/request';
 
 const FormPesagem = () => {
   const rowPadding = 'py-3';
@@ -88,31 +88,15 @@ const FormPesagem = () => {
     },
   ];
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const formData = new FormData(event.target);
-      const jsonData = Object.fromEntries(formData.entries());
-      const postData = { ...jsonData, observacao: jsonData.observacao || null };
-      const result = await api.post('/rebanho/pesagem', postData);
-      console.log(result);
-      event.target.reset();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="large-input">
+    <Form method="POST" className="large-input">
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
         <FormBtn text="Cadastrar" type="submit"/>
       </div>
       <ApiAlert />
-    </form>
+    </Form>
   );
 };
 
 export default FormPesagem;
-
-// action ...

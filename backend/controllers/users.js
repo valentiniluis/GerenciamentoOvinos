@@ -5,15 +5,19 @@ require('dotenv').config();
 
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 
+
+// queryArgs[0] corresponde à query
+// queryArgs[1] são os valores para os filtros que serão aplicados, se houverem
+
 exports.getUsers = async (req, res, next) => {
-    // queryArgs[0] corresponde à query
-    // queryArgs[1] são os valores para os filtros que serão aplicados, se houverem
+    const page = req.query.page || 1;
+    const MAX_PER_PAGE = 10;
     const queryArgs = [
         "SELECT us.nome, us.email, us.grupo_nome, TO_CHAR(us.data_cadastro, 'DD/MM/YYYY') AS data_cadastro \
         FROM usuario AS us"
     ];
     const filterProps = req.query;
-    const filters = Object.entries(filterProps);
+    const filters = Object.entries(filterProps).filter(([key]) => key !== 'page');
     if (filters.length > 0) {
         queryArgs[0] += " WHERE $1:name ILIKE '%$2#%';";
         queryArgs.push(filters[0]);
@@ -22,7 +26,12 @@ exports.getUsers = async (req, res, next) => {
 
     try {
         const data = await db.manyOrNone(...queryArgs);
-        res.status(200).json(data);
+        const totalRows = data.length;
+        const startIndex = (page - 1) * MAX_PER_PAGE;
+        const endIndex = startIndex + MAX_PER_PAGE;
+        const paginatedData = data.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
+        res.status(200).json({ users: paginatedData, pages: totalPages });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

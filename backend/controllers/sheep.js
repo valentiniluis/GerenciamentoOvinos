@@ -4,8 +4,7 @@ const db = require('../model/database');
 
 exports.getSheep = async (req, res, next) => {
     const page = req.query.page || 1;
-    const MAX_PER_PAGE = 15;
-
+    const MAX_PER_PAGE = 12;
     const queryArgs = [
         "SELECT \
             ov.brinco_num, ov.brinco_mae, ov.raca, ov.sexo, ov.finalidade, ov.peso_nascimento, \
@@ -29,7 +28,6 @@ exports.getSheep = async (req, res, next) => {
         queryArgs.push(queryValues);
     }
     queryArgs[0] += ';';
-
     try {
         const data = await db.manyOrNone(...queryArgs);
         const totalRows = data.length;
@@ -38,7 +36,6 @@ exports.getSheep = async (req, res, next) => {
         const paginatedData = data.slice(startIndex, endIndex);
         const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
         res.status(200).json({ sheep: paginatedData, pages: totalPages });
-        // res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

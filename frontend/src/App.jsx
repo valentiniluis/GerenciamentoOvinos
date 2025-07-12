@@ -4,7 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import RootLayout from './components/layout/root/RootLayout.jsx';
 import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
 import ListarRebanho from './pages/rebanho/ListagemRebanho.jsx';
-import CadastroPesagem from './pages/rebanho/CadastroPesagem.jsx';
+import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
 import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
 import CadastroUsuario, { loader as usersLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
 import ListagemUsuarios from './pages/usuarios/ListagemUsuarios.jsx';
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         children: [
           { path: 'cadastrar', element: <CadastroRebanho />, action: submitSheepAction },
           { path: 'listar', element: <ListarRebanho /> },
-          { path: 'pesagem', element: <CadastroPesagem /> },
+          { path: 'pesagem', element: <CadastroPesagem />, action: submitWeighInAction },
           {
             path: ':brinco',
             children: [

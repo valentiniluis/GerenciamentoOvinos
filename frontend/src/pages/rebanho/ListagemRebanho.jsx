@@ -23,8 +23,13 @@ const SCHEMA = [
 const ListagemRebanho = () => {
   const [animalData, setAnimalData] = useState([]);
   const [pages, setPages] = useState({ current: 1, max: null });
+  const [errorMessage, setErrorMessage] = useState();
 
   const updateData = useCallback(data => {
+    if (data?.isError) {
+      setErrorMessage(data.message);
+      return;
+    }
     const linkedData = data.map(obj => {
       const updatedData = { ...obj };
       const brinco = updatedData['brinco_num'];
@@ -44,27 +49,30 @@ const ListagemRebanho = () => {
     setAnimalData(linkedData);
   }, []);
 
-  const updatePages = useCallback((current, max) => {
-    setPages({ current, max });
-  }, []);
+  const updatePages = useCallback((current, max) => setPages({ current, max }), []);
 
   return (
     <>
       <PageTitle title="Listagem Rebanho" />
-      <section className="form-cont flex-center">
-        <FiltroOvinos updateSheepData={updateData} page={pages.current} updatePages={updatePages} />
-      </section>
-      <div className="row py-3">
-        {animalData.length > 0
-          ? (
-            <>
-              <CustomTable schema={SCHEMA} data={animalData} uniqueCol="brinco_num" />
-              <TablePagination pages={pages} updatePages={updatePages} />
-            </>
-          )
-          : <ErrorParagraph error={{ message: "Nenhum ovino cadastrado" }} />
-        }
-      </div>
+      {errorMessage ? <ErrorParagraph error={{ message: errorMessage }} />
+        : (
+          <>
+            <section className="form-cont flex-center">
+              <FiltroOvinos updateData={updateData} page={pages.current} updatePages={updatePages} />
+            </section>
+            <div className="row py-3">
+              {animalData.length > 0
+                ? (
+                  <>
+                    <CustomTable schema={SCHEMA} data={animalData} uniqueCol="brinco_num" />
+                    <TablePagination pages={pages} updatePages={updatePages} />
+                  </>
+                )
+                : <ErrorParagraph error={{ message: "Nenhum ovino cadastrado" }} />}
+            </div>
+          </>
+        )
+      }
     </>
   );
 };
