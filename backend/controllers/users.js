@@ -39,7 +39,8 @@ exports.createUser = async (req, res, next) => {
     }
 
     try {
-        const { nome, email, grupo_nome, senha, data_cadastro } = req.body;
+        const data_cadastro = new Date().toISOString().split('T')[0];
+        const { nome, email, grupo_nome, senha } = req.body;
         const salt = await bcrypt.genSalt(SALT_ROUNDS);
         const hashedPassword = await bcrypt.hash(senha, salt);
         await db.none(
@@ -48,6 +49,53 @@ exports.createUser = async (req, res, next) => {
             [email, nome, hashedPassword, grupo_nome, data_cadastro]
         );
         res.status(201).json({ success: true, message: "Usuário criado com sucesso" });
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
+exports.putUser = async (req, res, next) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const error = new Error(result.array()[0].msg)
+        error.statusCode = 422;
+        throw error;
+    }
+
+    try {
+        const { email: antigo_email } = req.params;
+        const { nome, email: novo_email, grupo_nome } = req.body;
+        await db.none(
+            "UPDATE usuario \
+            SET \
+            email = $1, \
+            nome = $2, \
+            grupo_nome = $3 \
+            WHERE email = $4;",
+            [novo_email, nome, grupo_nome, antigo_email]
+        );
+        res.status(201).json({ success: true, message: "Usuário atualizado com sucesso" });
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
+exports.deleteUser = async (req, res, next) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const error = new Error(result.array()[0].msg)
+        error.statusCode = 422;
+        throw error;
+    }
+
+    try {
+        const { email } = req.params;
+        await db.none("DELETE FROM usuario WHERE usuario.email = $1;", email);
+        res.status(200).json({ success: true, message: "Usuário excluído com sucesso" });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

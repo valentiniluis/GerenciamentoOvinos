@@ -15,9 +15,11 @@ const TablePagination = ({ pages, updatePages }) => {
           <li className={classes.pageItems}>
             <button onClick={() => updatePages(FIRST, max)}>{FIRST}</button>
           </li>
-          <li>
-            <span>. . .</span>
-          </li>
+          { previousPage - 1 > FIRST ? (
+            <li>
+              <span>. . .</span>
+            </li>
+            ) : null }
         </>
       ) : null}
       {previousPage >= 1 ? (
@@ -41,9 +43,11 @@ const TablePagination = ({ pages, updatePages }) => {
       ) : null}
       {nextPage < max ? (
         <>
-          <li>
-            <span>. . .</span>
-          </li>
+          { nextPage + 1 < max ? (
+            <li>
+              <span>. . .</span>
+            </li>
+            ) : null }
           <li className={classes.pageItems}>
             <button onClick={() => updatePages(max, max)}>{max}</button>
           </li>

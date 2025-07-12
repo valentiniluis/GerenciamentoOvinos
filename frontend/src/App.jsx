@@ -6,18 +6,23 @@ import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/Ca
 import ListarRebanho from './pages/rebanho/ListagemRebanho.jsx';
 import CadastroPesagem from './pages/rebanho/CadastroPesagem.jsx';
 import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
-import CadastroUsuario, { loader as usersLoader } from './pages/usuarios/CadastroUsuario.jsx';
+import CadastroUsuario, { loader as usersLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
 import ListagemUsuarios from './pages/usuarios/ListagemUsuarios.jsx';
 import PerfilUsuario from './pages/usuarios/PerfilUsuario.jsx';
 import ListagemGrupos from './pages/grupos/ListagemGrupos.jsx';
-import CadastroGrupo from './pages/grupos/CadastroGrupo.jsx';
+import CadastroGrupo, { action as submitGroupAction } from './pages/grupos/CadastroGrupo.jsx';
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import Autenticacao from './pages/autenticacao/Autenticacao.jsx';
 import PaginaNaoEncontrada from './pages/PaginaNaoEncontrada.jsx';
 import EditarOvino, { loader as loadSheep } from './pages/rebanho/EditarOvino.jsx';
+import EditarUsuario, { loader as singleUserLoader } from './pages/usuarios/EditarUsuario.jsx';
+import EditarGrupo, { loader as singleGroupLoader } from './pages/grupos/EditarGrupo.jsx';
 import { action as deleteSheepAction } from './pages/rebanho/ExcluirOvino.jsx';
+import { action as deleteUserAction } from './pages/usuarios/ExcluirUsuario.jsx';
+import { action as deleteGroupAction } from './pages/grupos/ExcluirGrupo.jsx';
+import { action as deleteWeighInAction } from './pages/rebanho/ExcluirPesagem.jsx';
 
 
 const router = createBrowserRouter([
@@ -39,24 +44,41 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <DadosOvino />, loader: sheepDataLoader },
               { path: 'editar', element: <EditarOvino />, loader: loadSheep, action: submitSheepAction },
-              { path: 'excluir', action: deleteSheepAction }
+              { path: 'excluir', action: deleteSheepAction },
+              { path: 'pesagem/:data', action: deleteWeighInAction }
             ]
           }
         ]
       },
       {
         path: 'usuario',
+        id: 'user',
+        loader: usersLoader,
         children: [
-          { path: 'cadastrar', element: <CadastroUsuario />, loader: usersLoader },
+          { path: 'cadastrar', element: <CadastroUsuario />, action: submitUserAction },
           { path: 'listar', element: <ListagemUsuarios /> },
-          { path: ':email', element: <PerfilUsuario /> },
+          {
+            path: ':email',
+            children: [
+              { index: true, element: <PerfilUsuario /> },
+              { path: 'editar', element: <EditarUsuario />, action: submitUserAction, loader: singleUserLoader },
+              { path: 'excluir', action: deleteUserAction }
+            ]
+          },
         ]
       },
       {
         path: 'grupo',
         children: [
           { path: 'listar', element: <ListagemGrupos /> },
-          { path: 'cadastrar', element: <CadastroGrupo /> },
+          { path: 'cadastrar', element: <CadastroGrupo />, action: submitGroupAction },
+          {
+            path: ':nome',
+            children: [
+              { path: 'editar', element: <EditarGrupo />, action: submitGroupAction, loader: singleGroupLoader },
+              { path: 'excluir', action: deleteGroupAction }
+            ]
+          }
         ]
       },
       { path: '/relatorio', element: <Relatorio /> },

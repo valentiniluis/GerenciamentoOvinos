@@ -1,5 +1,5 @@
 import '../../../../styles/form.css';
-import { useNavigate, Form, useSubmit } from 'react-router-dom';
+import { Form, useSubmit } from 'react-router-dom';
 import FormRow from '../../../UI/FormRow.jsx';
 import InputField from '../../../UI/InputField.jsx';
 import FieldWrapper from '../../../UI/FieldWrapper.jsx';
@@ -12,7 +12,6 @@ import { dateFromLocaleToISO } from '../../../../util/utilFunctions.js';
 
 
 const FormOvino = ({ dados, metodo }) => {
-  const navigate = useNavigate();
   const submit = useSubmit();
 
   const rowPadding = 'py-3';
@@ -157,18 +156,12 @@ const FormOvino = ({ dados, metodo }) => {
     rows.push([abatidoProps]);
   }
 
-  let formButtons = (
-    <div className="row py-5 justify-content-center">
-      <FormBtn text="Cadastrar" type="submit" />
-    </div>
-  );
+  let formButtons = <FormBtn text="Cadastrar" type="submit" />;
 
   if (metodo === 'PUT') {
-    const handleCancel = () => navigate('/rebanho/listar');
     const handleDelete = () => submit(null, { action: `/rebanho/${dados.brinco_num}/excluir`, method: 'DELETE' });
     formButtons = (
-      <div className="row py-5 gap-5 justify-content-center">
-        <FormBtn text="Cancelar" type="button" className="cancel-btn" onClick={handleCancel} />
+      <>
         <FormBtn text="Salvar" type="submit" />
         <DeleteConfirmation
           buttonText="Excluir Ovino"
@@ -176,7 +169,7 @@ const FormOvino = ({ dados, metodo }) => {
           text="Excluir um ovino irá também deletar suas pesagens e registros médicos"
           confirm={handleDelete}
         />
-      </div>
+      </>
     )
   };
 
@@ -201,7 +194,9 @@ const FormOvino = ({ dados, metodo }) => {
           ))}
         </FormRow>
       ))}
-      {formButtons}
+      <div className="row py-5 gap-5 justify-content-center">
+        {formButtons}
+      </div>
       <ApiAlert />
     </Form>
   );

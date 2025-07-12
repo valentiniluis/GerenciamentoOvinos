@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import FormBtn from '../../UI/FormBtn';
 
 
-const DeleteConfirmation = ({ title, text, confirm, buttonText }) => {
+const DeleteConfirmation = ({ title, text, confirm, buttonText, className='delete-btn' }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClose = () => setIsModalOpen(false);
@@ -11,7 +11,7 @@ const DeleteConfirmation = ({ title, text, confirm, buttonText }) => {
 
   return (
     <>
-      <FormBtn text={buttonText} type="button" className="delete-btn" onClick={handleOpen} />
+      <FormBtn text={buttonText} type="button" className={className} onClick={handleOpen} />
 
       <Modal show={isModalOpen}>
         <Modal.Header>

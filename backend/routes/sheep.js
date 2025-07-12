@@ -14,10 +14,31 @@ router.post('/', [
   dataValidation.validateDate('data_nascimento', "Data de nascimento"),
   dataValidation.validateGoal('finalidade'),
   dataValidation.validateWeight('peso_nascimento'),
-  dataValidation.checkIdNotExists('brinco_num')],
-  sheepControllers.postSheep);
+  dataValidation.checkIdNotExists('brinco_num')
+], sheepControllers.postSheep);
+
+
+router.put('/:brinco', [
+  dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
+  dataValidation.validateIdUpdate('brinco_num'),
+  dataValidation.validateId('brinco_num'),
+  dataValidation.checkNotEqual('brinco_num', 'brinco_mae', 'Brinco do ovino e brinco da mãe do ovino não podem ser iguais'),
+  dataValidation.validateRace('raca'),
+  dataValidation.validateSex('sexo'),
+  dataValidation.validateDate('data_nascimento', "Data de nascimento"),
+  dataValidation.validateGoal('finalidade'),
+  dataValidation.validateWeight('peso_nascimento'),
+  dataValidation.validateBoolean('abatido', "'Abatido' deve ter valor verdadeiro ou falso")
+], sheepControllers.putSheep);
+
+
+router.delete('/:brinco', [
+  dataValidation.validateParamId('brinco', 'Brinco de ovino não está cadastrado')
+], sheepControllers.deleteSheep);
+
 
 router.get('/:brinco', sheepControllers.getOneSheep);
+
 
 router.post('/pesagem', [
   dataValidation.checkExistingId('brinco_num', "Brinco de ovino não está cadastrado"),
@@ -25,22 +46,13 @@ router.post('/pesagem', [
   dataValidation.validateWeight('peso'),
   dataValidation.validateDate('data_pesagem', 'Data de pesagem'),
   dataValidation.validateObservation('observacao'),
-  dataValidation.validateWeighInConstraint('brinco_num', 'data_pesagem')],
-  sheepControllers.postWeighIn);
+  dataValidation.validateWeighInConstraint('brinco_num', 'data_pesagem')
+], sheepControllers.postWeighIn);
 
-router.put('/:brinco', [
-  dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
-  dataValidation.checkExistingId('brinco_num', 'Brinco de Ovino não está cadastrado'),
-  dataValidation.validateRace('raca'),
-  dataValidation.validateSex('sexo'),
-  dataValidation.validateDate('data_nascimento', "Data de nascimento"),
-  dataValidation.validateGoal('finalidade'),
-  dataValidation.validateWeight('peso_nascimento')],
-  sheepControllers.putSheep);
 
-router.delete('/:brinco', [
-  dataValidation.validateParamId('brinco', 'Brinco de ovino não está cadastrado')], 
-  sheepControllers.deleteSheep);
+router.delete('/:brinco/pesagem/:data', [
+  dataValidation.validateDeleteWeighIn('Não há pesagem do ovino no dia especificado')
+], sheepControllers.deleteWeighIn);
 
 
 module.exports = router;

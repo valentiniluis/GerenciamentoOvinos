@@ -1,5 +1,6 @@
 import { useLoaderData } from 'react-router-dom';
 import '../../styles/form.css';
+import ReturnLink from '../../components/UI/ReturnLink.jsx';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import FormOvino from '../../components/layout/forms/rebanho/FormOvino.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
@@ -14,9 +15,17 @@ const EditarOvino = () => {
     return <ErrorParagraph error={data} />
   }
 
+  const title = (
+    <>
+      <ReturnLink path="/rebanho/listar" />
+      <span className='title-span'>{`Editar Ovino N° ${data.brinco_num}`}</span>
+    </>
+  );
+
+
   return (
     <>
-      <PageTitle title={`Editar Ovino N° ${data.brinco_num}`} />
+      <PageTitle title={title} />
       <div className="form-cont flex-center">
         <FormOvino dados={data} metodo="PUT" />
       </div>

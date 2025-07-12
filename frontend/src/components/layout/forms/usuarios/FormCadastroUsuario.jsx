@@ -1,28 +1,25 @@
 import '../../../../styles/form.css';
-import { useLoaderData } from 'react-router-dom';
-import { useState } from 'react';
+import { useRouteLoaderData, Form, useSubmit } from 'react-router-dom';
 import RenderFields from '../RenderFields.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
 import ErrorParagraph from '../../../UI/ErrorParagraph.jsx';
+import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx';
 
-import api from '../../../../api/request';
 
-const FormCadastroUsuario = () => {
-  const rowPadding = 'py-3';
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
-
-  const response = useLoaderData();
+const FormCadastroUsuario = ({ dados, metodo }) => {
+  const submit = useSubmit();
+  const response = useRouteLoaderData('user');
   if (response.isError) return <ErrorParagraph error={response} />
-  
+
   const groups = response.data;
   const grupos = groups.map((group) => ({
     name: group.nome,
     value: group.nome,
   }));
 
-  const fields = [
+  const rowPadding = 'py-3';
+  let fields = [
     {
       wrapper: {
         class: rowPadding,
@@ -35,6 +32,7 @@ const FormCadastroUsuario = () => {
         name: 'nome',
         placeholder: 'Ex. João da Silva',
         required: true,
+        defaultValue: dados?.nome
       },
     },
     {
@@ -49,6 +47,7 @@ const FormCadastroUsuario = () => {
         name: 'email',
         placeholder: 'email@exemplo.com',
         required: true,
+        defaultValue: dados?.email
       },
     },
     {
@@ -61,12 +60,16 @@ const FormCadastroUsuario = () => {
         id: 'grupo_nome',
         name: 'grupo_nome',
         required: true,
+        defaultValue: dados?.grupo_nome,
         options: [
           { name: 'Selecione um grupo', value: '', hidden: true },
         ].concat(grupos),
       },
-    },
-    {
+    }
+  ];
+
+  if (metodo === 'POST') {
+    const senha = [{
       wrapper: {
         class: rowPadding,
         size: 'medium-input',
@@ -89,46 +92,38 @@ const FormCadastroUsuario = () => {
         type: 'password',
         name: 'confirmacao_senha',
       },
-    },
-  ];
+    }];
+    fields = fields.concat(senha);
+  }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const formData = new FormData(event.target);
-      const jsonData = Object.fromEntries(formData.entries());
-      const now = new Date().toISOString().split('T')[0];
-      const postData = { ...jsonData, data_cadastro: now };
-      const result = await api.post('/usuarios', postData);
-      console.log(result);
-      setSuccessMsg(result.data.message);
-      event.target.reset();
-    } catch (err) {
-      console.log(err);
-      setErrorMsg(
-        err.response.data.message ||
-          'Erro inesperado. Tente novamente mais tarde',
-      );
-    }
+  let formButtons = (
+    <FormBtn text="Cadastrar" type="submit" />
+  );
+
+  if (metodo === 'PUT') {
+    const handleDelete = () => submit(null, { action: `/usuario/${dados.email}/excluir`, method: 'DELETE' });
+    formButtons = (
+      <>
+        <FormBtn text="Salvar" type="submit" />
+        <DeleteConfirmation
+          buttonText="Excluir Usuário"
+          title="Confirmar Exclusão"
+          text="Deletar um usuário é uma ação permanente. Você tem certeza?"
+          confirm={handleDelete}
+        />
+      </>
+    )
   };
 
+
   return (
-    <form onSubmit={handleSubmit} className="medium-input">
+    <Form method={metodo} className="medium-input">
       <RenderFields fields={fields} />
-      <div className="row py-5 justify-content-center">
-        <FormBtn text="Cadastrar" type="submit"/>
+      <div className="row py-5 justify-content-center gap-5">
+        {formButtons}
       </div>
-      <ApiAlert
-        variant="danger"
-        message={errorMsg}
-        onClose={() => setErrorMsg(null)}
-      />
-      <ApiAlert
-        variant="success"
-        message={successMsg}
-        onClose={() => setSuccessMsg(null)}
-      />
-    </form>
+      <ApiAlert />
+    </Form>
   );
 };
 

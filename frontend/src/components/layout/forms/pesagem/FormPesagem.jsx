@@ -1,5 +1,4 @@
 import '../../../../styles/form.css';
-import { useState } from 'react';
 import ApiAlert from '../../../UI/ApiAlert';
 import RenderFields from '../RenderFields';
 import FormBtn from '../../../UI/FormBtn';
@@ -7,8 +6,6 @@ import FormBtn from '../../../UI/FormBtn';
 import api from '../../../../api/request';
 
 const FormPesagem = () => {
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
   const rowPadding = 'py-3';
   const fields = [
     {
@@ -98,13 +95,10 @@ const FormPesagem = () => {
       const jsonData = Object.fromEntries(formData.entries());
       const postData = { ...jsonData, observacao: jsonData.observacao || null };
       const result = await api.post('/rebanho/pesagem', postData);
-      setSuccessMsg(result.data.message);
+      console.log(result);
       event.target.reset();
     } catch (err) {
-      setErrorMsg(
-        err.response?.data?.message ||
-          'Erro inesperado. Tente novamente mais tarde',
-      );
+      console.log(err);
     }
   };
 
@@ -114,18 +108,11 @@ const FormPesagem = () => {
       <div className="row py-5 justify-content-center">
         <FormBtn text="Cadastrar" type="submit"/>
       </div>
-      <ApiAlert
-        variant="danger"
-        message={errorMsg}
-        onClose={() => setErrorMsg(null)}
-      />
-      <ApiAlert
-        variant="success"
-        message={successMsg}
-        onClose={() => setSuccessMsg(null)}
-      />
+      <ApiAlert />
     </form>
   );
 };
 
 export default FormPesagem;
+
+// action ...

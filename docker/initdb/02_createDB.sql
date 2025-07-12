@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS tarefa (
   descricao VARCHAR(255) NULL,
   usuario_email VARCHAR(255) NOT NULL,
   CONSTRAINT pk_tarefa PRIMARY KEY (data_criacao, tarefa_nome),
-  CONSTRAINT fk_tarefa_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email) ON DELETE CASCADE
+  CONSTRAINT fk_tarefa_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ovino (
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS ovino (
   abatido BOOLEAN NOT NULL,
   CONSTRAINT pk_ovino PRIMARY KEY (brinco_num),
   CONSTRAINT fk_ovino_mae FOREIGN KEY (brinco_mae) REFERENCES ovino(brinco_num) ON DELETE SET NULL,
-  CONSTRAINT fk_ovino_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email) ON DELETE CASCADE
+  CONSTRAINT fk_ovino_usuario FOREIGN KEY (usuario_email) REFERENCES usuario(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS pesagem (
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS pesagem (
   data_pesagem DATE NOT NULL,
   observacao VARCHAR(255),
   CONSTRAINT pk_pesagem PRIMARY KEY (ovino_brinco, data_pesagem),
-  CONSTRAINT fk_pesagem_ovino FOREIGN KEY (ovino_brinco) REFERENCES ovino(brinco_num) ON DELETE CASCADE
+  CONSTRAINT fk_pesagem_ovino FOREIGN KEY (ovino_brinco) REFERENCES ovino(brinco_num) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS historico_medico (
@@ -69,6 +69,6 @@ CREATE TABLE IF NOT EXISTS historico_animal (
   dose NUMERIC(7,3) NOT NULL,
   medicamento_nome VARCHAR(255) NOT NULL,
   CONSTRAINT pk_historico_animal PRIMARY KEY (data_registro, ovino_brinco, doenca_nome),
-  CONSTRAINT fk_historico_animal_medico FOREIGN KEY (doenca_nome) REFERENCES historico_medico(doenca_nome) ON DELETE CASCADE,
-  CONSTRAINT fk_historico_animal_ovino FOREIGN KEY (ovino_brinco) REFERENCES ovino(brinco_num) ON DELETE CASCADE
+  CONSTRAINT fk_historico_animal_medico FOREIGN KEY (doenca_nome) REFERENCES historico_medico(doenca_nome) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_historico_animal_ovino FOREIGN KEY (ovino_brinco) REFERENCES ovino(brinco_num) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -1,8 +1,9 @@
-import { useParams, useLoaderData } from 'react-router-dom';
+import { useParams, useLoaderData, useFetcher } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
 import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
+import DeleteIcon from '../../components/UI/DeleteIcon.jsx';
 
 import api from '../../api/request';
 
@@ -12,17 +13,35 @@ const SCHEMA = [
   ['etapa_vida', 'Etapa da Vida'],
   ['peso', 'Peso (kg)'],
   ['data_pesagem', 'Data da Pesagem'],
-  ['observacao', 'Observação']
+  ['observacao', 'Observação'],
+  ['excluir', 'Excluir']
 ];
 
 
 const DadosOvino = () => {
+  const fetcher = useFetcher();
   const { brinco } = useParams();
 
   const response = useLoaderData();
   if (response.isError) return <ErrorParagraph error={response} />
 
-  const sheepData = response.data;
+  const data = response.data;
+
+  const handleDelete = (dataPesagem) => {
+    const dataFormatada = dataPesagem.split('/').join('-');
+    fetcher.submit(null, { action: `/rebanho/${brinco}/pesagem/${dataFormatada}`, method: 'DELETE' });
+  }
+
+  const sheepData = data.map(pesagem => ({
+    ...pesagem, excluir: (
+      <DeleteIcon 
+        confirm={() => handleDelete(pesagem.data_pesagem)}
+        disabled={pesagem.etapa_vida === 'Nascimento'}
+        modalTitle="Confirmar Exclusão da Pesagem"
+        modalText="Os dados da pesagem serão excluídos permanentemente. Você tem certeza?"
+      />
+    )
+  }));
 
   return (
     <>
@@ -36,7 +55,7 @@ const DadosOvino = () => {
       </section>
       <section className="limit-600">
         <h2>Ganho de Peso Diário</h2>
-        {sheepData.length > 2
+        {sheepData.length >= 2
           ? <GanhoPesoDiario data={sheepData} />
           : <ErrorParagraph error={{ message: 'O ovino não tem o mínimo de 2 pesagens cadastradas para o cálculo do GPD.' }} />
         }

@@ -41,6 +41,7 @@ const FiltroUsuarios = ({ updateUsersData }) => {
         const data = response.data;
         updateUsersData(data);
       } catch (err) {
+        updateUsersData({ isError: true, message: 'Não foi possível extrair usuários'})
         console.log(err);
       }
     }

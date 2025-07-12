@@ -33,19 +33,6 @@
   background-color: rgb(209, 209, 209);
 }
 
-.cancel-btn {
-  background-color: rgb(172, 165, 165);
-  transition: all ease-in-out .2s;
-}
-
-.cancel-btn:hover {
-  background-color: rgb(150, 146, 146);
-}
-
-.cancel-btn:active {
-  background-color: gray !important;
-}
-
 .delete-btn {
   background-color: rgb(211, 99, 99);
   transition: all ease-in-out .2s;
@@ -96,4 +83,30 @@
   color: #00087d;
   font-weight: bold;
   font-size: 1rem;
+}
+
+.return-icon {
+  width: 2rem;
+}
+
+.title-span {
+  padding: 0 2rem;
+}
+
+
+.delete-btn-icon {
+  background-color: transparent;
+  padding: 0;
+}
+
+.delete-btn-icon:hover {
+  background-color: transparent;
+}
+
+.delete-btn-icon img {
+  width: 1.5rem;
+}
+
+.delete-btn-icon:active {
+  background-color: transparent !important;
 }

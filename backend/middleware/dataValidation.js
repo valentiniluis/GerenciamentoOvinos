@@ -3,8 +3,8 @@ const config = require('./config/validation-config');
 const db = require('../model/database');
 
 
-exports.validateId = (fieldName) => {
-  return body(fieldName)
+exports.validateId = (fieldname) => {
+  return body(fieldname)
     .isAscii()
     .withMessage('Número do Brinco contém símbolo inválido')
     .isLength({
@@ -15,31 +15,32 @@ exports.validateId = (fieldName) => {
 }
 
 
-exports.checkOptionalExistingId = (fieldName) => {
-  return body(fieldName, 'Brinco de ovino mãe não está cadastrado')
+exports.checkOptionalExistingId = (fieldname, message) => {
+  return body(fieldname)
     .optional()
     .custom(async value => {
       return await db.one('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value)
-    });
+    })
+    .withMessage(message);
 }
 
 
-exports.checkExistingId = (fieldName, message) => {
-  return body(fieldName)
+exports.checkExistingId = (fieldname, message) => {
+  return body(fieldname)
     .custom(async value => await db.one('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value))
     .withMessage(message);
 }
 
 
-exports.checkIdNotExists = (fieldName) => {
-  return body(fieldName)
+exports.checkIdNotExists = (fieldname) => {
+  return body(fieldname)
     .custom(async value => await db.none('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value))
     .withMessage('Ovino com esse brinco já foi cadastrado')
 }
 
 
-exports.validateRace = (fieldName) => {
-  return body(fieldName)
+exports.validateRace = (fieldname) => {
+  return body(fieldname)
     .isString()
     .withMessage('Raça deve ser uma sequência de caracteres')
     .isLength({
@@ -50,33 +51,33 @@ exports.validateRace = (fieldName) => {
 }
 
 
-exports.validateSex = (fieldName) => {
-  return body(fieldName, "Sexo deve ser 'M' para masculino ou 'F' para feminino")
+exports.validateSex = (fieldname) => {
+  return body(fieldname, "Sexo deve ser 'M' para masculino ou 'F' para feminino")
     .isIn(['M', 'F']);
 }
 
 
-exports.validateDate = (fieldName, label) => {
-  return body(fieldName, `${label} deve ser uma data válida`)
+exports.validateDate = (fieldname, label) => {
+  return body(fieldname, `${label} deve ser uma data válida`)
     .isDate();
 }
 
 
-exports.validateGoal = (fieldName) => {
-  return body(fieldName, 'Opção inválida para finalidade')
+exports.validateGoal = (fieldname) => {
+  return body(fieldname, 'Opção inválida para finalidade')
     .isIn(['Reprodução', 'Venda', 'Abate', 'Leite', 'Outra']);
 }
 
 
-exports.validateWeight = (fieldName) => {
-  return body(fieldName, 'Peso deve ser um número positivo')
+exports.validateWeight = (fieldname) => {
+  return body(fieldname, 'Peso deve ser um número positivo')
     .isNumeric()
     .custom(value => value > 0);
 }
 
 
-exports.validateObservation = (fieldName) => {
-  return body(fieldName, `Observação deve ser sequência de ${config.MIN_OBSERVATION_LENGTH} até ${config.MAX_OBSERVATION_LENGTH} caracteres`)
+exports.validateObservation = (fieldname) => {
+  return body(fieldname, `Observação deve ser sequência de ${config.MIN_OBSERVATION_LENGTH} até ${config.MAX_OBSERVATION_LENGTH} caracteres`)
     .optional()
     .trim()
     .isString()
@@ -87,16 +88,16 @@ exports.validateObservation = (fieldName) => {
 }
 
 
-exports.validateLifeStage = (fieldName) => {
-  return body(fieldName, 'Etapa de vida inválida')
+exports.validateLifeStage = (fieldname) => {
+  return body(fieldname, 'Etapa de vida inválida')
     .isIn(['Desmame', 'Engorda', 'Abate', 'Reprodução']);
 }
 
 
-exports.validatePermissions = (fieldName) => {
+exports.validatePermissions = (fieldname) => {
   return [
-    body(fieldName, 'Nenhuma permissão foi inserida').isObject(),
-    body(`${fieldName}.*`, 'Permissões inseridas são inválidas').optional().isBoolean()
+    body(fieldname, 'Nenhuma permissão foi inserida').isObject(),
+    body(`${fieldname}.*`, 'Permissões inseridas são inválidas').optional().isBoolean()
   ];
 }
 
@@ -113,8 +114,8 @@ exports.validateWeighInConstraint = (sheepNumber, dateField) => {
 }
 
 
-exports.validateDescriptionTask = (fieldName) => {
-  return body(fieldName, 'Descrição da tarefa deve ser uma sequência de caracteres')
+exports.validateDescriptionTask = (fieldname) => {
+  return body(fieldname, 'Descrição da tarefa deve ser uma sequência de caracteres')
     .optional()
     .trim()
     .isString()
@@ -125,8 +126,8 @@ exports.validateDescriptionTask = (fieldName) => {
 }
 
 
-exports.validateTaskName = (fieldName) => {
-  return body(fieldName, 'Nome da tarefa deve ser uma sequência de caracteres')
+exports.validateTaskName = (fieldname) => {
+  return body(fieldname, 'Nome da tarefa deve ser uma sequência de caracteres')
     .trim()
     .isString()
     .isLength({
@@ -137,8 +138,48 @@ exports.validateTaskName = (fieldName) => {
 }
 
 
-exports.validateParamId = (fieldName, message) => {
-  return param(fieldName)
+exports.validateParamId = (fieldname, message) => {
+  return param(fieldname)
     .custom(async value => await db.one('SELECT brinco_num FROM ovino WHERE brinco_num = $1;', value))
+    .withMessage(message);
+}
+
+
+exports.validateIdUpdate = (fieldname) => {
+  return body(fieldname)
+    .custom(async (value, { req }) => {
+      const { brinco } = req.params;
+      // se o número do brinco é o mesmo dos params, então não houve alteração
+      if (value === brinco) return true;
+      // se o brinco é diferente, então não deve existir um ovino com esse brinco no banco de dados
+      return await db.none('SELECT 1 FROM ovino AS ov WHERE ov.brinco_num = $1;', value);
+    })
+    .withMessage('Novo brinco inserido já está sendo usado por outro ovino');
+}
+
+
+exports.validateBoolean = (fieldname, message) => {
+  return body(fieldname)
+    .isBoolean()
+    .withMessage(message);
+}
+
+
+exports.checkNotEqual = (fieldname1, fieldname2, message) => {
+  return body(fieldname1)
+    .custom((value1, { req }) => {
+      const value2 = req.body[fieldname2];
+      return value1 !== value2;
+    })
+    .withMessage(message);
+}
+
+
+exports.validateDeleteWeighIn = (message) => {
+  return param('brinco')
+    .custom((brinco, { req }) => {
+      const { data } = req.params;
+      return db.one('SELECT 1 FROM pesagem AS pe WHERE pe.ovino_brinco = $1 AND pe.data_pesagem = $2;', [brinco, data]);
+    })
     .withMessage(message);
 }
