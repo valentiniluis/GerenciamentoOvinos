@@ -18,7 +18,8 @@ exports.postStartAccount = async (req, res, next) => {
   }
 
   try {
-    const { nome, email, senha, data_cadastro } = req.body;
+    const data_cadastro = new Date().toISOString().split('T')[0];
+    const { nome, email, senha } = req.body;
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(senha, salt);
     await db.none(
@@ -26,7 +27,7 @@ exports.postStartAccount = async (req, res, next) => {
             VALUES ($1, $2, $3, $4, $5);",
       [email, nome, hashedPassword, "Administrador", data_cadastro]
     );
-    res.status(201).json({ success: true });
+    res.status(201).json({ success: true, message: 'Conta criada com sucesso' });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     throw err;
@@ -42,9 +43,13 @@ exports.postLogin = async (req, res, next) => {
     throw error;
   }
 
+  console.log(req);
+
   try {
     const { email, senha } = req.body;
     const userData = await db.oneOrNone('SELECT email, senha FROM usuario WHERE email = $1;', email);
+
+    console.log(userData);
 
     let match = false;
     if (userData) {

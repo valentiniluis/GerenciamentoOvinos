@@ -2,20 +2,20 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 
 import RootLayout from './components/layout/root/RootLayout.jsx';
-import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
 import ListarRebanho from './pages/rebanho/ListagemRebanho.jsx';
-import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
-import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
-import CadastroUsuario, { loader as usersLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
 import ListagemUsuarios from './pages/usuarios/ListagemUsuarios.jsx';
 import PerfilUsuario from './pages/usuarios/PerfilUsuario.jsx';
 import ListagemGrupos from './pages/grupos/ListagemGrupos.jsx';
-import CadastroGrupo, { action as submitGroupAction } from './pages/grupos/CadastroGrupo.jsx';
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
-import Autenticacao from './pages/autenticacao/Autenticacao.jsx';
 import PaginaNaoEncontrada from './pages/PaginaNaoEncontrada.jsx';
+import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
+import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
+import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
+import CadastroUsuario, { loader as usersLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
+import CadastroGrupo, { action as submitGroupAction } from './pages/grupos/CadastroGrupo.jsx';
+import Autenticacao, { action as authenticateAction } from './pages/autenticacao/Autenticacao.jsx';
 import EditarOvino, { loader as loadSheep } from './pages/rebanho/EditarOvino.jsx';
 import EditarUsuario, { loader as singleUserLoader } from './pages/usuarios/EditarUsuario.jsx';
 import EditarGrupo, { loader as singleGroupLoader } from './pages/grupos/EditarGrupo.jsx';
@@ -23,10 +23,11 @@ import { action as deleteSheepAction } from './pages/rebanho/ExcluirOvino.jsx';
 import { action as deleteUserAction } from './pages/usuarios/ExcluirUsuario.jsx';
 import { action as deleteGroupAction } from './pages/grupos/ExcluirGrupo.jsx';
 import { action as deleteWeighInAction } from './pages/rebanho/ExcluirPesagem.jsx';
+import { action as logoutAction, loader as logoutLoader } from './pages/autenticacao/Logout.jsx';
 
 
 const router = createBrowserRouter([
-  { path: '/login', element: <Autenticacao /> },
+  { path: '/entrar', element: <Autenticacao />, action: authenticateAction },
   {
     path: '/',
     element: <RootLayout />,
@@ -82,9 +83,10 @@ const router = createBrowserRouter([
         ]
       },
       { path: '/relatorio', element: <Relatorio /> },
+      { path: '/logout', action: logoutAction, loader: logoutLoader },
       { path: '*', element: <PaginaNaoEncontrada /> }
     ]
-  }
+  },
 ]);
 
 const App = () => {

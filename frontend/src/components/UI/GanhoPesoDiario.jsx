@@ -1,3 +1,4 @@
+import { Card } from 'react-bootstrap';
 import { useState } from 'react';
 import { calculateWeightChange } from '../../util/utilFunctions.js';
 import RenderFields from '../../components/layout/forms/RenderFields.jsx';
@@ -61,14 +62,37 @@ const GanhoPesoDiario = ({ data }) => {
 
   return (
     <>
-      <RenderFields fields={pageInputs} />
+      <section className="limit-600">
+        <h2>Ganho de Peso Diário</h2>
+        <RenderFields fields={pageInputs} />
+      </section>
       {result === undefined ? null : result.erro === undefined ? (
-        <>
-          <p className='my-paragraph'>Dias passados: {result.diasPassados}</p>
-          <p className='my-paragraph'>Peso inicial: {result.pesoInicial}kg</p>
-          <p className='my-paragraph'>Peso final: {result.pesoFinal}kg</p>
-          <p className='my-paragraph'>Ganho de Peso por Dia: {result.GPD}kg</p>
-        </>
+        <section className='cards'>
+          <Card>
+            <Card.Body>
+              <Card.Title>Tempo Passado</Card.Title>
+              <Card.Text>{result.diasPassados} Dias</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>Peso inicial</Card.Title>
+              <Card.Text>{result.pesoInicial}kg</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>Peso final</Card.Title>
+              <Card.Text>{result.pesoFinal}kg</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>Ganho de Peso</Card.Title>
+              <Card.Text>{result.GPD}kg por dia</Card.Text>
+            </Card.Body>
+          </Card>
+        </section>
       ) : <ErrorParagraph error={{ message: result.erro }} />
       }
     </>

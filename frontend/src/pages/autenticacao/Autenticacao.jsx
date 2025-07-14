@@ -1,49 +1,9 @@
+import { redirect } from 'react-router-dom';
 import '../../styles/auth.css';
-import { useState } from 'react';
-import FormCadastro from '../../components/layout/forms/login/FormCadastro';
-import FormLogin from '../../components/layout/forms/login/FormLogin';
+import AuthSection from '../../components/layout/auth/AuthSection.jsx';
+import { storeAuthToken } from '../../util/auth.js';
 
-
-const AuthenticationForm = ({ authMode }) => {
-  return (
-    <div className='form-container'>
-      {authMode === 'Login'
-        ? <FormLogin />
-        : <FormCadastro />
-      }
-    </div>
-  );
-}
-
-const AuthNav = ({ currentMode, onChangeMode }) => {
-  return (
-    <nav className="auth-navbar">
-      <menu>
-        <button 
-          onClick={() => onChangeMode('Login')} 
-          className={`navbar-button ${currentMode === 'Login' ? 'active' : ''}`}>
-          Login
-        </button>
-        <button 
-          onClick={() => onChangeMode('Cadastro')} 
-          className={`navbar-button ${currentMode === 'Cadastro' ? 'active' : ''}`}>
-          Cadastro
-        </button>
-      </menu>
-    </nav>
-  )
-}
-
-const AuthSection = () => {
-  const [authMode, setAuthMode] = useState('Login');
-
-  return (
-    <>
-      <AuthNav onChangeMode={setAuthMode} currentMode={authMode} />
-      <AuthenticationForm authMode={authMode} />
-    </>
-  );
-}
+import api from '../../api/request.js';
 
 
 const Autenticacao = () => {
@@ -59,3 +19,24 @@ const Autenticacao = () => {
 }
 
 export default Autenticacao;
+
+
+export const action = async ({ request }) => {
+  try {
+    const searchParams = new URL(request.url).searchParams;
+    const mode = searchParams.get('mode') || 'login';
+    if (mode !== 'login' && mode !== 'signup') throw new Error('Modo inválido');
+    const formData = await request.formData();
+    const submitData = Object.fromEntries(formData.entries());
+    const response = await api.post('/' + mode, submitData);
+    const token = response.data.token;
+    storeAuthToken(token);
+    return redirect('/');
+  } catch (err) {
+    console.log(err);
+    return {
+      isError: true,
+      message: err.response?.data?.message || 'Falha ao autenticar'
+    };
+  }
+}

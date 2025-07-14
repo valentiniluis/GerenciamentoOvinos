@@ -3,10 +3,11 @@ const router = express.Router();
 
 const usersControllers = require('../controllers/users');
 const userValidation = require('../middleware/userValidation');
+const isAuth = require('../middleware/isAuth');
 
-router.get('/', usersControllers.getUsers);
+router.get('/', isAuth, usersControllers.getUsers);
 
-router.post('/', [
+router.post('/', isAuth, [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
   userValidation.checkGroupExists('grupo_nome'),
@@ -15,16 +16,16 @@ router.post('/', [
   userValidation.checkUserNotExists('email')
 ], usersControllers.createUser);
 
-router.get('/:email', usersControllers.getUser);
+router.get('/:email', isAuth, usersControllers.getUser);
 
-router.put('/:email', [
+router.put('/:email', isAuth, [
   userValidation.validateName('nome'),
   userValidation.validateEmailUpdate('email', 'Novo e-mail inserido já está em uso'),
   userValidation.validateEmail('email'),
   userValidation.checkGroupExists('grupo_nome')
 ], usersControllers.putUser);
 
-router.delete('/:email', [
+router.delete('/:email', isAuth, [
   userValidation.validateParamsEmail('email')
 ], usersControllers.deleteUser);
 

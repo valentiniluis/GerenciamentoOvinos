@@ -3,15 +3,14 @@ const router = express.Router();
 
 const tarefaControllers = require('../controllers/tasks');
 const dataValidation = require('../middleware/dataValidation');
+const isAuth = require('../middleware/isAuth');
 
-router.get('/', tarefaControllers.getTarefas);
+router.get('/', isAuth, tarefaControllers.getTarefas);
 
-router.post('/', [
+router.post('/', isAuth, [
   dataValidation.validateDate('data_criacao'),
   dataValidation.validateDescriptionTask('tarefa_descricao'),
   dataValidation.validateTaskName('tarefa_nome'),
-],
-  tarefaControllers.postTarefas
-);
+], tarefaControllers.postTarefas);
 
 module.exports = router;

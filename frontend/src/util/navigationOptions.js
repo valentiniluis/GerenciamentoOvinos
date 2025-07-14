@@ -8,7 +8,7 @@ import groupIcon from '/group.svg';
 
 const NAVIGATION_OPTIONS = [
   {
-    name: 'Dashboard',
+    name: 'Início',
     icon: dashboardIcon,
     path: '/'
   },

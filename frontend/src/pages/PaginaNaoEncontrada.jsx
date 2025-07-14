@@ -5,7 +5,7 @@ const PaginaNaoEncontrada = () => {
   return (
     <>
       <PageTitle title="Página Não Encontrada" />
-      <Link to={'/login'}>
+      <Link to="/">
         <button>Voltar Para Página Principal</button>
       </Link>
     </>

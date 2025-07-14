@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../../styles/sidebar.css';
-
+import GroupIcon from '/Group_2.png';
 import SidebarHeader from './SidebarHeader.jsx';
 import NavOption from './NavOption.jsx';
 import SidebarFooter from './SidebarFooter.jsx';
@@ -16,7 +16,7 @@ const Sidebar = ({ user }) => {
     return (navOption.path === path) || (navOption.path !== '/' && path.startsWith(navOption.path));
   });
 
-  const [activeOption, setActiveOption] = useState(currentPage.name);
+  const [activeOption, setActiveOption] = useState(currentPage?.name);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSelectOption = (option) => {
@@ -31,7 +31,7 @@ const Sidebar = ({ user }) => {
       <nav className="sidebar d-none d-md-flex">
         {/* Sidebar padrão para telas médias/grandes */}
         <div>
-          <SidebarHeader user={user} profilePicture={'/Group_2.png'} />
+          <SidebarHeader user={user} profilePicture={GroupIcon} />
           <div id="nav-options-container" className="row pt-3 m-0">
             {NAVIGATION_OPTIONS.map((option) => (
               <NavOption
@@ -43,7 +43,7 @@ const Sidebar = ({ user }) => {
             ))}
           </div>
         </div>
-        <SidebarFooter profilePicture={'/Group_2.png'} />
+        <SidebarFooter profilePicture={GroupIcon} />
       </nav>
 
       {/* Navbar responsivo para telas pequenas */}
@@ -52,7 +52,7 @@ const Sidebar = ({ user }) => {
         <span className="navbar-mobile-title">Menu</span>
         <img
           className="profile-picture-two"
-          src={'/Group_2.png'}
+          src={GroupIcon}
           alt="Foto de Perfil do Usuário"
         />
         {menuOpen && (

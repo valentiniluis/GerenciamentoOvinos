@@ -23,22 +23,20 @@
   justify-content: space-evenly;
 }
 
-.navbar-button {
+.navbar-link {
   font-size: 20px;
-  border: none;
-  background-color: transparent;
-  text-underline-offset: 0.4rem;
   transition: all ease-in-out .2s;
   color: black;
+  text-decoration: none;
 }
 
-.navbar-button:hover {
+.navbar-link:hover {
   color: rgb(95, 95, 95);
 }
 
-.auth-navbar button.active {
+.auth-navbar a.active {
   text-decoration: underline;
-
+  text-underline-offset: 0.4rem;
 }
 
 .bg-image-container {

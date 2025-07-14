@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useLoaderData, useFetcher } from 'react-router-dom';
+import '../../styles/card.css';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
 import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario.jsx';
@@ -64,13 +65,10 @@ const DadosOvino = () => {
           : <ErrorParagraph error={{ message: 'Nenhuma pesagem cadastrada' }} />
         }
       </section>
-      <section className="limit-600">
-        <h2>Ganho de Peso Diário</h2>
-        {sheepData.length >= 2
-          ? <GanhoPesoDiario data={sheepData} />
-          : <ErrorParagraph error={{ message: 'O ovino não tem o mínimo de 2 pesagens cadastradas para o cálculo do GPD.' }} />
-        }
-      </section>
+      {sheepData.length >= 2
+        ? <GanhoPesoDiario data={sheepData} />
+        : <ErrorParagraph error={{ message: 'O ovino não tem o mínimo de 2 pesagens cadastradas para o cálculo do GPD.' }} />
+      }
       <CustomAlert
         variant={deleteMessage.variant}
         message={deleteMessage.message}

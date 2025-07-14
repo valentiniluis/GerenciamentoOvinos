@@ -5,13 +5,13 @@ const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuC
   const currentUrl = useLocation().pathname;
   const hasSubmenu = submenu !== undefined;
 
-  let cssClass = 'row justify-content-center w-100 m-0 px-0 py-4';
+  let cssClass = 'row m-0 px-0 py-3';
   if (active) cssClass += ' active-nav';
-  let navElement = <Link to={path} className="option-text m-0">{name}</Link>;
+
+  let navElement = <Link to={path} className="option-text">{name}</Link>;
+  if (hasSubmenu) navElement = <p className="option-text">{name}</p>;
+
   let submenuLinks;
-
-  if (hasSubmenu) navElement = <p className="option-text m-0">{name}</p>;
-
   if (hasSubmenu && active) {
     submenuLinks = submenu.map((sub) => {
       const subpath = `${path}/${sub.subpath}`;
@@ -30,13 +30,13 @@ const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuC
   return (
     <>
       <div className={cssClass}>
-        <div className="opt-cont d-flex gap-4 nav-option" onClick={() => selectOption(name)}>
+        <div className="d-flex gap-3 nav-option" onClick={() => selectOption(name)}>
           <img className="option-icon" src={icon} alt={`${name} Sidebar Icon`} />
           {navElement}
         </div>
       </div>
       {active && hasSubmenu && (
-        <div className="submenu text-center">
+        <div className="submenu">
           {submenuLinks}
         </div>
       )}

@@ -3,10 +3,10 @@ require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+
 module.exports = (req, res, next) => {
   try {
-    const authorizationHeader = req.get('Authorization');
-
+    const authorizationHeader = req.headers.authorization;
     let decodedToken = undefined;
     if (authorizationHeader) {
       const token = authorizationHeader.split(' ')[1];
