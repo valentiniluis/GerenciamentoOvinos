@@ -43,8 +43,6 @@ exports.postLogin = async (req, res, next) => {
     throw error;
   }
 
-  console.log(req);
-
   try {
     const { email, senha } = req.body;
     const userData = await db.oneOrNone('SELECT email, senha FROM usuario WHERE email = $1;', email);
@@ -69,7 +67,7 @@ exports.postLogin = async (req, res, next) => {
       { expiresIn: JWT_EXPIRE_TIME }
     );
 
-    res.status(200).json({ success: true, token, userEmail: userData.email });
+    res.status(200).json({ success: true, token, expiration: JWT_EXPIRE_TIME, userEmail: userData.email });
 
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;

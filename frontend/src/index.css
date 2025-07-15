@@ -17,7 +17,8 @@ body {
 }
 
 .page-title {
-  font-size: 2.6rem;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 img {
@@ -40,8 +41,9 @@ img {
 }
 
 .my-paragraph {
-  font-size: 1.1rem;
-  text-align: justify;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 .limit-600 {

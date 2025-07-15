@@ -1,0 +1,33 @@
+
+.card {
+  max-width: 22%;
+  margin-top: 3rem;
+  text-align: center;
+  padding: 0;
+}
+
+.cardBody {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.cardHr {
+  color: grey;
+}
+
+.cardText {
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+@media (max-width: 848px) {
+  .card {
+    max-width: 46%;
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    max-width: 94%;
+  }
+}

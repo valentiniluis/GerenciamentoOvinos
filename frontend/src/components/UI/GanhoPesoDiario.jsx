@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { calculateWeightChange } from '../../util/utilFunctions.js';
 import RenderFields from '../../components/layout/forms/RenderFields.jsx';
 import ErrorParagraph from './ErrorParagraph.jsx';
+import classes from '../../styles/Card.module.css';
 
 
 const GanhoPesoDiario = ({ data }) => {
@@ -67,29 +68,34 @@ const GanhoPesoDiario = ({ data }) => {
         <RenderFields fields={pageInputs} />
       </section>
       {result === undefined ? null : result.erro === undefined ? (
-        <section className='cards'>
-          <Card>
-            <Card.Body>
+        // cards
+        <section className='row justify-content-between pb-5'>
+          <Card className={classes.card}>
+            <Card.Body className={classes.cardBody}>
               <Card.Title>Tempo Passado</Card.Title>
-              <Card.Text>{result.diasPassados} Dias</Card.Text>
+              <hr className={classes.cardHr} />
+              <Card.Text className={classes.cardText}>{result.diasPassados} Dias</Card.Text>
             </Card.Body>
           </Card>
-          <Card>
-            <Card.Body>
+          <Card className={classes.card}>
+            <Card.Body className={classes.cardBody}>
               <Card.Title>Peso inicial</Card.Title>
-              <Card.Text>{result.pesoInicial}kg</Card.Text>
+              <hr className={classes.cardHr} />
+              <Card.Text className={classes.cardText}>{result.pesoInicial}kg</Card.Text>
             </Card.Body>
           </Card>
-          <Card>
-            <Card.Body>
+          <Card className={classes.card}>
+            <Card.Body className={classes.cardBody}>
               <Card.Title>Peso final</Card.Title>
-              <Card.Text>{result.pesoFinal}kg</Card.Text>
+              <hr className={classes.cardHr} />
+              <Card.Text className={classes.cardText}>{result.pesoFinal}kg</Card.Text>
             </Card.Body>
           </Card>
-          <Card>
-            <Card.Body>
+          <Card className={classes.card}>
+            <Card.Body className={classes.cardBody}>
               <Card.Title>Ganho de Peso</Card.Title>
-              <Card.Text>{result.GPD}kg por dia</Card.Text>
+              <hr className={classes.cardHr} />
+              <Card.Text className={classes.cardText}>{result.GPD}kg por dia</Card.Text>
             </Card.Body>
           </Card>
         </section>

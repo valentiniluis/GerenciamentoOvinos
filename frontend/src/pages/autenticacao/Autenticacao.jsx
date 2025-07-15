@@ -29,11 +29,10 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const submitData = Object.fromEntries(formData.entries());
     const response = await api.post('/' + mode, submitData);
-    const token = response.data.token;
-    storeAuthToken(token);
+    const { token, expiration } = response.data;
+    storeAuthToken(token, expiration);
     return redirect('/');
   } catch (err) {
-    console.log(err);
     return {
       isError: true,
       message: err.response?.data?.message || 'Falha ao autenticar'

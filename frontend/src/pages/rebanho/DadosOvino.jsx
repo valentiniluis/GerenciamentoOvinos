@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams, useLoaderData, useFetcher } from 'react-router-dom';
-import '../../styles/card.css';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
 import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario.jsx';

@@ -2,6 +2,8 @@ import { Form, useNavigation } from 'react-router-dom';
 import RenderFields from '../RenderFields';
 import FormBtn from '../../../UI/FormBtn';
 
+import ApiAlert from '../../../UI/ApiAlert';
+
 const rowPadding = 'py-3';
 const inputs = [
   {
@@ -65,22 +67,29 @@ const FormCadastro = () => {
   const isSubmitting = (navigation.state === 'submitting');
 
   return (
-    <Form className="col-xl-7 col-lg-8 col-md-9 col-sm-11 col-12 my-form" method='POST'>
-      <div className="row py-4">
-        <h2 className="text-center">Criar Conta</h2>
+    <>
+      <div className='form-container'>
+        <Form className="col-xl-7 col-lg-8 col-md-9 col-sm-11 col-12 my-form" method='POST'>
+          <div className="row py-4">
+            <h2 className="text-center">Criar Conta</h2>
+          </div>
+          <section className="medium-input login-input-wrapper">
+            <RenderFields fields={inputs} />
+          </section>
+          <div className="row py-5 justify-content-center">
+            <FormBtn
+              text={!isSubmitting ? "Cadastrar" : "Cadastrando..."}
+              className="auth-btn"
+              type="submit"
+              disabled={isSubmitting}
+            />
+          </div>
+        </Form>
       </div>
-      <section className="medium-input login-input-wrapper">
-        <RenderFields fields={inputs} />
+      <section className="w-75 mx-auto my-0 pt-4">
+        <ApiAlert />
       </section>
-      <div className="row py-5 justify-content-center">
-        <FormBtn 
-          text={!isSubmitting ? "Cadastrar" : "Cadastrando..."} 
-          className="auth-btn" 
-          type="submit" 
-          disabled={isSubmitting}
-        />
-      </div>
-    </Form>
+    </>
   );
 };
 

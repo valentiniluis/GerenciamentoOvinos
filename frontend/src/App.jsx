@@ -24,6 +24,7 @@ import { action as deleteUserAction } from './pages/usuarios/ExcluirUsuario.jsx'
 import { action as deleteGroupAction } from './pages/grupos/ExcluirGrupo.jsx';
 import { action as deleteWeighInAction } from './pages/rebanho/ExcluirPesagem.jsx';
 import { action as logoutAction, loader as logoutLoader } from './pages/autenticacao/Logout.jsx';
+import { checkAuthLoader } from './util/auth.js';
 
 
 const router = createBrowserRouter([
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    loader: checkAuthLoader,
     children: [
       { index: true, element: <Dashboard /> },
       { path: '/calendario', element: <Calendario /> },
