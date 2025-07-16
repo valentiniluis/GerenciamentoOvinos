@@ -1,12 +1,13 @@
-const SidebarHeader = ({ user, profilePicture }) => {
+import UserInitialSpan from "./UserInitialSpan";
+
+const SidebarHeader = ({ user }) => {
+  const displayedName = user.split(' ')[0];
+  const initialLetter = user[0];
+
   return (
     <div className="row d-flex justify-content-center m-0 gap-3 py-3 border-bottom">
-      <img
-        className="profile-picture-one"
-        src={profilePicture}
-        alt="Foto de Perfil"
-      />
-      <p className="text-center">{user}</p>
+      <UserInitialSpan>{initialLetter}</UserInitialSpan>
+      <p className="text-center">{displayedName}</p>
     </div>
   );
 };

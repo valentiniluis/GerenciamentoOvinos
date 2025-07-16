@@ -4,7 +4,7 @@ const db = require('../model/database');
 exports.getTarefas = async (req, res, next) => {
     try {
       const data = await db.manyOrNone(
-        `SELECT *, TO_CHAR(data_criacao, 'YYYY-MM-DD') as data_criacao_formatada from tarefa`
+        `SELECT *, TO_CHAR(data_criacao, 'YYYY-MM-DD') AS data_criacao_formatada FROM tarefa;`
       );
       const dataFormatada = data.map(evento => ({
         ...evento,

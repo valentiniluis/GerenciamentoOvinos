@@ -3,18 +3,32 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { PermissionsContext } from '../../../store/permissions-context';
 
+const OptionWrapper = ({ children, hasSubmenu, name, selectOption, path }) => {
+  const handleClick = () => selectOption(name);
+
+  if (!hasSubmenu) return (
+    <Link to={path} className='nav-option gap-3 option-link' onClick={handleClick}>
+      {children}
+    </Link>
+  );
+
+  return (
+    <div className="d-flex gap-3 nav-option" onClick={handleClick}>
+      {children}
+    </div>
+  );
+}
+
+
 const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuClick }) => {
   const location = useLocation();
   const permissions = useContext(PermissionsContext);
 
   const currentUrl = location.pathname;
-  const hasSubmenu = submenu !== undefined;
+  const hasSubmenu = (submenu !== undefined);
 
   let cssClass = 'row m-0 px-0 py-3';
   if (active) cssClass += ' active-nav';
-
-  let navElement = <Link to={path} className="option-text">{name}</Link>;
-  if (hasSubmenu) navElement = <p className="option-text">{name}</p>;
 
   let submenuLinks;
   if (hasSubmenu && active) {
@@ -39,10 +53,10 @@ const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuC
   return (
     <>
       <div className={cssClass}>
-        <div className="d-flex gap-3 nav-option" onClick={() => selectOption(name)}>
+        <OptionWrapper hasSubmenu={hasSubmenu} name={name} selectOption={selectOption} path={path}>
           <img className="option-icon" src={icon} alt={`${name} Sidebar Icon`} />
-          {navElement}
-        </div>
+          <p className="option-text">{name}</p>
+        </OptionWrapper>
       </div>
       {active && hasSubmenu && (
         <div className="submenu">

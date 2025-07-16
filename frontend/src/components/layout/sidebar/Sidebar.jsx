@@ -1,16 +1,14 @@
 import { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../../styles/sidebar.css';
-import GroupIcon from '/Group_2.png';
 import SidebarHeader from './SidebarHeader.jsx';
 import NavOption from './NavOption.jsx';
 import SidebarFooter from './SidebarFooter.jsx';
-import menuIcon from '/menu_hamburger.svg';
-
+import UserInitialSpan from './UserInitialSpan.jsx';
 import NAVIGATION_OPTIONS from '../../../util/navigationOptions.js';
 import { PermissionsContext } from '../../../store/permissions-context.jsx';
+import menuIcon from '/menu_hamburger.svg';
 
-// fazer autorização na sidebar mobile também
 
 const Sidebar = ({ user, email }) => {
   const permissions = useContext(PermissionsContext);
@@ -41,7 +39,7 @@ const Sidebar = ({ user, email }) => {
       <nav className="sidebar d-none d-md-flex">
         {/* Sidebar padrão para telas médias/grandes */}
         <div>
-          <SidebarHeader user={user} profilePicture={GroupIcon} />
+          <SidebarHeader user={user} />
           <div id="nav-options-container" className="row pt-3 m-0">
             {NAVIGATION_OPTIONS.map((option) => {
               const { permissionsRequired, props } = option;
@@ -59,30 +57,32 @@ const Sidebar = ({ user, email }) => {
             })}
           </div>
         </div>
-        <SidebarFooter profilePicture={GroupIcon} userEmail={email} />
+        <SidebarFooter userEmail={email} />
       </nav>
 
       {/* Navbar responsivo para telas pequenas */}
       <nav className="navbar-mobile d-flex d-md-none align-items-center justify-content-between px-3 py-2">
         <img src={menuIcon} alt="Abrir menu" className="menu-icon" onClick={() => setMenuOpen(prevOpen => !prevOpen)} />
         <span className="navbar-mobile-title">Menu</span>
-        <img
-          className="profile-picture-two"
-          src={GroupIcon}
-          alt="Foto de Perfil do Usuário"
-        />
+        <UserInitialSpan>{user[0]}</UserInitialSpan>
         {menuOpen && (
-          <div className="navbar-mobile-dropdown">
-            {NAVIGATION_OPTIONS.map((option) => (
-              <div key={option.props.name}>
-                <NavOption
-                  {...option.props}
-                  active={activeOption === option.props.name}
-                  selectOption={() => handleSelectOption(option.props)}
-                  onSubmenuClick={handleCloseSubmenu}
-                />
-              </div>
-            ))}
+          <div id="nav-options-container" className="navbar-mobile-dropdown">
+            {NAVIGATION_OPTIONS.map(option => {
+              const { props, permissionsRequired } = option;
+              const authorized = (permissionsRequired.length === 0) ||
+                permissionsRequired.some(permReq => permissions[permReq] == true);
+              if (!authorized) return null;
+              return (
+                <div key={props.name}>
+                  <NavOption
+                    {...props}
+                    active={activeOption === props.name}
+                    selectOption={() => handleSelectOption(props)}
+                    onSubmenuClick={handleCloseSubmenu}
+                  />
+                </div>
+              );
+            })}
           </div>
         )}
       </nav>

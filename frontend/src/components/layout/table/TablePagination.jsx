@@ -3,6 +3,8 @@ import classes from '../../../styles/TablePagination.module.css';
 
 const TablePagination = ({ pages, updatePages }) => {
   const { current, max } = pages;
+  if (max === 1) return null;
+
   const previousPage = current - 1;
   const nextPage = current + 1;
 
