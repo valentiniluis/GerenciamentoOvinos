@@ -4,26 +4,26 @@ const router = express.Router();
 const groupsControllers = require('../controllers/groups');
 const userValidation = require('../middleware/userValidation');
 const dataValidation = require('../middleware/dataValidation');
-const isAuth = require('../middleware/isAuth');
+const { isAuthenticated, isAuthorized } = require('../middleware/isAuth');
 
 
-router.get('/', isAuth, groupsControllers.getGroups);
+router.get('/', isAuthenticated, isAuthorized('perm_visual_grupos'), groupsControllers.getGroups);
 
-router.post('/', isAuth, [
+router.post('/', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateGroup('nome'),
   userValidation.checkGroupNotExists('nome'),
   ...dataValidation.validatePermissions('permissoes')
 ], groupsControllers.createGroup);
 
-router.get('/:nome', isAuth, groupsControllers.getGroup);
+router.get('/:nome', isAuthenticated, isAuthorized('perm_visual_grupos'), groupsControllers.getGroup);
 
-router.put('/:nome', isAuth, [
+router.put('/:nome', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateGroup('nome'),
   userValidation.validateGroupUpdate('nome'),
   ...dataValidation.validatePermissions('permissoes')
 ], groupsControllers.putGroup);
 
-router.delete('/:nome', isAuth, [
+router.delete('/:nome', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateParamsGroup('nome', 'Grupo não encontrado')
 ], groupsControllers.deleteGroup);
 

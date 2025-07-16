@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
+const { getPermissions } = require('../util/permissions');
 require('dotenv').config();
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS;
@@ -79,20 +80,7 @@ exports.getUserPermissions = async (req, res, next) => {
   // (extraído por meio do middleware isAuth)
   try {
     const { userEmail } = req;
-    const result = await db.one(
-      'SELECT \
-        us.email, us.nome, \
-        gp.perm_visual_rebanho, \
-        gp.perm_visual_calendario, \
-        gp.perm_visual_grupos, \
-        gp.perm_alter_rebanho, \
-        gp.perm_alter_calendario, \
-        gp.perm_alter_usuario_grupo \
-      FROM usuario AS us \
-      INNER JOIN grupo AS gp \
-      ON us.grupo_nome = gp.nome \
-      WHERE us.email = $1;', 
-      userEmail);
+    const result = await getPermissions(userEmail);
     res.status(200).json({ success: true, data: result });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;

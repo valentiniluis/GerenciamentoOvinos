@@ -3,11 +3,11 @@ const router = express.Router();
 
 const usersControllers = require('../controllers/users');
 const userValidation = require('../middleware/userValidation');
-const isAuth = require('../middleware/isAuth');
+const { isAuthenticated, isAuthorized } = require('../middleware/isAuth');
 
-router.get('/', isAuth, usersControllers.getUsers);
+router.get('/', isAuthenticated, isAuthorized('perm_visual_grupos'), usersControllers.getUsers);
 
-router.post('/', isAuth, [
+router.post('/', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
   userValidation.checkGroupExists('grupo_nome'),
@@ -16,16 +16,16 @@ router.post('/', isAuth, [
   userValidation.checkUserNotExists('email')
 ], usersControllers.createUser);
 
-router.get('/:email', isAuth, usersControllers.getUser);
+router.get('/:email', isAuthenticated, isAuthorized('perm_visual_grupos'), usersControllers.getUser);
 
-router.put('/:email', isAuth, [
+router.put('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateName('nome'),
   userValidation.validateEmailUpdate('email', 'Novo e-mail inserido já está em uso'),
   userValidation.validateEmail('email'),
   userValidation.checkGroupExists('grupo_nome')
 ], usersControllers.putUser);
 
-router.delete('/:email', isAuth, [
+router.delete('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateParamsEmail('email')
 ], usersControllers.deleteUser);
 
