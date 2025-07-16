@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../../styles/sidebar.css';
 import GroupIcon from '/Group_2.png';
@@ -6,18 +6,28 @@ import SidebarHeader from './SidebarHeader.jsx';
 import NavOption from './NavOption.jsx';
 import SidebarFooter from './SidebarFooter.jsx';
 import menuIcon from '/menu_hamburger.svg';
+
 import NAVIGATION_OPTIONS from '../../../util/navigationOptions.js';
+import { PermissionsContext } from '../../../store/permissions-context.jsx';
 
+// fazer autorização na sidebar mobile também
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, email }) => {
+  const permissions = useContext(PermissionsContext);
   const location = useLocation();
-  const path = location.pathname;
-  const currentPage = NAVIGATION_OPTIONS.find(navOption => {
-    return (navOption.path === path) || (navOption.path !== '/' && path.startsWith(navOption.path));
-  });
 
-  const [activeOption, setActiveOption] = useState(currentPage?.name);
+  const [activeOption, setActiveOption] = useState();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const path = location.pathname;
+  useEffect(() => {
+    const currentPage = NAVIGATION_OPTIONS.find(option => {
+      const { props } = option;
+      return (props.path === path) || (props.path !== '/' && path.startsWith(props.path));
+    })?.props;
+    setActiveOption(currentPage?.name);
+  }, [path]);
+
 
   const handleSelectOption = (option) => {
     setActiveOption(option.name);
@@ -33,17 +43,23 @@ const Sidebar = ({ user }) => {
         <div>
           <SidebarHeader user={user} profilePicture={GroupIcon} />
           <div id="nav-options-container" className="row pt-3 m-0">
-            {NAVIGATION_OPTIONS.map((option) => (
-              <NavOption
-                key={option.name}
-                active={activeOption === option.name}
-                selectOption={() => handleSelectOption(option)}
-                {...option}
-              />
-            ))}
+            {NAVIGATION_OPTIONS.map((option) => {
+              const { permissionsRequired, props } = option;
+              const authorized = (permissionsRequired.length === 0) ||
+                permissionsRequired.some(permReq => permissions[permReq] == true);
+              if (!authorized) return null;
+              return (
+                <NavOption
+                  key={props.name}
+                  active={activeOption === props.name}
+                  selectOption={() => handleSelectOption(props)}
+                  {...props}
+                />
+              )
+            })}
           </div>
         </div>
-        <SidebarFooter profilePicture={GroupIcon} />
+        <SidebarFooter profilePicture={GroupIcon} userEmail={email} />
       </nav>
 
       {/* Navbar responsivo para telas pequenas */}
@@ -58,11 +74,11 @@ const Sidebar = ({ user }) => {
         {menuOpen && (
           <div className="navbar-mobile-dropdown">
             {NAVIGATION_OPTIONS.map((option) => (
-              <div key={option.name}>
+              <div key={option.props.name}>
                 <NavOption
-                  {...option}
-                  active={activeOption === option.name}
-                  selectOption={() => handleSelectOption(option)}
+                  {...option.props}
+                  active={activeOption === option.props.name}
+                  selectOption={() => handleSelectOption(option.props)}
                   onSubmenuClick={handleCloseSubmenu}
                 />
               </div>

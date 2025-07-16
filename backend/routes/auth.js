@@ -3,6 +3,8 @@ const router = express.Router();
 
 const authController = require('../controllers/auth');
 const userValidation = require('../middleware/userValidation');
+const isAuth = require('../middleware/isAuth');
+
 
 router.post('/login', [
   userValidation.validateLogin('email')
@@ -15,5 +17,6 @@ router.post('/signup', [
   userValidation.matchingPasswords('confirmacao_senha', 'senha'),
 ], authController.postStartAccount);
 
+router.get('/permissoes', isAuth, authController.getUserPermissions);
 
 module.exports = router;

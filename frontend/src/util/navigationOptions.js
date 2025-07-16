@@ -8,47 +8,65 @@ import groupIcon from '/group.svg';
 
 const NAVIGATION_OPTIONS = [
   {
-    name: 'Início',
-    icon: dashboardIcon,
-    path: '/'
+    permissionsRequired: [],
+    props: {
+      name: 'Início',
+      icon: dashboardIcon,
+      path: '/'
+    }
   },
   {
-    name: 'Rebanho',
-    icon: sheepIcon,
-    path: '/rebanho',
-    submenu: [
-      { name: 'Cadastrar', subpath: 'cadastrar' },
-      { name: 'Listar', subpath: 'listar' },
-      { name: 'Cadastrar Pesagem', subpath: 'pesagem' }
-    ]
+    permissionsRequired: ['perm_visual_rebanho', 'perm_alter_rebanho'],
+    props: {
+      name: 'Rebanho',
+      icon: sheepIcon,
+      path: '/rebanho',
+      submenu: [
+        { name: 'Cadastrar', subpath: 'cadastrar', permissionRequired: 'perm_alter_rebanho' },
+        { name: 'Listar', subpath: 'listar', permissionRequired: 'perm_visual_rebanho' },
+        { name: 'Cadastrar Pesagem', subpath: 'pesagem', permissionRequired: 'perm_alter_rebanho' }
+      ]
+    }
   },
   {
-    name: 'Calendário',
-    icon: calendarIcon,
-    path: '/calendario'
+    permissionsRequired: ['perm_visual_calendario', 'perm_alter_calendario'],
+    props: {
+      name: 'Calendário',
+      icon: calendarIcon,
+      path: '/calendario'
+    }
   },
   {
-    name: 'Relatório',
-    icon: reportIcon,
-    path: '/relatorio'
+    permissionsRequired: [],
+    props: {
+      name: 'Relatório',
+      icon: reportIcon,
+      path: '/relatorio'
+    }
   },
   {
-    name: 'Usuários',
-    icon: userIcon,
-    path: '/usuario',
-    submenu: [
-      { name: 'Cadastrar', subpath: 'cadastrar' },
-      { name: 'Listar', subpath: 'listar' }
-    ]
+    permissionsRequired: ['perm_visual_grupos', 'perm_alter_usuario_grupo'],
+    props: {
+      name: 'Usuários',
+      icon: userIcon,
+      path: '/usuario',
+      submenu: [
+        { name: 'Cadastrar', subpath: 'cadastrar', permissionRequired: 'perm_alter_usuario_grupo' },
+        { name: 'Listar', subpath: 'listar', permissionRequired: 'perm_visual_grupos' }
+      ]
+    }
   },
   {
-    name: 'Grupos',
-    icon: groupIcon,
-    path: '/grupo',
-    submenu: [
-      { name: 'Cadastrar', subpath: 'cadastrar' },
-      { name: 'Listar', subpath: 'listar' }
-    ]
+    permissionsRequired: ['perm_visual_grupos', 'perm_alter_usuario_grupo'],
+    props: {
+      name: 'Grupos',
+      icon: groupIcon,
+      path: '/grupo',
+      submenu: [
+        { name: 'Cadastrar', subpath: 'cadastrar', permissionRequired: 'perm_alter_usuario_grupo' },
+        { name: 'Listar', subpath: 'listar', permissionRequired: 'perm_visual_grupos' }
+      ]
+    }
   }
 ];
 

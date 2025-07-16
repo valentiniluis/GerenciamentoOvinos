@@ -47,8 +47,6 @@ exports.postLogin = async (req, res, next) => {
     const { email, senha } = req.body;
     const userData = await db.oneOrNone('SELECT email, senha FROM usuario WHERE email = $1;', email);
 
-    console.log(userData);
-
     let match = false;
     if (userData) {
       const hashedPassword = userData.senha;
@@ -69,6 +67,33 @@ exports.postLogin = async (req, res, next) => {
 
     res.status(200).json({ success: true, token, expiration: JWT_EXPIRE_TIME, userEmail: userData.email });
 
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+}
+
+
+exports.getUserPermissions = async (req, res, next) => {
+  // usamos as informações extraídas do usuário depois de checar se seu jwt é valido
+  // (extraído por meio do middleware isAuth)
+  try {
+    const { userEmail } = req;
+    const result = await db.one(
+      'SELECT \
+        us.email, us.nome, \
+        gp.perm_visual_rebanho, \
+        gp.perm_visual_calendario, \
+        gp.perm_visual_grupos, \
+        gp.perm_alter_rebanho, \
+        gp.perm_alter_calendario, \
+        gp.perm_alter_usuario_grupo \
+      FROM usuario AS us \
+      INNER JOIN grupo AS gp \
+      ON us.grupo_nome = gp.nome \
+      WHERE us.email = $1;', 
+      userEmail);
+    res.status(200).json({ success: true, data: result });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);

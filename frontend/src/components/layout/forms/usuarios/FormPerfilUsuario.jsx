@@ -81,7 +81,7 @@ const FormPerfilUsuario = () => {
   };
 
   const toggleReadMode = () => {
-    setReadMode((prevMode) => !prevMode);
+    setReadMode(prevMode => !prevMode);
   };
 
   const editBtnText = readMode ? 'Editar Dados' : 'Salvar Alterações';

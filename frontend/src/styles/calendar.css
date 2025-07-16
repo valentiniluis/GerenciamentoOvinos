@@ -1,11 +1,7 @@
 .calendario-container {
-  height: calc(100vh - 20px); 
+  min-height: 100vh;
   overflow: hidden; 
   padding-bottom: 1rem;
-}
-
-.fc {
-  height: calc(85vh - 80px) !important; 
 }
 
 .fc-view {

@@ -1,10 +1,17 @@
+import { useContext } from 'react';
 import PageTitle from '../../components/UI/PageTitle';
 import FormPesagem from '../../components/layout/forms/pesagem/FormPesagem';
+import ErrorPage from '../ErrorPage.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 import api from '../../api/request.js';
 
 
 const CadastroPesagem = () => {
+  const permissions = useContext(PermissionsContext);
+
+  if (!permissions.perm_alter_rebanho) return <ErrorPage title="Usuário não autorizado" />
+  
   return (
     <>
       <PageTitle title="Cadastrar Pesagem de Ovino" />

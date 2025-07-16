@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 
-import RootLayout from './components/layout/root/RootLayout.jsx';
 import ListarRebanho from './pages/rebanho/ListagemRebanho.jsx';
 import ListagemUsuarios from './pages/usuarios/ListagemUsuarios.jsx';
 import PerfilUsuario from './pages/usuarios/PerfilUsuario.jsx';
@@ -9,7 +8,8 @@ import ListagemGrupos from './pages/grupos/ListagemGrupos.jsx';
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
-import PaginaNaoEncontrada from './pages/PaginaNaoEncontrada.jsx';
+import ErrorPage from './pages/ErrorPage.jsx';
+import RootLayout, { loader as rootLoader } from './components/layout/root/RootLayout.jsx';
 import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
 import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
 import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
@@ -24,7 +24,6 @@ import { action as deleteUserAction } from './pages/usuarios/ExcluirUsuario.jsx'
 import { action as deleteGroupAction } from './pages/grupos/ExcluirGrupo.jsx';
 import { action as deleteWeighInAction } from './pages/rebanho/ExcluirPesagem.jsx';
 import { action as logoutAction, loader as logoutLoader } from './pages/autenticacao/Logout.jsx';
-import { checkAuthLoader } from './util/auth.js';
 
 
 const router = createBrowserRouter([
@@ -32,7 +31,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    loader: checkAuthLoader,
+    loader: rootLoader,
     children: [
       { index: true, element: <Dashboard /> },
       { path: '/calendario', element: <Calendario /> },
@@ -86,7 +85,7 @@ const router = createBrowserRouter([
       },
       { path: '/relatorio', element: <Relatorio /> },
       { path: '/logout', action: logoutAction, loader: logoutLoader },
-      { path: '*', element: <PaginaNaoEncontrada /> }
+      { path: '*', element: <ErrorPage title="Página não encontrada" /> }
     ]
   },
 ]);
@@ -94,7 +93,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <RouterProvider router={router} />
-  )
+  );
 }
 
 export default App;

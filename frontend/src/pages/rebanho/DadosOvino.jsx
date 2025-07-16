@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams, useLoaderData, useFetcher } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
@@ -6,24 +6,18 @@ import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
 import DeleteIcon from '../../components/UI/DeleteIcon.jsx';
 import CustomAlert from '../../components/UI/CustomAlert.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 import api from '../../api/request';
-
-
-const SCHEMA = [
-  ['ovino_brinco', 'Nº do Brinco'],
-  ['etapa_vida', 'Etapa da Vida'],
-  ['peso', 'Peso (kg)'],
-  ['data_pesagem', 'Data da Pesagem'],
-  ['observacao', 'Observação'],
-  ['excluir', 'Excluir']
-];
+import ErrorPage from '../ErrorPage.jsx';
 
 
 const DadosOvino = () => {
+  const permissions = useContext(PermissionsContext);
   const fetcher = useFetcher();
   const { brinco } = useParams();
   const [deleteMessage, setDeleteMessage] = useState({ message: null, variant: null });
+  const response = useLoaderData();
 
   useEffect(() => {
     setDeleteMessage({
@@ -32,9 +26,18 @@ const DadosOvino = () => {
     });
   }, [fetcher.data]);
 
-  const response = useLoaderData();
+  if (!permissions.perm_visual_rebanho) return <ErrorPage title="Usuário não autorizado" />
+
   if (response.isError) return <ErrorParagraph error={response} />
-  const data = response.data;
+  let sheepData = response.data;
+
+  const SCHEMA = [
+    ['ovino_brinco', 'Nº do Brinco'],
+    ['etapa_vida', 'Etapa da Vida'],
+    ['peso', 'Peso (kg)'],
+    ['data_pesagem', 'Data da Pesagem'],
+    ['observacao', 'Observação']
+  ];
 
   const handleDelete = (dataPesagem) => {
     const dataFormatada = dataPesagem.split('/').join('-');
@@ -43,16 +46,19 @@ const DadosOvino = () => {
 
   const handleCloseMessage = () => setDeleteMessage({ variant: null, message: null });
 
-  const sheepData = data.map(pesagem => ({
-    ...pesagem, excluir: (
-      <DeleteIcon
-        confirm={() => handleDelete(pesagem.data_pesagem)}
-        disabled={pesagem.etapa_vida === 'Nascimento'}
-        modalTitle="Confirmar Exclusão da Pesagem"
-        modalText="Os dados da pesagem serão excluídos permanentemente. Você tem certeza?"
-      />
-    )
-  }));
+  if (permissions.perm_alter_rebanho) {
+    sheepData = sheepData.map(pesagem => ({
+      ...pesagem, excluir: (
+        <DeleteIcon
+          confirm={() => handleDelete(pesagem.data_pesagem)}
+          disabled={pesagem.etapa_vida === 'Nascimento'}
+          modalTitle="Confirmar Exclusão da Pesagem"
+          modalText="Os dados da pesagem serão excluídos permanentemente. Você tem certeza?"
+        />
+      )
+    }));
+    SCHEMA.push(['excluir', 'Excluir']);
+  }
 
   return (
     <>

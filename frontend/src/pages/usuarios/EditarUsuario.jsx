@@ -1,13 +1,19 @@
+import { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import ReturnLink from '../../components/UI/ReturnLink.jsx';
 import PageTitle from '../../components/UI/PageTitle';
 import FormCadastroUsuario from '../../components/layout/forms/usuarios/FormCadastroUsuario';
+import ErrorPage from '../ErrorPage.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 import api from '../../api/request.js';
 
 
 const EditarUsuario = () => {
+  const permissions = useContext(PermissionsContext);
   const data = useLoaderData();
+
+  if (!permissions.perm_alter_usuario_grupo) return <ErrorPage title="Usuário não autorizado" />;
 
   const title = (
     <>

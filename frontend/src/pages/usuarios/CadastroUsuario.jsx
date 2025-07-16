@@ -1,10 +1,17 @@
+import { useContext } from 'react';
 import PageTitle from '../../components/UI/PageTitle';
 import FormCadastroUsuario from '../../components/layout/forms/usuarios/FormCadastroUsuario';
+import ErrorPage from '../ErrorPage.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 import api from '../../api/request.js';
 
 
 const CadastroUsuario = () => {
+  const permissions = useContext(PermissionsContext);
+
+  if (!permissions.perm_alter_usuario_grupo) return <ErrorPage title="Usuário não autorizado" />
+  
   return (
     <>
       <PageTitle title="Cadastrar Usuário" />

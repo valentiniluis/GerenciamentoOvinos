@@ -1,8 +1,13 @@
+import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { PermissionsContext } from '../../../store/permissions-context';
 
 const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuClick }) => {
-  const currentUrl = useLocation().pathname;
+  const location = useLocation();
+  const permissions = useContext(PermissionsContext);
+
+  const currentUrl = location.pathname;
   const hasSubmenu = submenu !== undefined;
 
   let cssClass = 'row m-0 px-0 py-3';
@@ -13,7 +18,11 @@ const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuC
 
   let submenuLinks;
   if (hasSubmenu && active) {
-    submenuLinks = submenu.map((sub) => {
+    submenuLinks = submenu.map(sub => {
+      const { permissionRequired } = sub;
+      const authorized = permissions[permissionRequired] == true;
+      if (!authorized) return null;
+
       const subpath = `${path}/${sub.subpath}`;
       const isActive = (subpath === currentUrl);
       let cssClass = "submenu-item d-block m-0";

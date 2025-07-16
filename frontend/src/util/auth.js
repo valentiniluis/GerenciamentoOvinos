@@ -1,4 +1,4 @@
-import { redirect } from 'react-router-dom';
+// import { redirect } from 'react-router-dom';
 
 export const getTokenDuration = () => {
   const storedExpiration = new Date(localStorage.getItem('SGO_EXPIRATION'));
@@ -26,8 +26,8 @@ export const getAuthToken = () => {
 }
 
 
-export const checkAuthLoader = () => {
-  const token = getAuthToken();
-  if (!token) return redirect('/entrar');
-  return token;
-}
+// export const checkAuthLoader = () => {
+//   const token = getAuthToken();
+//   if (!token) return redirect('/entrar');
+//   return token;
+// }

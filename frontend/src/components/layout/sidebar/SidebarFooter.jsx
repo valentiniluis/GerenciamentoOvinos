@@ -1,6 +1,6 @@
 import { Link, useSubmit } from 'react-router-dom';
 
-const SidebarFooter = ({ userEmail='admin@admin.com' }) => {
+const SidebarFooter = ({ userEmail }) => {
   const submit = useSubmit();
 
   const handleLogout = () => submit(null, { action: '/logout', method: 'POST' });
