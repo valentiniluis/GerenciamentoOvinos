@@ -3,12 +3,12 @@ const router = express.Router();
 
 const sheepControllers = require('../controllers/sheep');
 const dataValidation = require('../middleware/dataValidation');
-const isAuth = require('../middleware/isAuth');
+const { isAuthenticated, isAuthorized } = require('../middleware/isAuth');
 
 
-router.get('/', isAuth, sheepControllers.getSheep);
+router.get('/', isAuthenticated, isAuthorized('perm_visual_rebanho'), sheepControllers.getSheep);
 
-router.post('/', isAuth, [
+router.post('/', isAuthenticated, isAuthorized('perm_alter_rebanho'), [
   dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
   dataValidation.validateId('brinco_num'),
   dataValidation.validateRace('raca'),
@@ -20,7 +20,7 @@ router.post('/', isAuth, [
 ], sheepControllers.postSheep);
 
 
-router.put('/:brinco', isAuth, [
+router.put('/:brinco', isAuthenticated, isAuthorized('perm_alter_rebanho'), [
   dataValidation.checkOptionalExistingId('brinco_mae', "Brinco de ovelha mãe não está cadastrado"),
   dataValidation.validateIdUpdate('brinco_num'),
   dataValidation.validateId('brinco_num'),
@@ -34,15 +34,15 @@ router.put('/:brinco', isAuth, [
 ], sheepControllers.putSheep);
 
 
-router.delete('/:brinco', isAuth, [
+router.delete('/:brinco', isAuthenticated, isAuthorized('perm_alter_rebanho'), [
   dataValidation.validateParamId('brinco', 'Brinco de ovino não está cadastrado')
 ], sheepControllers.deleteSheep);
 
 
-router.get('/:brinco', isAuth, sheepControllers.getOneSheep);
+router.get('/:brinco', isAuthenticated, isAuthorized('perm_visual_rebanho'), sheepControllers.getOneSheep);
 
 
-router.post('/pesagem', isAuth, [
+router.post('/pesagem', isAuthenticated, isAuthorized('perm_alter_rebanho'), [
   dataValidation.checkExistingId('brinco_num', "Brinco de ovino não está cadastrado"),
   dataValidation.validateLifeStage('etapa_vida'),
   dataValidation.validateWeight('peso'),
@@ -52,7 +52,7 @@ router.post('/pesagem', isAuth, [
 ], sheepControllers.postWeighIn);
 
 
-router.delete('/:brinco/pesagem/:data', isAuth, [
+router.delete('/:brinco/pesagem/:data', isAuthenticated, isAuthorized('perm_alter_rebanho'), [
   dataValidation.validateDeleteWeighIn('Não há pesagem do ovino no dia especificado')
 ], sheepControllers.deleteWeighIn);
 

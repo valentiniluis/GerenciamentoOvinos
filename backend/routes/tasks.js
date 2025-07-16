@@ -3,11 +3,11 @@ const router = express.Router();
 
 const tarefaControllers = require('../controllers/tasks');
 const dataValidation = require('../middleware/dataValidation');
-const isAuth = require('../middleware/isAuth');
+const { isAuthenticated, isAuthorized } = require('../middleware/isAuth');
 
-router.get('/', isAuth, tarefaControllers.getTarefas);
+router.get('/', isAuthenticated, isAuthorized('perm_visual_calendario'), tarefaControllers.getTarefas);
 
-router.post('/', isAuth, [
+router.post('/', isAuthenticated, isAuthorized('perm_alter_calendario'), [
   dataValidation.validateDate('data_criacao'),
   dataValidation.validateDescriptionTask('tarefa_descricao'),
   dataValidation.validateTaskName('tarefa_nome'),
