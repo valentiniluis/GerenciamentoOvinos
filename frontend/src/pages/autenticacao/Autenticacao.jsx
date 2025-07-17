@@ -29,6 +29,14 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const submitData = Object.fromEntries(formData.entries());
     const response = await api.post('/' + mode, submitData);
+
+    if (mode === 'signup') {
+      return {
+        isError: response.data?.isError || false,
+        message: response.data?.message || 'Erro ao cadastrar'
+      }
+    }
+
     const { token, expiration } = response.data;
     storeAuthToken(token, expiration);
     return redirect('/');
