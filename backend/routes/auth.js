@@ -13,6 +13,7 @@ router.post('/login', [
 router.post('/signup', [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
+  userValidation.checkUserNotExists('email'),
   userValidation.validatePassword('senha'),
   userValidation.matchingPasswords('confirmacao_senha', 'senha'),
 ], authController.postStartAccount);

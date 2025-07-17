@@ -13,7 +13,7 @@ const DeleteConfirmation = ({ title, text, confirm, buttonText, className='delet
     <>
       <FormBtn text={buttonText} type="button" className={className} onClick={handleOpen} />
 
-      <Modal show={isModalOpen}>
+      <Modal show={isModalOpen} centered>
         <Modal.Header>
           <Modal.Title>
             {title}

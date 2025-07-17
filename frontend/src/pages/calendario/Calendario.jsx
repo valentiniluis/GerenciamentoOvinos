@@ -20,7 +20,8 @@ const Calendar = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -80,6 +81,7 @@ const Calendar = () => {
             ? { ...ev, title: titulo, start: selectedDate }
             : ev
         ));
+        setSuccessMessage('Tarefa editada com sucesso');
       } catch (err) {
         setErrorMessage(err.response?.data?.message || 'Falha ao editar tarefa');
       }
@@ -100,6 +102,7 @@ const Calendar = () => {
             allDay: true
           },
         ]);
+        setSuccessMessage('Tarefa criada com sucesso');
       } catch (err) {
         setErrorMessage(err.response?.data?.message || 'Falha ao criar tarefa');
       }
@@ -136,6 +139,7 @@ const Calendar = () => {
         initialEvent={selectedEvent}
       />
       <CustomAlert variant="danger" message={errorMessage} onClose={() => setErrorMessage(null)} />
+      <CustomAlert variant="success" message={successMessage} onClose={() => setSuccessMessage(null)} />
     </section>
   );
 };
