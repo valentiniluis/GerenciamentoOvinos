@@ -19,6 +19,7 @@ const Calendar = () => {
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
@@ -28,8 +29,10 @@ const Calendar = () => {
         const eventosData = response.data.map(evento => ({
           title: evento.tarefa_nome,
           start: evento.data_criacao,
-          allDay: true
+          allDay: true,
+          descricao: evento.descricao || 'teste',
         }));
+        console.log(eventosData);
         setEvents(eventosData);
       } catch (err) {
         setErrorMessage(err.response?.data?.message || 'Falha ao carregar eventos');
@@ -43,20 +46,64 @@ const Calendar = () => {
   const handleDateClick = (info) => {
     if (!permissions.perm_alter_calendario) return;
     setSelectedDate(info.dateStr);
+    setSelectedEvent(null);
+    setShowModal(true);
+  };
+
+  const handleEventClick = (info) => {
+    if (!permissions.perm_alter_calendario) return;
+    setSelectedDate(info.event.startStr);
+    setSelectedEvent({
+      tarefa_nome: info.event.title,
+      data_criacao: info.event.startStr,
+      descricao: info.event.extendedProps?.descricao || '',
+    });
     setShowModal(true);
   };
 
   const handleClose = () => setShowModal(false);
 
-  const handleSave = ({ titulo }) => {
-    setEvents((prev) => [
-      ...prev,
-      {
-        title: titulo,
-        start: selectedDate,
-        allDay: true
-      },
-    ]);
+  const handleSave = async ({ titulo, descricao }) => {
+    if (selectedEvent) {
+      // Editar tarefa existente
+      try {
+        await api.put(`/tarefas`, {
+          tarefa_nome_original: selectedEvent.tarefa_nome,
+          data_criacao_original: selectedEvent.data_criacao,
+          tarefa_nome: titulo,
+          descricao,
+          data_criacao: selectedDate,
+          usuario_email: 'admin@admin.com'
+        });
+        setEvents((prev) => prev.map(ev =>
+          ev.title === selectedEvent.tarefa_nome && ev.start === selectedEvent.data_criacao
+            ? { ...ev, title: titulo, start: selectedDate }
+            : ev
+        ));
+      } catch (err) {
+        setErrorMessage(err.response?.data?.message || 'Falha ao editar tarefa');
+      }
+    } else {
+      // Criar nova tarefa
+      try {
+        await api.post('/tarefas', {
+          tarefa_nome: titulo,
+          descricao,
+          data_criacao: selectedDate,
+          usuario_email: 'admin@admin.com'
+        });
+        setEvents((prev) => [
+          ...prev,
+          {
+            title: titulo,
+            start: selectedDate,
+            allDay: true
+          },
+        ]);
+      } catch (err) {
+        setErrorMessage(err.response?.data?.message || 'Falha ao criar tarefa');
+      }
+    }
     setShowModal(false);
   };
 
@@ -78,6 +125,7 @@ const Calendar = () => {
           eventColor="#009099"
           events={events}
           dateClick={handleDateClick}
+          eventClick={handleEventClick}
         />
       </div>
       <EventModal
@@ -85,6 +133,7 @@ const Calendar = () => {
         onClose={handleClose}
         onSave={handleSave}
         initialDate={selectedDate}
+        initialEvent={selectedEvent}
       />
       <CustomAlert variant="danger" message={errorMessage} onClose={() => setErrorMessage(null)} />
     </section>

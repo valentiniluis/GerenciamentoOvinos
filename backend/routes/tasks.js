@@ -13,4 +13,10 @@ router.post('/', isAuthenticated, isAuthorized('perm_alter_calendario'), [
   dataValidation.validateTaskName('tarefa_nome'),
 ], tarefaControllers.postTarefas);
 
+router.put('/', isAuthenticated, isAuthorized('perm_alter_calendario'), [
+  dataValidation.validateDate('data_criacao'),
+  dataValidation.validateDescriptionTask('descricao'),
+  dataValidation.validateTaskName('tarefa_nome'),
+], tarefaControllers.putTarefas);
+
 module.exports = router;

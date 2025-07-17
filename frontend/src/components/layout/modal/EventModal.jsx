@@ -1,36 +1,29 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import api from '../../../api/request';
 import ApiAlert from '../../UI/ApiAlert';
 
-const EventModal = ({ show, onClose, onSave, initialDate }) => {
-  const [titulo, setTitulo] = useState('');
-  const [descricao, setDescricao] = useState('');
+const EventModal = ({ show, onClose, onSave, initialDate, initialEvent }) => {
+  const [titulo, setTitulo] = useState(initialEvent?.tarefa_nome || '');
+  const [descricao, setDescricao] = useState(initialEvent?.descricao || '');
+
+  // Atualiza campos ao abrir modal para edição
+  useEffect(() => {
+    setTitulo(initialEvent?.tarefa_nome || '');
+    setDescricao(initialEvent?.descricao || '');
+  }, [initialEvent, show]);
 
   const handleSave = async () => {
     if (!titulo) return alert('Informe corretamente um título.');
     if (!initialDate) return alert('Data inválida.');
-
-    try {
-      const data = {
-        data_criacao: initialDate,
-        tarefa_nome: titulo,
-        descricao: descricao || null,
-        usuario_email: 'admin@admin.com'
-      }
-      const result = await api.post('/tarefas', data);
-      console.log('Resultado do POST:', result);
-      onSave({ titulo });
-    } catch (err) {
-      console.error('Erro ao salvar tarefa:', err);
-    }
+    onSave({ titulo, descricao });
   };
 
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Nova Tarefa</Modal.Title>
+        <Modal.Title>{initialEvent ? 'Editar Tarefa' : 'Nova Tarefa'}</Modal.Title>
       </Modal.Header>
       <ApiAlert />
       <Modal.Body>
@@ -75,6 +68,3 @@ const EventModal = ({ show, onClose, onSave, initialDate }) => {
 };
 
 export default EventModal;
-
-
-// action...

@@ -6,12 +6,15 @@ import CardPesagensRecentes from '../../components/layout/cards/CardPesagensRece
 import CardQuantidadeSexo from '../../components/layout/cards/CardQuantidadeSexo';
 import CardTarefasPendentes from '../../components/layout/cards/CardTarefasPendentes';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import api from '../../api/request';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 const Dashboard = () => {
+  const permissions = useContext(PermissionsContext);
+
   // Gáfico Animais por finalidade
   const [pieData, setPieData] = useState([]);
 
@@ -115,7 +118,7 @@ const Dashboard = () => {
           {/* Card Tarefas Pendentes */}
           <Col xs={12} lg={12}>
             <div className="h-100">
-              <CardTarefasPendentes tarefas={tarefasPendentes} />
+              <CardTarefasPendentes tarefas={tarefasPendentes} permissao={permissions.perm_visual_calendario}/>
             </div>
           </Col>
         </Row>
