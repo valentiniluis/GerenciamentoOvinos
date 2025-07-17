@@ -1,28 +1,16 @@
 import '../../../../styles/form.css';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import RenderFields from '../RenderFields';
 import FormBtn from '../../../UI/FormBtn';
+import ErrorParagraph from '../../../UI/ErrorParagraph';
 
-import api from '../../../../api/request';
 
 const FormPerfilUsuario = () => {
-  const [userData, setUserData] = useState({});
   const [readMode, setReadMode] = useState(true);
-  const { email } = useParams();
+  const userData = useLoaderData();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await api.get(`/usuarios/${email}`);
-        const data = response.data;
-        setUserData(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchData();
-  }, [email]);
+  if (userData.isError) return <ErrorParagraph error={{ message: userData.message }} />
 
   const rowPadding = 'py-2';
   const fields = [
@@ -84,8 +72,8 @@ const FormPerfilUsuario = () => {
     setReadMode(prevMode => !prevMode);
   };
 
-  const editBtnText = readMode ? 'Editar Dados' : 'Salvar Alterações';
-  const editBtnType = readMode ? 'button' : 'submit';
+  const editBtnText = (readMode) ? 'Editar Dados' : 'Salvar Alterações';
+  const editBtnType = (readMode) ? 'button' : 'submit';
 
   return (
     <form onSubmit={handleEdit} className="medium-input">

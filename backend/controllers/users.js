@@ -115,10 +115,19 @@ exports.deleteUser = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
     const { email } = req.params;
     try {
-        const data = await db.one(
-            "SELECT * FROM usuario WHERE email = $1;",
-            [email]
-        );
+        const data = await db.one("SELECT * FROM usuario AS us WHERE us.email = $1;", email);
+        res.status(200).json(data);
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
+exports.getProfile = async (req, res, next) => {
+    try {
+        const { userEmail } = req;
+        const data = await db.one("SELECT * FROM usuario AS us WHERE us.email = $1;", userEmail);
         res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;

@@ -38,26 +38,28 @@ const Sidebar = ({ user, email }) => {
     <>
       <nav className="sidebar d-none d-md-flex">
         {/* Sidebar padrão para telas médias/grandes */}
-        <div>
-          <SidebarHeader user={user} />
-          <div id="nav-options-container" className="row pt-3 m-0">
-            {NAVIGATION_OPTIONS.map((option) => {
-              const { permissionsRequired, props } = option;
-              const authorized = (permissionsRequired.length === 0) ||
-                permissionsRequired.some(permReq => permissions[permReq] == true);
-              if (!authorized) return null;
-              return (
-                <NavOption
-                  key={props.name}
-                  active={activeOption === props.name}
-                  selectOption={() => handleSelectOption(props)}
-                  {...props}
-                />
-              )
-            })}
+        <div id="sidebar-container">
+          <div>
+            <SidebarHeader user={user} />
+            <div id="nav-options-container" className="row pt-3 m-0">
+              {NAVIGATION_OPTIONS.map((option) => {
+                const { permissionsRequired, props } = option;
+                const authorized = (permissionsRequired.length === 0) ||
+                  permissionsRequired.some(permReq => permissions[permReq] == true);
+                if (!authorized) return null;
+                return (
+                  <NavOption
+                    key={props.name}
+                    active={activeOption === props.name}
+                    selectOption={() => handleSelectOption(props)}
+                    {...props}
+                  />
+                )
+              })}
+            </div>
           </div>
+          <SidebarFooter userEmail={email} />
         </div>
-        <SidebarFooter userEmail={email} />
       </nav>
 
       {/* Navbar responsivo para telas pequenas */}

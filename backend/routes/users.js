@@ -16,6 +16,8 @@ router.post('/', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.checkUserNotExists('email')
 ], usersControllers.createUser);
 
+router.get('/perfil', isAuthenticated, usersControllers.getProfile);
+
 router.get('/:email', isAuthenticated, isAuthorized('perm_visual_grupos'), usersControllers.getUser);
 
 router.put('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
@@ -28,5 +30,6 @@ router.put('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'),
 router.delete('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateParamsEmail('email')
 ], usersControllers.deleteUser);
+
 
 module.exports = router;

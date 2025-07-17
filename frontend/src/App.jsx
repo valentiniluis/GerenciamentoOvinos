@@ -3,13 +3,13 @@ import { RouterProvider } from 'react-router-dom';
 
 import ListarRebanho from './pages/rebanho/ListagemRebanho.jsx';
 import ListagemUsuarios from './pages/usuarios/ListagemUsuarios.jsx';
-import PerfilUsuario from './pages/usuarios/PerfilUsuario.jsx';
 import ListagemGrupos from './pages/grupos/ListagemGrupos.jsx';
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import RootLayout, { loader as rootLoader } from './components/layout/root/RootLayout.jsx';
+import PerfilUsuario, { loader as profileLoader } from './pages/usuarios/PerfilUsuario.jsx';
 import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
 import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
 import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
@@ -29,12 +29,12 @@ import { action as logoutAction, loader as logoutLoader } from './pages/autentic
 const router = createBrowserRouter([
   { path: '/entrar', element: <Autenticacao />, action: authenticateAction },
   {
-    path: '/',
+    path: '',
     element: <RootLayout />,
     loader: rootLoader,
     children: [
       { index: true, element: <Dashboard /> },
-      { path: '/calendario', element: <Calendario /> },
+      { path: 'calendario', element: <Calendario /> },
       {
         path: 'rebanho',
         children: [
@@ -62,8 +62,7 @@ const router = createBrowserRouter([
           {
             path: ':email',
             children: [
-              { index: true, element: <PerfilUsuario /> },
-              { path: 'editar', element: <EditarUsuario />, action: submitUserAction, loader: singleUserLoader },
+              { index: true, element: <EditarUsuario />, action: submitUserAction, loader: singleUserLoader },
               { path: 'excluir', action: deleteUserAction }
             ]
           },
@@ -77,14 +76,15 @@ const router = createBrowserRouter([
           {
             path: ':nome',
             children: [
-              { path: 'editar', element: <EditarGrupo />, action: submitGroupAction, loader: singleGroupLoader },
+              { index: true, element: <EditarGrupo />, action: submitGroupAction, loader: singleGroupLoader },
               { path: 'excluir', action: deleteGroupAction }
             ]
           }
         ]
       },
-      { path: '/relatorio', element: <Relatorio /> },
-      { path: '/logout', action: logoutAction, loader: logoutLoader },
+      { path: 'perfil', element: <PerfilUsuario />, loader: profileLoader },
+      { path: 'relatorio', element: <Relatorio /> },
+      { path: 'logout', action: logoutAction, loader: logoutLoader },
       { path: '*', element: <ErrorPage title="Página não encontrada" /> }
     ]
   },

@@ -2,6 +2,8 @@ import '../../styles/form.css';
 import PageTitle from '../../components/UI/PageTitle';
 import FormPerfilUsuario from '../../components/layout/forms/usuarios/FormPerfilUsuario';
 
+import api from '../../api/request.js';
+
 
 const PerfilUsuario = () => {
   return (
@@ -15,3 +17,16 @@ const PerfilUsuario = () => {
 };
 
 export default PerfilUsuario;
+
+
+export const loader = async () => {
+  try {
+    const response = await api.get('/usuarios/perfil');
+    return response.data;
+  } catch (err) {
+    return {
+      isError: true,
+      message: err.response?.data?.message || 'Falha carregar o perfil'
+    }
+  }
+}

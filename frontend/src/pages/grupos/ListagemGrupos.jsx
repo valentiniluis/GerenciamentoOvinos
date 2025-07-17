@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
 import FiltroGrupos from '../../components/layout/forms/grupos/FiltroGrupos';
-import editIcon from '/edit_icon.svg';
 import ErrorParagraph from '../../components/UI/ErrorParagraph';
 import ErrorPage from '../ErrorPage';
 import { PermissionsContext } from '../../store/permissions-context';
+import editIcon from '/edit_icon.svg';
+import editDisabledIcon from '/edit_disabled.svg';
 
 
 const ListagemGrupos = () => {
@@ -18,13 +19,18 @@ const ListagemGrupos = () => {
     if (data?.isError) return setErrorMessage(data.message);
     let newData = [...data];
     if (permissions.perm_alter_usuario_grupo) {
-      newData = data.map(group => ({
-        ...group, editar: (
-          <Link to={`/grupo/${group.nome}/editar`}>
-            <img src={editIcon} alt="Ícone de editar grupo" className='edit-icon' />
-          </Link>
-        )
-      }));
+      newData = data.map(group => {
+        const isAdmin = (group.nome === 'Administrador');
+        const linkPath = (isAdmin) ? null : '/grupo/' + group.nome;
+        const linkIcon = (isAdmin) ? editDisabledIcon : editIcon;
+        return {
+          ...group, editar: (
+            <Link to={linkPath}>
+              <img src={linkIcon} alt="Ícone de editar grupo" className='edit-icon' />
+            </Link>
+          )
+        }
+      })
     }
     setGroupsData(newData);
   }, [permissions.perm_alter_usuario_grupo]);
@@ -50,11 +56,10 @@ const ListagemGrupos = () => {
               <FiltroGrupos updateGroupsData={updateGroupsData} />
             </section>
             <div className="row py-3">
-              {groupsData.length > 0 ? (
-                <CustomTable schema={SCHEMA} data={groupsData} uniqueCol="nome" />
-              ) : (
-                <h3 className="text-center">Nenhuma informação cadastrada</h3>
-              )}
+              {groupsData.length > 0
+                ? <CustomTable schema={SCHEMA} data={groupsData} uniqueCol="nome" /> 
+                : <ErrorParagraph error={{ message: 'Nenhum grupo cadastrado' }} />
+              }
             </div>
           </>
         )}

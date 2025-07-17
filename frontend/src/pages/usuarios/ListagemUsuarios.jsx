@@ -8,6 +8,7 @@ import ErrorParagraph from '../../components/UI/ErrorParagraph';
 import ErrorPage from '../ErrorPage';
 import { PermissionsContext } from '../../store/permissions-context';
 import editIcon from '/edit_icon.svg';
+import editDisabledIcon from '/edit_disabled.svg';
 
 
 const ListagemUsuarios = () => {
@@ -20,13 +21,18 @@ const ListagemUsuarios = () => {
     if (data?.isError) return setErrorMessage(data.message);
     let newData = [...data];
     if (permissions.perm_alter_usuario_grupo) {
-      newData = newData.map(user => ({
-        ...user, editar: (
-          <Link to={`/usuario/${user.email}/editar`}>
-            <img src={editIcon} alt="Ícone de editar usuário" className='edit-icon' />
-          </Link>
-        )
-      }));
+      newData = newData.map(user => {
+        const isAdmin = (user.grupo_nome === 'Administrador');
+        const linkPath = (isAdmin) ? null : '/usuario/' + user.email;
+        const linkIcon = (isAdmin) ? editDisabledIcon : editIcon;
+        return {
+          ...user, editar: (
+            <Link to={linkPath}>
+              <img src={linkIcon} alt="Ícone de editar usuário" className='edit-icon' />
+            </Link>
+          )
+        }
+      });
     }
     setUsersData(newData);
   }, [permissions.perm_alter_usuario_grupo]);
