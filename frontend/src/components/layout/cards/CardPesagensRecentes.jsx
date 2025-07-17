@@ -1,6 +1,18 @@
 import { Card, Table } from 'react-bootstrap';
 
-const CardPesagensRecentes = ({ pesagens }) => {
+const CardPesagensRecentes = ({ pesagens, permissao }) => {
+  if (!permissao) return null;
+  if (!pesagens || pesagens.length === 0) {
+    return (
+      <Card className="mb-4">
+        <Card.Body>
+          <Card.Title>Últimas Pesagens</Card.Title>
+          <p className="text-muted">Nenhum dado disponível</p>
+        </Card.Body>
+      </Card>
+    );
+  }
+  
   return (
     <Card className="mb-4">
       <Card.Body>

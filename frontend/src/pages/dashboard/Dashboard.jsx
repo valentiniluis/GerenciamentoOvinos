@@ -1,10 +1,10 @@
 import PageTitle from '../../components/UI/PageTitle';
-import CardEstadoSaude from '../../components/layout/cards/CardQuantidadeRaca';
+import CardQuantidadeRaca from '../../components/layout/cards/CardQuantidadeRaca';
 import CardTiposFuncao from '../../components/layout/cards/CardTiposFuncao';
 import CardTotalAnimais from '../../components/layout/cards/CardTotalAnimais';
 import CardPesagensRecentes from '../../components/layout/cards/CardPesagensRecentes';
 import CardQuantidadeSexo from '../../components/layout/cards/CardQuantidadeSexo';
-import CardTarefasPendentes from '../../components/layout/cards/CardTarefasPendentes';
+import CardTarefasPendentes from '../../components/layout/cards/CardTarefasAgendadas.jsx';
 
 import { useEffect, useState, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -18,7 +18,7 @@ const Dashboard = () => {
   // Gáfico Animais por finalidade
   const [pieData, setPieData] = useState([]);
 
-  // Gráfico Saúde animal
+  // Gráfico Quantidade por Raça
   const [barLabels, setBarLabels] = useState([]);
   const [barSeries, setBarSeries] = useState([]);
 
@@ -83,35 +83,35 @@ const Dashboard = () => {
           {/* Card Total Animais */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardTotalAnimais xLabels={lineXLabels} series={lineSeries} />
+              <CardTotalAnimais xLabels={lineXLabels} series={lineSeries} permissao={permissions.perm_visual_rebanho}/>
             </div>
           </Col>
 
           {/* Card Animais por finalidade */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardTiposFuncao data={pieData} />
+              <CardTiposFuncao data={pieData} permissao={permissions.perm_visual_rebanho}/>
             </div>
           </Col>
 
-          {/* Card Estado Saúde */}
+          {/* Card Quantidade Raça */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardEstadoSaude labels={barLabels} series={barSeries} />
+              <CardQuantidadeRaca labels={barLabels} series={barSeries} permissao={permissions.perm_visual_rebanho}/>
             </div>
           </Col>
 
           {/* Card Quantidade por Sexo */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardQuantidadeSexo data={sexoData} />
+              <CardQuantidadeSexo data={sexoData} permissao={permissions.perm_visual_rebanho}/>
             </div>
           </Col>
 
           {/* Card Pesagens Recentes */}
           <Col xs={12} lg={8}>
             <div className="h-100">
-              <CardPesagensRecentes pesagens={ultimasPesagens} />
+              <CardPesagensRecentes pesagens={ultimasPesagens} permissao={permissions.perm_visual_rebanho}/>
             </div>
           </Col>
 

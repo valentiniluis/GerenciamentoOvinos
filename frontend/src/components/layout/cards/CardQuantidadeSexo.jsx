@@ -1,7 +1,19 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Card } from 'react-bootstrap';
 
-export default function CardQuantidadeSexo({ data }) {
+export default function CardQuantidadeSexo({ data, permissao }) {
+  if (!permissao) return null;
+  if (!data || data.length === 0) {
+    return (
+      <Card className="mb-2">
+        <Card.Header>Quantidade por Sexo</Card.Header>
+        <Card.Body>
+          <p className="text-muted">Nenhum dado disponível</p>
+        </Card.Body>
+      </Card>
+    );
+  }
+
   const formattedData =
     data?.map((item) => ({
       id: item.sexo,
