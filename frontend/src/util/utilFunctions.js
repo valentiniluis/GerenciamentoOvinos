@@ -27,7 +27,9 @@ export const calculateWeightChange = (weightData) => {
 }
 
 export const dateFromLocaleToISO = (dateString) => {
-  const date = new Date(dateString);
+  const [day, month, year] = dateString.split('/');
+  const formatedDate = [year, month, day].join('-');
+  const date = new Date(formatedDate);
   const dateISO = date.toISOString().split('T')[0];
   return dateISO;
 }

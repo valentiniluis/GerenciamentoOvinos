@@ -1,19 +1,42 @@
+import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+import { PermissionsContext } from '../../../store/permissions-context';
+
+const OptionWrapper = ({ children, hasSubmenu, name, selectOption, path }) => {
+  const handleClick = () => selectOption(name);
+
+  if (!hasSubmenu) return (
+    <Link to={path} className='nav-option gap-3 option-link' onClick={handleClick}>
+      {children}
+    </Link>
+  );
+
+  return (
+    <div className="d-flex gap-3 nav-option" onClick={handleClick}>
+      {children}
+    </div>
+  );
+}
 
 
 const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuClick }) => {
-  const currentUrl = useLocation().pathname;
-  const hasSubmenu = submenu !== undefined;
+  const location = useLocation();
+  const permissions = useContext(PermissionsContext);
 
-  let cssClass = 'row justify-content-center w-100 m-0 px-0 py-4';
+  const currentUrl = location.pathname;
+  const hasSubmenu = (submenu !== undefined);
+
+  let cssClass = 'row m-0 px-0 py-3';
   if (active) cssClass += ' active-nav';
-  let navElement = <Link to={path} className="option-text m-0">{name}</Link>;
+
   let submenuLinks;
-
-  if (hasSubmenu) navElement = <p className="option-text m-0">{name}</p>;
-
   if (hasSubmenu && active) {
-    submenuLinks = submenu.map((sub) => {
+    submenuLinks = submenu.map(sub => {
+      const { permissionRequired } = sub;
+      const authorized = permissions[permissionRequired] == true;
+      if (!authorized) return null;
+
       const subpath = `${path}/${sub.subpath}`;
       const isActive = (subpath === currentUrl);
       let cssClass = "submenu-item d-block m-0";
@@ -30,13 +53,13 @@ const NavOption = ({ name, icon, active, selectOption, path, submenu, onSubmenuC
   return (
     <>
       <div className={cssClass}>
-        <div className="opt-cont d-flex gap-4 nav-option" onClick={() => selectOption(name)}>
+        <OptionWrapper hasSubmenu={hasSubmenu} name={name} selectOption={selectOption} path={path}>
           <img className="option-icon" src={icon} alt={`${name} Sidebar Icon`} />
-          {navElement}
-        </div>
+          <p className="option-text">{name}</p>
+        </OptionWrapper>
       </div>
       {active && hasSubmenu && (
-        <div className="submenu text-center">
+        <div className="submenu">
           {submenuLinks}
         </div>
       )}

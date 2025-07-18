@@ -1,22 +1,35 @@
+import { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import '../../styles/form.css';
+import ReturnLink from '../../components/UI/ReturnLink.jsx';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import FormOvino from '../../components/layout/forms/rebanho/FormOvino.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
+import ErrorPage from '../ErrorPage.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 import api from '../../api/request';
 
 
 const EditarOvino = () => {
+  const permissions = useContext(PermissionsContext);
   const data = useLoaderData();
 
-  if (data && data.isError) {
-    return <ErrorParagraph error={data} />
-  }
+  if (!permissions.perm_alter_rebanho) return <ErrorPage title="Usuário não autorizado" />
+  if (data && data.isError) return <ErrorParagraph error={data} />
+
+  const pageTitle = 'Editar Ovino N° ' + data.brinco_num;
+  const title = (
+    <>
+      <ReturnLink path="/rebanho/listar" />
+      <span className='title-span'>{pageTitle}</span>
+    </>
+  );
+
 
   return (
     <>
-      <PageTitle title={`Editar Ovino N° ${data.brinco_num}`} />
+      <PageTitle title={title} />
       <div className="form-cont flex-center">
         <FormOvino dados={data} metodo="PUT" />
       </div>

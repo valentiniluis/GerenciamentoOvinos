@@ -18,7 +18,9 @@ INSERT INTO usuario (
     grupo_nome, 
     data_cadastro
 ) VALUES
-('admin@admin.com', 'Admin', 'senhaAdmin', 'Administrador', '2022-01-01');
+('admin@admin.com', 'Admin', '$2b$10$p7nZo3pyzUrkJ5DL3Cmtd.f6pECeshlbh3Yuc7FYyWzcauZrEMlBa', 'Administrador', '2022-01-01');
+-- Senha inserida -> 'Senha123'
+-- Todas as senhas são encriptadas durante login/cadastro
 
 INSERT INTO ovino (
     brinco_num, 

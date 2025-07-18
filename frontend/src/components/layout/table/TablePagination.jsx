@@ -3,6 +3,8 @@ import classes from '../../../styles/TablePagination.module.css';
 
 const TablePagination = ({ pages, updatePages }) => {
   const { current, max } = pages;
+  if (max === 1) return null;
+
   const previousPage = current - 1;
   const nextPage = current + 1;
 
@@ -15,9 +17,11 @@ const TablePagination = ({ pages, updatePages }) => {
           <li className={classes.pageItems}>
             <button onClick={() => updatePages(FIRST, max)}>{FIRST}</button>
           </li>
-          <li>
-            <span>. . .</span>
-          </li>
+          { previousPage - 1 > FIRST ? (
+            <li>
+              <span>. . .</span>
+            </li>
+            ) : null }
         </>
       ) : null}
       {previousPage >= 1 ? (
@@ -41,9 +45,11 @@ const TablePagination = ({ pages, updatePages }) => {
       ) : null}
       {nextPage < max ? (
         <>
-          <li>
-            <span>. . .</span>
-          </li>
+          { nextPage + 1 < max ? (
+            <li>
+              <span>. . .</span>
+            </li>
+            ) : null }
           <li className={classes.pageItems}>
             <button onClick={() => updatePages(max, max)}>{max}</button>
           </li>

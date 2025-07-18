@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
+const { getPermissions } = require('../util/permissions');
 require('dotenv').config();
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS;
@@ -18,7 +19,8 @@ exports.postStartAccount = async (req, res, next) => {
   }
 
   try {
-    const { nome, email, senha, data_cadastro } = req.body;
+    const data_cadastro = new Date().toISOString().split('T')[0];
+    const { nome, email, senha } = req.body;
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(senha, salt);
     await db.none(
@@ -26,7 +28,7 @@ exports.postStartAccount = async (req, res, next) => {
             VALUES ($1, $2, $3, $4, $5);",
       [email, nome, hashedPassword, "Administrador", data_cadastro]
     );
-    res.status(201).json({ success: true });
+    res.status(201).json({ success: true, message: 'Conta criada com sucesso' });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     throw err;
@@ -64,8 +66,22 @@ exports.postLogin = async (req, res, next) => {
       { expiresIn: JWT_EXPIRE_TIME }
     );
 
-    res.status(200).json({ success: true, token, userEmail: userData.email });
+    res.status(200).json({ success: true, token, expiration: JWT_EXPIRE_TIME, userEmail: userData.email });
 
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+}
+
+
+exports.getUserPermissions = async (req, res, next) => {
+  // usamos as informações extraídas do usuário depois de checar se seu jwt é valido
+  // (extraído por meio do middleware isAuth)
+  try {
+    const { userEmail } = req;
+    const result = await getPermissions(userEmail);
+    res.status(200).json({ success: true, data: result });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);

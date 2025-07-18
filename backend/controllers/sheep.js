@@ -1,11 +1,15 @@
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
 
+// mapeia um tipo de entrada para uma condição WHERE
+const queryWhereOperators = {
+    abatido: '='
+};
+
 
 exports.getSheep = async (req, res, next) => {
     const page = req.query.page || 1;
-    const MAX_PER_PAGE = 1;
-
+    const MAX_PER_PAGE = 12;
     const queryArgs = [
         "SELECT \
             ov.brinco_num, ov.brinco_mae, ov.raca, ov.sexo, ov.finalidade, ov.peso_nascimento, \
@@ -23,13 +27,16 @@ exports.getSheep = async (req, res, next) => {
         const conditions = filters.map((keyValuePair, index) => {
             const firstVariableNumber = (index * 2) + 1;
             queryValues = queryValues.concat(keyValuePair);
-            return `$${firstVariableNumber}:name ILIKE '%$${firstVariableNumber + 1}#%'`;
+            const column = keyValuePair[0];
+            const operator = queryWhereOperators[column] || 'ILIKE';
+            let value = `$${firstVariableNumber + 1}`;
+            if (operator === 'ILIKE') value = `'%${value}#%'`
+            return `$${firstVariableNumber}:name ${operator} ${value}`;
         });
         queryArgs[0] += conditions.join(' AND ');
         queryArgs.push(queryValues);
     }
     queryArgs[0] += ';';
-
     try {
         const data = await db.manyOrNone(...queryArgs);
         const totalRows = data.length;
@@ -38,7 +45,6 @@ exports.getSheep = async (req, res, next) => {
         const paginatedData = data.slice(startIndex, endIndex);
         const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
         res.status(200).json({ sheep: paginatedData, pages: totalPages });
-        // res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -97,6 +103,62 @@ exports.postSheep = async (req, res, next) => {
 }
 
 
+exports.putSheep = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error(errors.array()[0].msg)
+        error.statusCode = 422;
+        throw error;
+    }
+
+    try {
+        const { brinco_num: novo_brinco, raca, sexo, data_nascimento, finalidade, peso_nascimento, abatido } = req.body;
+        const brinco_mae = (!req.body.comprado) ? req.body.brinco_mae : null;
+        const { brinco: antigo_brinco } = req.params;
+        await db.none(
+            "UPDATE ovino \
+            SET \
+            brinco_num = $1, \
+            brinco_mae = $2, \
+            raca = $3, \
+            sexo = $4, \
+            peso_nascimento = $5, \
+            data_nascimento = $6, \
+            finalidade = $7, \
+            abatido = $8 \
+            WHERE brinco_num = $9;",
+            [novo_brinco, brinco_mae, raca, sexo, peso_nascimento, data_nascimento, finalidade, abatido, antigo_brinco]
+        );
+        res.status(200).json({ success: true, message: "Ovino editado com sucesso" });
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
+exports.deleteSheep = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error(errors.array()[0].msg);
+        error.statusCode = 422;
+        throw error;
+    }
+
+    try {
+        const { brinco } = req.params;
+        await db.none(' \
+            DELETE FROM ovino \
+            WHERE ovino.brinco_num = $1;',
+            [brinco]);
+        res.status(200).json({ message: 'Ovino excluído com sucesso' });
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
 exports.postWeighIn = async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -123,54 +185,26 @@ exports.postWeighIn = async (req, res, next) => {
 }
 
 
-exports.putSheep = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const error = new Error(errors.array()[0].msg)
+exports.deleteWeighIn = async (req, res, next) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const error = new Error(result.array()[0].msg)
         error.statusCode = 422;
         throw error;
     }
 
     try {
-        const { raca, sexo, data_nascimento, finalidade, peso_nascimento, abatido } = req.body;
-        const brinco_mae = (!req.body.comprado) ? req.body.brinco_mae : null;
-        const { brinco } = req.params;
+        const { brinco, data } = req.params;
+        const [date, month, year] = data.split('-');
+        const formattedDate = [year, month, date].join('-');
+
         await db.none(
-            "UPDATE ovino \
-            SET \
-            brinco_mae = $2, \
-            raca = $3, \
-            sexo = $4, \
-            peso_nascimento = $5, \
-            data_nascimento = $6, \
-            finalidade = $7, \
-            abatido = $8 \
-            WHERE brinco_num = $1;",
-            [brinco, brinco_mae, raca, sexo, peso_nascimento, data_nascimento, finalidade, abatido]
+            "DELETE FROM pesagem \
+            WHERE ovino_brinco = $1 \
+            AND data_pesagem = $2;",
+            [brinco, formattedDate]
         );
-        res.status(200).json({ success: true, message: "Ovino editado com sucesso" });
-    } catch (err) {
-        if (!err.statusCode) err.statusCode = 500;
-        throw err;
-    }
-}
-
-
-exports.deleteSheep = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const error = new Error(errors.array()[0].msg);
-        error.statusCode = 422;
-        throw error;
-    }
-
-    try {
-        const { brinco } = req.params;
-        await db.none(' \
-            DELETE FROM ovino \
-            WHERE ovino.brinco_num = $1;',
-        [brinco]);
-        res.status(200).json({ message: 'Ovino excluído com sucesso' });
+        res.status(201).json({ success: true, message: "Pesagem excluída com sucesso" });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

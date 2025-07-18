@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const config = require('./config/validation-config');
 const db = require('../model/database');
 
@@ -91,4 +91,60 @@ exports.validateLogin = (fieldName) => {
   return body(fieldName, 'E-mail ou senha incorreto(s)')
     .trim()
     .isEmail();
+}
+
+
+exports.validateEmailUpdate = (fieldname, message) => {
+  return body(fieldname)
+    .custom(async (value, { req }) => {
+      const { email: currentEmail } = req.params;
+      if (value === currentEmail) return true;
+      return await db.none('SELECT 1 FROM usuario AS us WHERE us.email = $1;', value);
+    })
+    .withMessage(message);
+}
+
+
+exports.validateParamsEmail = (fieldname) => {
+  return param(fieldname)
+    .custom(async (value) => {
+      return await db.one('SELECT 1 FROM usuario AS us WHERE us.email = $1;', value);
+    })
+    .withMessage('E-mail não cadastrado');
+}
+
+
+exports.validateGroupUpdate = (fieldname) => {
+  return body(fieldname)
+    .custom((novo_nome, { req }) => {
+      const { nome: antigo_nome } = req;
+      if (novo_nome === antigo_nome) return true;
+      return db.none('SELECT 1 FROM grupos AS gp WHERE gp.nome = $1;', novo_nome);
+    })
+    .withMessage('Nome de grupo inserido está em uso');
+}
+
+
+exports.validateParamsGroup = (fieldname, message) => {
+  return param(fieldname)
+    .custom((grupo) => {
+      return db.one('SELECT 1 FROM grupo AS gp WHERE gp.nome = $1;', grupo);
+    })
+    .withMessage(message);
+}
+
+
+// por enquanto, a aplicação só suporta um administrador
+exports.checkFirstAdmin = (req, res, next) => {
+  try {
+    const admins = db.oneOrNone("SELECT 1 FROM usuario AS us WHERE us.grupo_nome = 'Administrador';");
+    if (admins.length > 0) {
+      const error = new Error('Já existe um administrador do rebanho. Para prosseguir, o administrador deve criar uma conta para você e informar suas credenciais para entrada.');
+      error.statusCode = 400;
+    }
+    next();
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    throw err;
+  }
 }

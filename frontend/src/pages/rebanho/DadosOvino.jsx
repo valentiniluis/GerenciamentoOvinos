@@ -1,28 +1,64 @@
-import { useParams, useLoaderData } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import { useParams, useLoaderData, useFetcher } from 'react-router-dom';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
 import GanhoPesoDiario from '../../components/UI/GanhoPesoDiario.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
+import DeleteIcon from '../../components/UI/DeleteIcon.jsx';
+import CustomAlert from '../../components/UI/CustomAlert.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
 
 import api from '../../api/request';
-
-
-const SCHEMA = [
-  ['ovino_brinco', 'Nº do Brinco'],
-  ['etapa_vida', 'Etapa da Vida'],
-  ['peso', 'Peso (kg)'],
-  ['data_pesagem', 'Data da Pesagem'],
-  ['observacao', 'Observação']
-];
+import ErrorPage from '../ErrorPage.jsx';
 
 
 const DadosOvino = () => {
+  const permissions = useContext(PermissionsContext);
+  const fetcher = useFetcher();
   const { brinco } = useParams();
-
+  const [deleteMessage, setDeleteMessage] = useState({ message: null, variant: null });
   const response = useLoaderData();
-  if (response.isError) return <ErrorParagraph error={response} />
 
-  const sheepData = response.data;
+  useEffect(() => {
+    setDeleteMessage({
+      variant: fetcher.data?.isError ? 'danger' : 'success',
+      message: fetcher.data?.message
+    });
+  }, [fetcher.data]);
+
+  if (!permissions.perm_visual_rebanho) return <ErrorPage title="Usuário não autorizado" />
+
+  if (response.isError) return <ErrorParagraph error={response} />
+  let sheepData = response.data;
+
+  const SCHEMA = [
+    ['ovino_brinco', 'Nº do Brinco'],
+    ['etapa_vida', 'Etapa da Vida'],
+    ['peso', 'Peso (kg)'],
+    ['data_pesagem', 'Data da Pesagem'],
+    ['observacao', 'Observação']
+  ];
+
+  const handleDelete = (dataPesagem) => {
+    const dataFormatada = dataPesagem.split('/').join('-');
+    fetcher.submit(null, { action: `/rebanho/${brinco}/pesagem/${dataFormatada}`, method: 'DELETE' });
+  }
+
+  const handleCloseMessage = () => setDeleteMessage({ variant: null, message: null });
+
+  if (permissions.perm_alter_rebanho) {
+    sheepData = sheepData.map(pesagem => ({
+      ...pesagem, excluir: (
+        <DeleteIcon
+          confirm={() => handleDelete(pesagem.data_pesagem)}
+          disabled={pesagem.etapa_vida === 'Nascimento'}
+          modalTitle="Confirmar Exclusão da Pesagem"
+          modalText="Os dados da pesagem serão excluídos permanentemente. Você tem certeza?"
+        />
+      )
+    }));
+    SCHEMA.push(['excluir', 'Excluir']);
+  }
 
   return (
     <>
@@ -34,13 +70,15 @@ const DadosOvino = () => {
           : <ErrorParagraph error={{ message: 'Nenhuma pesagem cadastrada' }} />
         }
       </section>
-      <section className="limit-600">
-        <h2>Ganho de Peso Diário</h2>
-        {sheepData.length > 2
-          ? <GanhoPesoDiario data={sheepData} />
-          : <ErrorParagraph error={{ message: 'O ovino não tem o mínimo de 2 pesagens cadastradas para o cálculo do GPD.' }} />
-        }
-      </section>
+      {sheepData.length >= 2
+        ? <GanhoPesoDiario data={sheepData} />
+        : <ErrorParagraph error={{ message: 'O ovino não tem o mínimo de 2 pesagens cadastradas para o cálculo do GPD.' }} />
+      }
+      <CustomAlert
+        variant={deleteMessage.variant}
+        message={deleteMessage.message}
+        onClose={handleCloseMessage}
+      />
     </>
   );
 }

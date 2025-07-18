@@ -1,10 +1,21 @@
-import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Card } from 'react-bootstrap';
 
-export default function BasicPie({ data }) {
+export default function CardTiposFuncao({ data, permissao }) {
+  if (!permissao) return null;
+  if (!data || data.length === 0) {
+    return (
+      <Card className="mb-2">
+        <Card.Header>Animais por finalidade</Card.Header>
+        <Card.Body>
+          <p className="text-muted">Nenhum dado disponível</p>
+        </Card.Body>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="mb-4">
+    <Card className="mb-2">
       <Card.Header>Animais por finalidade</Card.Header>
       <Card.Body>
         <PieChart
@@ -17,8 +28,7 @@ export default function BasicPie({ data }) {
               })),
             },
           ]}
-          width={200}
-          height={200}
+          height={150}
         />
       </Card.Body>
     </Card>

@@ -5,10 +5,10 @@ import FILTER_TYPES from "../../../../util/filterTypes.js";
 import api from '../../../../api/request.js';
 
 
-const FiltroOvinos = ({ updateSheepData, page, updatePages }) => {
+const FiltroOvinos = ({ updateData, page, updatePages }) => {
   const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
   const noFilterApplied = (filter.filterProp === 'nenhuma');
-  
+
   const inputFilter = [{
     wrapper: {
       size: 'large-input'
@@ -33,8 +33,7 @@ const FiltroOvinos = ({ updateSheepData, page, updatePages }) => {
   useEffect(() => {
     async function fetchData() {
       const { filterProp, filterValue } = filter;
-      const hasFilterSet = (filterProp !== 'nenhuma');
-      if (hasFilterSet && !filterValue) return;
+      const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
       try {
         let url = '/rebanho?page=' + page;
         if (hasFilterSet) {
@@ -43,14 +42,17 @@ const FiltroOvinos = ({ updateSheepData, page, updatePages }) => {
         }
         const response = await api.get(url);
         const data = response.data;
-        updateSheepData(data.sheep);
+        updateData(data.sheep);
         updatePages(page, data.pages);
       } catch (err) {
-        console.log(err);
+        updateData({
+          isError: true,
+          message: err.response.data.message || 'Falha ao extrair ovinos'
+        });
       }
     }
     fetchData();
-  }, [filter, updateSheepData, page, updatePages]);
+  }, [filter, updateData, page, updatePages]);
 
   const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[filter.filterProp]
 

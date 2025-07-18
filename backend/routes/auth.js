@@ -3,21 +3,21 @@ const router = express.Router();
 
 const authController = require('../controllers/auth');
 const userValidation = require('../middleware/userValidation');
-const dataValidation = require('../middleware/dataValidation');
+const { isAuthenticated } = require('../middleware/isAuth');
 
 
 router.post('/login', [
-  userValidation.validateLogin('email')],
-  authController.postLogin);
+  userValidation.validateLogin('email')
+], authController.postLogin);
 
-router.post('/cadastro', [
+router.post('/signup', userValidation.checkFirstAdmin, [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
+  userValidation.checkUserNotExists('email'),
   userValidation.validatePassword('senha'),
   userValidation.matchingPasswords('confirmacao_senha', 'senha'),
-  dataValidation.validateDate('data_cadastro')
-  ],
-  authController.postStartAccount);
+], authController.postStartAccount);
 
+router.get('/permissoes', isAuthenticated, authController.getUserPermissions);
 
 module.exports = router;

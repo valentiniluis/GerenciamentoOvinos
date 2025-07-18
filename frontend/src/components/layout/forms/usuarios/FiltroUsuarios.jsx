@@ -5,7 +5,7 @@ import FILTER_TYPES from "../../../../util/filterTypes.js";
 import api from '../../../../api/request.js';
 
 
-const FiltroUsuarios = ({ updateUsersData }) => {
+const FiltroUsuarios = ({ updateData, page, updatePages }) => {
   const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
   const noFilterApplied = (filter.filterProp === 'nenhuma');
 
@@ -29,23 +29,26 @@ const FiltroUsuarios = ({ updateUsersData }) => {
   useEffect(() => {
     async function fetchData() {
       const { filterProp, filterValue } = filter;
-      const hasFilterSet = (filterProp !== 'nenhuma');
-      if (hasFilterSet && !filterValue) return;
+      const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
       try {
-        let url = '/usuarios';
+        let url = '/usuarios?page=' + page;
         if (hasFilterSet) {
-          const queryParam = `?${filterProp}=${filterValue}`;
+          const queryParam = `&${filterProp}=${filterValue}`;
           url += queryParam;
         }
         const response = await api.get(url);
         const data = response.data;
-        updateUsersData(data);
+        updateData(data.users);
+        updatePages(page, data.pages);
       } catch (err) {
-        console.log(err);
+        updateData({ 
+          isError: true, 
+          message: err.response.data.message || 'Não foi possível extrair usuários'
+        });
       }
     }
     fetchData();
-  }, [filter, updateUsersData]);
+  }, [filter, updateData, page, updatePages]);
 
   const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[filter.filterProp]
 

@@ -3,20 +3,33 @@ const router = express.Router();
 
 const usersControllers = require('../controllers/users');
 const userValidation = require('../middleware/userValidation');
-const dataValidation = require('../middleware/dataValidation');
+const { isAuthenticated, isAuthorized } = require('../middleware/isAuth');
 
-router.get('/', usersControllers.getUsers);
+router.get('/', isAuthenticated, isAuthorized('perm_visual_grupos'), usersControllers.getUsers);
 
-router.post('/', [
+router.post('/', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
   userValidation.checkGroupExists('grupo_nome'),
   userValidation.validatePassword('senha'),
   userValidation.matchingPasswords('confirmacao_senha', 'senha'),
-  dataValidation.validateDate('data_cadastro', 'Data de cadastro'),
-  userValidation.checkUserNotExists('email')],
-  usersControllers.createUser);
+  userValidation.checkUserNotExists('email')
+], usersControllers.createUser);
 
-router.get('/:email', usersControllers.getUser);
+router.get('/perfil', isAuthenticated, usersControllers.getProfile);
+
+router.get('/:email', isAuthenticated, isAuthorized('perm_visual_grupos'), usersControllers.getUser);
+
+router.put('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
+  userValidation.validateName('nome'),
+  userValidation.validateEmailUpdate('email', 'Novo e-mail inserido já está em uso'),
+  userValidation.validateEmail('email'),
+  userValidation.checkGroupExists('grupo_nome')
+], usersControllers.putUser);
+
+router.delete('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
+  userValidation.validateParamsEmail('email')
+], usersControllers.deleteUser);
+
 
 module.exports = router;
