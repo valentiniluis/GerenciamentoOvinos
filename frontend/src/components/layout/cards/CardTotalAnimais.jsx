@@ -18,7 +18,7 @@ export default function CardTotalAnimais({ xLabels, series, permissao }) {
     <Card className="mb-2">
       <Card.Header>Total animais</Card.Header>
       <Card.Body>
-        <LineChart xAxis={[{ data: xLabels }]} series={series} height={150} />
+        <LineChart xAxis={[{ data: xLabels, label: 'Meses' }]} series={series} height={150} />
       </Card.Body>
     </Card>
   );
