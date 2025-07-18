@@ -1,5 +1,5 @@
 import '../../../../styles/form.css';
-import { Form, useSubmit } from 'react-router-dom';
+import { Form, useActionData, useSubmit } from 'react-router-dom';
 import FormRow from '../../../UI/FormRow.jsx';
 import InputField from '../../../UI/InputField.jsx';
 import FieldWrapper from '../../../UI/FieldWrapper.jsx';
@@ -9,10 +9,17 @@ import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
 import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx'
 import { dateFromLocaleToISO } from '../../../../util/utilFunctions.js';
+import { useEffect, useRef } from 'react';
 
 
 const FormOvino = ({ dados, metodo }) => {
+  const formRef = useRef();
   const submit = useSubmit();
+  const data = useActionData();
+
+  useEffect(() => {
+    if (!data?.isError) formRef.current.reset();
+  }, [data]);
 
   const rowPadding = 'py-3';
   const rows = [
@@ -174,7 +181,7 @@ const FormOvino = ({ dados, metodo }) => {
   };
 
   return (
-    <Form method={metodo} className="large-input">
+    <Form method={metodo} className="large-input" ref={formRef}>
       <h4 className="py-1">Informações</h4>
       <OvinoComprado dados={{ brinco_mae: dados?.brinco_mae }} metodo={metodo} />
       {rows.map((row, i) => (

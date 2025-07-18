@@ -1,11 +1,19 @@
-import { Form } from 'react-router-dom';
+import { Form, useActionData } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import '../../../../styles/form.css';
-import ApiAlert from '../../../UI/ApiAlert';
-import RenderFields from '../RenderFields';
-import FormBtn from '../../../UI/FormBtn';
+import ApiAlert from '../../../UI/ApiAlert.jsx';
+import RenderFields from '../RenderFields.jsx';
+import FormBtn from '../../../UI/FormBtn.jsx';
 
 
 const FormPesagem = () => {
+  const data = useActionData();
+  const formRef = useRef();
+
+  useEffect(() => {
+    if (!data?.isError) formRef.current.reset();
+  }, [data]);
+
   const rowPadding = 'py-3';
   const fields = [
     {
@@ -89,7 +97,7 @@ const FormPesagem = () => {
   ];
 
   return (
-    <Form method="POST" className="large-input">
+    <Form method="POST" className="large-input" ref={formRef}>
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
         <FormBtn text="Cadastrar" type="submit"/>

@@ -4,7 +4,7 @@ const CustomTable = ({ schema, data, uniqueCol }) => {
   const columns = schema.map(column => column[0]);
 
   return (
-    <Table bordered className='text-center'>
+    <Table bordered className='text-center' responsive>
       <thead>
         <tr>
           {schema.map(column => (

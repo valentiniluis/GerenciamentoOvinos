@@ -10,7 +10,7 @@ import { PermissionsContext } from '../../../store/permissions-context.jsx';
 import menuIcon from '/menu_hamburger.svg';
 
 
-const Sidebar = ({ user, email }) => {
+const Sidebar = ({ user }) => {
   const permissions = useContext(PermissionsContext);
   const location = useLocation();
 
@@ -26,6 +26,9 @@ const Sidebar = ({ user, email }) => {
     setActiveOption(currentPage?.name);
   }, [path]);
 
+  useEffect(() => {
+    handleCloseSubmenu();
+  }, [path]);
 
   const handleSelectOption = (option) => {
     setActiveOption(option.name);
@@ -58,7 +61,7 @@ const Sidebar = ({ user, email }) => {
               })}
             </div>
           </div>
-          <SidebarFooter userEmail={email} />
+          <SidebarFooter />
         </div>
       </nav>
 
@@ -68,7 +71,7 @@ const Sidebar = ({ user, email }) => {
         <span className="navbar-mobile-title">Menu</span>
         <UserInitialSpan>{user[0]}</UserInitialSpan>
         {menuOpen && (
-          <div id="nav-options-container" className="navbar-mobile-dropdown">
+          <div id="nav-options-container" className="navbar-mobile-dropdown" onMouseLeave={handleCloseSubmenu}>
             {NAVIGATION_OPTIONS.map(option => {
               const { props, permissionsRequired } = option;
               const authorized = (permissionsRequired.length === 0) ||
@@ -85,6 +88,7 @@ const Sidebar = ({ user, email }) => {
                 </div>
               );
             })}
+            <SidebarFooter />
           </div>
         )}
       </nav>

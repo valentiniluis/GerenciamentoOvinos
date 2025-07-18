@@ -110,3 +110,9 @@
 .delete-btn-icon:active {
   background-color: transparent !important;
 }
+
+.report-paragraph {
+  text-align: justify;
+  font-size: 1.125rem;
+  line-height: 2.2rem;
+}

@@ -1,15 +1,23 @@
 import '../../../../styles/form.css';
-import { useRouteLoaderData, Form, useSubmit } from 'react-router-dom';
+import { useRouteLoaderData, Form, useSubmit, useActionData } from 'react-router-dom';
 import RenderFields from '../RenderFields.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
 import ErrorParagraph from '../../../UI/ErrorParagraph.jsx';
 import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx';
+import { useEffect, useRef } from 'react';
 
 
 const FormCadastroUsuario = ({ dados, metodo }) => {
   const submit = useSubmit();
   const response = useRouteLoaderData('user');
+  const data = useActionData();
+  const formRef = useRef();
+
+  useEffect(() => {
+    if (!data?.isError) formRef.current.reset();
+  }, [data]);
+
   if (response.isError) return <ErrorParagraph error={response} />
 
   const groups = response.data;
@@ -117,7 +125,7 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
 
 
   return (
-    <Form method={metodo} className="medium-input">
+    <Form method={metodo} className="medium-input" ref={formRef}>
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center gap-5">
         {formButtons}

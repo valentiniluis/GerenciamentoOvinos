@@ -26,7 +26,6 @@ exports.getGroups = async (req, res, next) => {
 
     try {
         const data = await db.manyOrNone(...queryArgs);
-        console.log(data);
         res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;

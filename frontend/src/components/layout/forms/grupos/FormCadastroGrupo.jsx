@@ -1,4 +1,4 @@
-import { Form as RouterForm, useSubmit } from 'react-router-dom';
+import { Form as RouterForm, useActionData, useSubmit } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import '../../../../styles/form.css';
 import RenderFields from '../RenderFields.jsx';
@@ -6,6 +6,7 @@ import FormRow from '../../../UI/FormRow.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
 import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
+import { useEffect, useRef } from 'react';
 
 
 const TEXT_PADDING = 'py-2';
@@ -13,6 +14,12 @@ const CHECKBOX_PADDING = 'py-1';
 
 const FormCadastroGrupo = ({ dados, metodo }) => {
   const submit = useSubmit();
+  const formRef = useRef();
+  const data = useActionData();
+
+  useEffect(() => {
+    if (!data?.isError) formRef.current.reset();
+  }, [data]);
 
   const TEXT_FIELDS = [
     {
@@ -26,7 +33,8 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
         id: "nome",
         name: "nome",
         placeholder: "Ex. Auxiliares",
-        required: true,
+        required: (metodo !== 'PUT'),
+        readOnly: (metodo === 'PUT'),
         defaultValue: dados?.nome
       }
     },
@@ -158,7 +166,7 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
   }
 
   return (
-    <RouterForm method={metodo} className='medium-input'>
+    <RouterForm method={metodo} className='medium-input' ref={formRef}>
       <RenderFields fields={TEXT_FIELDS} />
       <FormRow>
         <Form.Label className='my-label standalone-label pt-3'>Permissões</Form.Label>
