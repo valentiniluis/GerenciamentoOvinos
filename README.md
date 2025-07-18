@@ -1,9 +1,9 @@
 # Sistema para Gerenciamento de Rebanho de Ovelhas
 
-| Aluno | Matrícula |
-| ------ | --------- |
-| Emerson Henrique Comar | 2221101007 |
-| Grégory Steffani dos Santos | 1911100026 |
+| Aluno                           | Matrícula   |
+| ------------------------------- | ----------- |
+| Emerson Henrique Comar          | 2221101007  |
+| Grégory Steffani dos Santos     | 1911100026  |
 | Luís Fernando Cerutti Valentini | 20230001310 |
 
 ## Documentação
@@ -34,11 +34,14 @@
     <summary>Exemplo: <code>backend/.env</code></summary>
 
     ```
-    DB_HOST=db
-    DB_USER=seu_usuario
-    DB_PASSWORD=sua_senha
-    DB_NAME=seu_banco
-    DB_PORT=5432
+   DB_HOST=localhost
+   DB_USER=seu_usuario
+   DB_PASSWORD=sua_senha
+   DB_NAME=seu_banco
+   DB_PORT=5432
+   BCRYPT_SALT_ROUNDS=12
+   JWT_SECRET=secret
+   JWT_EXPIRE_TIME=4h
     ```
     </details>
 
