@@ -117,7 +117,7 @@ exports.validateParamsEmail = (fieldname) => {
 exports.validateGroupUpdate = (fieldname) => {
   return body(fieldname)
     .custom((novo_nome, { req }) => {
-      const { nome: antigo_nome } = req;
+      const { nome: antigo_nome } = req.body;
       if (novo_nome === antigo_nome) return true;
       return db.none('SELECT 1 FROM grupos AS gp WHERE gp.nome = $1;', novo_nome);
     })
