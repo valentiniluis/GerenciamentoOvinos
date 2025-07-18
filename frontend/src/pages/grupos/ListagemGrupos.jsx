@@ -53,12 +53,12 @@ const ListagemGrupos = () => {
         : (
           <>
             <section className="form-cont flex-center">
-              <FiltroGrupos updateGroupsData={updateGroupsData} />
+              <FiltroGrupos updateGroupsData={updateGroupsData} setErrorMessage={setErrorMessage} />
             </section>
             <div className="row py-3">
               {groupsData.length > 0
                 ? <CustomTable schema={SCHEMA} data={groupsData} uniqueCol="nome" /> 
-                : <ErrorParagraph error={{ message: 'Nenhum grupo cadastrado' }} />
+                : <ErrorParagraph error={{ message: 'Nenhum grupo encontrado' }} />
               }
             </div>
           </>

@@ -5,7 +5,7 @@ import FILTER_TYPES from "../../../../util/filterTypes.js";
 import api from '../../../../api/request.js';
 
 
-const FiltroGrupos = ({ updateGroupsData }) => {
+const FiltroGrupos = ({ updateGroupsData, setErrorMessage }) => {
   const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
   const noFilterApplied = (filter.filterProp === 'nenhuma');
 
@@ -29,8 +29,7 @@ const FiltroGrupos = ({ updateGroupsData }) => {
   useEffect(() => {
     async function fetchData() {
       const { filterProp, filterValue } = filter;
-      const hasFilterSet = (filterProp !== 'nenhuma');
-      if (hasFilterSet && !filterValue) return;
+      const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
       try {
         let url = '/grupos';
         if (hasFilterSet) {
@@ -41,11 +40,11 @@ const FiltroGrupos = ({ updateGroupsData }) => {
         const data = response.data;
         updateGroupsData(data);
       } catch (err) {
-        console.log(err);
+        setErrorMessage(err.response?.data?.message || 'Falha ao carregar grupos');
       }
     }
     fetchData();
-  }, [filter, updateGroupsData]);
+  }, [filter, updateGroupsData, setErrorMessage]);
 
   const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[filter.filterProp]
 

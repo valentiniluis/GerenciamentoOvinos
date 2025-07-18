@@ -8,7 +8,7 @@ import api from '../../../../api/request.js';
 const FiltroOvinos = ({ updateData, page, updatePages }) => {
   const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
   const noFilterApplied = (filter.filterProp === 'nenhuma');
-  
+
   const inputFilter = [{
     wrapper: {
       size: 'large-input'
@@ -33,8 +33,7 @@ const FiltroOvinos = ({ updateData, page, updatePages }) => {
   useEffect(() => {
     async function fetchData() {
       const { filterProp, filterValue } = filter;
-      const hasFilterSet = (filterProp !== 'nenhuma');
-      if (hasFilterSet && !filterValue) return;
+      const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
       try {
         let url = '/rebanho?page=' + page;
         if (hasFilterSet) {

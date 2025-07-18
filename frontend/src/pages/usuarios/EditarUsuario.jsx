@@ -13,7 +13,9 @@ const EditarUsuario = () => {
   const permissions = useContext(PermissionsContext);
   const data = useLoaderData();
 
-  if (!permissions.perm_alter_usuario_grupo) return <ErrorPage title="Usuário não autorizado" />;
+  const isAdmin = (data.grupo_nome === 'Administrador');
+  if (!permissions.perm_alter_usuario_grupo || isAdmin) return <ErrorPage title="Usuário não autorizado" />;
+  if (data.isError) return <ErrorPage title="Usuário não encontrado" />;
 
   const title = (
     <>

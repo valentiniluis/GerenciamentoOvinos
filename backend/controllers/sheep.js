@@ -1,6 +1,11 @@
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
 
+// mapeia um tipo de entrada para uma condição WHERE
+const queryWhereOperators = {
+    abatido: '='
+};
+
 
 exports.getSheep = async (req, res, next) => {
     const page = req.query.page || 1;
@@ -22,7 +27,11 @@ exports.getSheep = async (req, res, next) => {
         const conditions = filters.map((keyValuePair, index) => {
             const firstVariableNumber = (index * 2) + 1;
             queryValues = queryValues.concat(keyValuePair);
-            return `$${firstVariableNumber}:name ILIKE '%$${firstVariableNumber + 1}#%'`;
+            const column = keyValuePair[0];
+            const operator = queryWhereOperators[column] || 'ILIKE';
+            let value = `$${firstVariableNumber + 1}`;
+            if (operator === 'ILIKE') value = `'%${value}#%'`
+            return `$${firstVariableNumber}:name ${operator} ${value}`;
         });
         queryArgs[0] += conditions.join(' AND ');
         queryArgs.push(queryValues);

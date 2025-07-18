@@ -29,12 +29,11 @@ const FiltroUsuarios = ({ updateData, page, updatePages }) => {
   useEffect(() => {
     async function fetchData() {
       const { filterProp, filterValue } = filter;
-      const hasFilterSet = (filterProp !== 'nenhuma');
-      if (hasFilterSet && !filterValue) return;
+      const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
       try {
         let url = '/usuarios?page=' + page;
         if (hasFilterSet) {
-          const queryParam = `?${filterProp}=${filterValue}`;
+          const queryParam = `&${filterProp}=${filterValue}`;
           url += queryParam;
         }
         const response = await api.get(url);

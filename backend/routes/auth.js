@@ -10,7 +10,7 @@ router.post('/login', [
   userValidation.validateLogin('email')
 ], authController.postLogin);
 
-router.post('/signup', [
+router.post('/signup', userValidation.checkFirstAdmin, [
   userValidation.validateName('nome'),
   userValidation.validateEmail('email'),
   userValidation.checkUserNotExists('email'),

@@ -22,7 +22,7 @@ exports.getUsers = async (req, res, next) => {
         queryArgs[0] += " WHERE $1:name ILIKE '%$2#%';";
         queryArgs.push(filters[0]);
     }
-    else queryArgs[0] += ';';
+    queryArgs[0] += ';';
 
     try {
         const data = await db.manyOrNone(...queryArgs);
@@ -75,6 +75,15 @@ exports.putUser = async (req, res, next) => {
 
     try {
         const { email: antigo_email } = req.params;
+        const user = await db.one('SELECT us.grupo_nome FROM usuario AS us WHERE us.email = $1;', antigo_email);
+        if (user.grupo_nome === 'Administrador') {
+            const editor = await db.one('SELECT us.grupo_nome FROM usuario AS us WHERE us.email = $1;', req.userEmail);
+            if (editor.grupo_nome !== 'Administrador') {
+                const error = new Error('Somente o usuário administrador pode alterar seus dados');
+                error.statusCode = 403;
+                throw error;
+            }
+        }
         const { nome, email: novo_email, grupo_nome } = req.body;
         await db.none(
             "UPDATE usuario \
