@@ -26,7 +26,8 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
         id: "nome",
         name: "nome",
         placeholder: "Ex. Auxiliares",
-        required: true,
+        required: (metodo !== 'PUT'),
+        readOnly: (metodo === 'PUT'),
         defaultValue: dados?.nome
       }
     },
