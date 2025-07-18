@@ -3,9 +3,8 @@ const db = require('../model/database');
 
 
 exports.getGroups = async (req, res, next) => {
-    try {
-        const data = await db.manyOrNone(
-            "WITH users_count AS ( \
+    const queryArgs = [
+        "WITH users_count AS ( \
                 SELECT grupo_nome, COUNT(*) AS membros \
                 FROM usuario \
                 GROUP BY grupo_nome \
@@ -15,8 +14,19 @@ exports.getGroups = async (req, res, next) => {
                 TO_CHAR(gp.data_criacao, 'DD/MM/YYYY') AS data_criacao \
             FROM grupo AS gp \
             LEFT JOIN users_count AS us \
-            ON gp.nome = us.grupo_nome;"
-        );
+            ON gp.nome = us.grupo_nome"
+    ];
+    const filterProps = req.query;
+    const filters = Object.entries(filterProps).filter(([key]) => key !== 'page');
+    if (filters.length > 0) {
+        queryArgs[0] += " WHERE $1:name ILIKE '%$2#%';";
+        queryArgs.push(filters[0]);
+    }
+    queryArgs[0] += ';';
+
+    try {
+        const data = await db.manyOrNone(...queryArgs);
+        console.log(data);
         res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
