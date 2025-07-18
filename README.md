@@ -9,6 +9,11 @@
 ## Documentação
 - A documentação do projeto pode ser visualizada no `requisitos_aplicacao/documentacao.pdf`
 
+## Modelo conceitual
+- Os arquivos referentes ao modelo conceitual estão em `requisitos_aplicacao/modelo_conceitual`
+
+## Modelo lógico
+- O arquivo referente ao modelo lógico está em `requisitos_aplicacao/modelo_logico`
 
 ## Como rodar o projeto (Docker Compose)
 
