@@ -35,12 +35,24 @@ exports.getDash = async (req, res, next) => {
       LIMIT 3
     `);
 
+    const totalAnimais = await db.manyOrNone(`
+        SELECT 
+          EXTRACT(YEAR FROM data_nascimento) AS ano,
+          TO_CHAR(data_nascimento, 'MM') AS mes,
+          COUNT(*) AS total
+        FROM ovino
+        WHERE abatido = false
+        GROUP BY ano, mes
+        ORDER BY ano, mes;
+      `);
+
     res.status(201).json({
       animaisPorFinalidade,
       quantidadePorRaca,
       quantidadePorSexo,
       ultimasPesagens,
-      tarefasPendentes
+      tarefasPendentes,
+      totalAnimais
     });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;

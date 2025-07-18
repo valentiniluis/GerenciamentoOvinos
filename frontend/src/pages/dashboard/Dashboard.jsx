@@ -29,6 +29,10 @@ const Dashboard = () => {
   const [sexoData, setSexoData] = useState([]);
   const [tarefasPendentes, setTarefasPendentes] = useState([]);
 
+  // Esse usei no Total animais
+  const [lineXLabels, setLineXLabels] = useState([]);
+  const [lineSeries, setLineSeries] = useState([]);
+
   useEffect(() => {
     const fetchPieData = async () => {
       try {
@@ -61,6 +65,31 @@ const Dashboard = () => {
 
         // Montar card tarefas pendentes
         setTarefasPendentes(response.data.tarefasPendentes);
+
+        // Montar card total animais
+        const totalAnimais = response.data.totalAnimais;
+
+        const meses = [...Array(12)].map((_, i) =>
+          String(i + 1).padStart(2, '0'),
+        );
+        const mesesNumerico = [...Array(12)].map((_, i) => i + 1);
+
+        const anos = [...new Set(totalAnimais.map((item) => item.ano))];
+
+        const series = anos.map((ano) => {
+          return {
+            label: ano,
+            data: meses.map((mes) => {
+              const found = totalAnimais.find(
+                (item) => item.ano === ano && item.mes === mes,
+              );
+              return found ? parseInt(found.total, 10) : 0;
+            }),
+          };
+        });
+
+        setLineXLabels(mesesNumerico); // [1, 2, ..., 12]
+        setLineSeries(series);
       } catch (error) {
         console.error('Erro ao buscar dados do dashboard:', error);
       }
@@ -68,12 +97,6 @@ const Dashboard = () => {
 
     fetchPieData();
   }, []);
-
-  // Esse usei no Total animais
-  const [lineXLabels, setLineXLabels] = useState([1, 2, 3, 5, 8, 10]);
-  const [lineSeries, setLineSeries] = useState([
-    { data: [2, 5.5, 2, 8.5, 1.5, 5] },
-  ]);
 
   return (
     <>
@@ -83,42 +106,62 @@ const Dashboard = () => {
           {/* Card Total Animais */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardTotalAnimais xLabels={lineXLabels} series={lineSeries} permissao={permissions.perm_visual_rebanho}/>
+              <CardTotalAnimais
+                xLabels={lineXLabels}
+                series={lineSeries}
+                permissao={permissions.perm_visual_rebanho}
+              />
             </div>
           </Col>
 
           {/* Card Animais por finalidade */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardTiposFuncao data={pieData} permissao={permissions.perm_visual_rebanho}/>
+              <CardTiposFuncao
+                data={pieData}
+                permissao={permissions.perm_visual_rebanho}
+              />
             </div>
           </Col>
 
           {/* Card Quantidade Raça */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardQuantidadeRaca labels={barLabels} series={barSeries} permissao={permissions.perm_visual_rebanho}/>
+              <CardQuantidadeRaca
+                labels={barLabels}
+                series={barSeries}
+                permissao={permissions.perm_visual_rebanho}
+              />
             </div>
           </Col>
 
           {/* Card Quantidade por Sexo */}
           <Col xs={12} md={6} lg={4}>
             <div className="h-100">
-              <CardQuantidadeSexo data={sexoData} permissao={permissions.perm_visual_rebanho}/>
+              <CardQuantidadeSexo
+                data={sexoData}
+                permissao={permissions.perm_visual_rebanho}
+              />
             </div>
           </Col>
 
           {/* Card Pesagens Recentes */}
           <Col xs={12} lg={8}>
             <div className="h-100">
-              <CardPesagensRecentes pesagens={ultimasPesagens} permissao={permissions.perm_visual_rebanho}/>
+              <CardPesagensRecentes
+                pesagens={ultimasPesagens}
+                permissao={permissions.perm_visual_rebanho}
+              />
             </div>
           </Col>
 
           {/* Card Tarefas Pendentes */}
           <Col xs={12} lg={12}>
             <div className="h-100">
-              <CardTarefasPendentes tarefas={tarefasPendentes} permissao={permissions.perm_visual_calendario}/>
+              <CardTarefasPendentes
+                tarefas={tarefasPendentes}
+                permissao={permissions.perm_visual_calendario}
+              />
             </div>
           </Col>
         </Row>

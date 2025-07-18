@@ -18,8 +18,8 @@ router.post('/', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
 router.get('/:nome', isAuthenticated, isAuthorized('perm_visual_grupos'), groupsControllers.getGroup);
 
 router.put('/:nome', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
-  userValidation.validateGroup('nome'),
-  userValidation.validateGroupUpdate('nome'),
+    userValidation.validateGroup('nome'),
+    userValidation.checkGroupExists('nome'),
   ...dataValidation.validatePermissions('permissoes')
 ], groupsControllers.putGroup);
 
