@@ -35,8 +35,8 @@ const FILTER_TYPES = {
     name: 'sexo',
     options: [
       { value: "", hidden: true, name: "Selecione o sexo..." },
-      { value: "F", name: "Macho" },
-      { value: "M", name: "Fêmea" },
+      { value: "M", name: "Macho" },
+      { value: "F", name: "Fêmea" },
     ],
   },
   finalidade: {

@@ -13,7 +13,7 @@ const ApiAlert = () => {
     const variant = (isError) ? 'danger' : 'success';
     setMessageProps({ message, variant });
 
-    const TIMEOUT_MS = 3000;
+    const TIMEOUT_MS = 5000;
     timeoutRef.current = setTimeout(handleClose, TIMEOUT_MS);
   }, [actionData]);
 

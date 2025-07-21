@@ -135,12 +135,13 @@ exports.validateParamsGroup = (fieldname, message) => {
 
 
 // por enquanto, a aplicação só suporta um administrador
-exports.checkFirstAdmin = (req, res, next) => {
+exports.checkFirstAdmin = async (req, res, next) => {
   try {
-    const admins = db.oneOrNone("SELECT 1 FROM usuario AS us WHERE us.grupo_nome = 'Administrador';");
+    const admins = await db.manyOrNone("SELECT 1 FROM usuario AS us WHERE us.grupo_nome = 'Administrador';");
     if (admins.length > 0) {
-      const error = new Error('Já existe um administrador do rebanho. Para prosseguir, o administrador deve criar uma conta para você e informar suas credenciais para entrada.');
+      const error = new Error('Já existe um administrador do rebanho. Para prosseguir, o administrador deve criar uma conta para você e informar suas credenciais.');
       error.statusCode = 400;
+      throw error;
     }
     next();
   } catch (err) {

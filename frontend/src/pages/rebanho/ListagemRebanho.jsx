@@ -1,13 +1,13 @@
 import { useState, useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import PageTitle from '../../components/UI/PageTitle';
-import CustomTable from '../../components/layout/table/CustomTable';
-import ErrorParagraph from '../../components/UI/ErrorParagraph';
-import FiltroOvinos from '../../components/layout/forms/rebanho/FiltroOvinos';
-import TablePagination from '../../components/layout/table/TablePagination';
+import PageTitle from '../../components/UI/PageTitle.jsx';
+import CustomTable from '../../components/layout/table/CustomTable.jsx';
+import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
+import FiltroOvinos from '../../components/layout/forms/rebanho/FiltroOvinos.jsx';
+import TablePagination from '../../components/layout/table/TablePagination.jsx';
+import ErrorPage from '../ErrorPage.jsx';
 import editIcon from '/edit_icon.svg';
 import { PermissionsContext } from '../../store/permissions-context';
-import ErrorPage from '../ErrorPage';
 
 
 
