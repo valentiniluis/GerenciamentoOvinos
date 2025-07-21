@@ -18,6 +18,12 @@ router.post('/', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [
 
 router.get('/perfil', isAuthenticated, usersControllers.getProfile);
 
+router.put('/perfil', isAuthenticated, [
+  userValidation.validateName('nome'),
+  userValidation.validateProfileEmailUpdate('email', 'E-mail inserido já está em uso'),
+  userValidation.validateEmail('email'),
+], usersControllers.putProfile);
+
 router.get('/:email', isAuthenticated, isAuthorized('perm_visual_grupos'), usersControllers.getUser);
 
 router.put('/:email', isAuthenticated, isAuthorized('perm_alter_usuario_grupo'), [

@@ -3,15 +3,20 @@ import { Modal, Button } from 'react-bootstrap';
 import FormBtn from '../../UI/FormBtn';
 
 
-const DeleteConfirmation = ({ title, text, confirm, buttonText, className='delete-btn' }) => {
+const Confirmation = ({ title, text, children, btnText, className='delete-btn', ...props }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClose = () => setIsModalOpen(false);
   const handleOpen = () => setIsModalOpen(true);
 
+  const handleConfirm = () => {
+    props.onClick();
+    handleClose();
+  }
+
   return (
     <>
-      <FormBtn text={buttonText} type="button" className={className} onClick={handleOpen} />
+      <FormBtn text={children} type="button" className={className} onClick={handleOpen} />
 
       <Modal show={isModalOpen} centered>
         <Modal.Header>
@@ -26,8 +31,8 @@ const DeleteConfirmation = ({ title, text, confirm, buttonText, className='delet
           <Button variant='secondary' onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant='danger' onClick={confirm}>
-            Excluir
+          <Button {...props} onClick={handleConfirm}>
+            {btnText}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -36,4 +41,4 @@ const DeleteConfirmation = ({ title, text, confirm, buttonText, className='delet
 }
 
 
-export default DeleteConfirmation;
+export default Confirmation;

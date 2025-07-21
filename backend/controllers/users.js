@@ -143,3 +143,30 @@ exports.getProfile = async (req, res, next) => {
         throw err;
     }
 }
+
+
+exports.putProfile = async (req, res, next) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const error = new Error(result.array()[0].msg)
+        error.statusCode = 422;
+        throw error;
+    }
+
+    try {
+        const { userEmail } = req;
+        const { nome, email: novo_email } = req.body;
+        await db.none(
+            "UPDATE usuario \
+            SET \
+            email = $1, \
+            nome = $2 \
+            WHERE email = $3;",
+            [novo_email, nome, userEmail]
+        );
+        res.status(201).json({ success: true, message: "Perfil atualizado com sucesso" });
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}

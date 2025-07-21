@@ -7,7 +7,7 @@ import OvinoComprado from '../../../UI/OvinoComprado.jsx';
 import SelectField from '../../../UI/SelectField.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
-import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx'
+import Confirmation from '../../modal/Confirmation.jsx'
 import { dateFromLocaleToISO } from '../../../../util/utilFunctions.js';
 import { useEffect, useRef } from 'react';
 
@@ -170,12 +170,15 @@ const FormOvino = ({ dados, metodo }) => {
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
-        <DeleteConfirmation
-          buttonText="Excluir Ovino"
+        <Confirmation
+          btnText="Excluir"
           title="Confirmar Exclusão"
           text="Excluir um ovino irá também deletar suas pesagens e registros médicos"
-          confirm={handleDelete}
-        />
+          onClick={handleDelete}
+          variant="danger"
+        >
+          Excluir Ovino
+        </Confirmation>
       </>
     )
   };

@@ -4,7 +4,7 @@ import '../../../../styles/form.css';
 import RenderFields from '../RenderFields.jsx';
 import FormRow from '../../../UI/FormRow.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
-import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx';
+import Confirmation from '../../modal/Confirmation.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import { useEffect, useRef } from 'react';
 
@@ -155,12 +155,15 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
-        <DeleteConfirmation
-          buttonText="Excluir Grupo"
+        <Confirmation
+          btnText="Excluir"
           title="Confirmar Exclusão"
           text="Ao excluir um grupo, os usuários pertencentes a ele também serão deletados. Você tem certeza?"
-          confirm={handleDelete}
-        />
+          onClick={handleDelete}
+          variant="danger"
+        >
+          Excluir Grupo
+        </Confirmation>
       </>
     )
   }

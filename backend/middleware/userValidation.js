@@ -105,6 +105,17 @@ exports.validateEmailUpdate = (fieldname, message) => {
 }
 
 
+exports.validateProfileEmailUpdate = (fieldname, message) => {
+  return body(fieldname)
+    .custom(async (newEmail, { req }) => {
+      const { userEmail: currentEmail } = req;
+      if (newEmail === currentEmail) return true;
+      return await db.none('SELECT 1 FROM usuario AS us WHERE us.email = $1;', newEmail);
+    })
+    .withMessage(message);
+}
+
+
 exports.validateParamsEmail = (fieldname) => {
   return param(fieldname)
     .custom(async (value) => {

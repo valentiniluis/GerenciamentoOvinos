@@ -4,7 +4,7 @@ import RenderFields from '../RenderFields.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
 import ErrorParagraph from '../../../UI/ErrorParagraph.jsx';
-import DeleteConfirmation from '../../modal/DeleteConfirmation.jsx';
+import Confirmation from '../../modal/Confirmation.jsx';
 import { useEffect, useRef } from 'react';
 
 
@@ -21,7 +21,8 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
   if (response.isError) return <ErrorParagraph error={response} />
 
   const groups = response.data;
-  const grupos = groups.map((group) => ({
+  const filtered = groups.filter(group => group.nome !== 'Administrador');
+  const grupos = filtered.map((group) => ({
     name: group.nome,
     value: group.nome,
   }));
@@ -113,16 +114,18 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
-        <DeleteConfirmation
-          buttonText="Excluir Usuário"
+        <Confirmation
+          btnText="Excluir"
           title="Confirmar Exclusão"
           text="Deletar um usuário é uma ação permanente. Você tem certeza?"
-          confirm={handleDelete}
-        />
+          onClick={handleDelete}
+          variant="danger"
+        >
+          Excluir Usuário
+        </Confirmation>
       </>
     )
   };
-
 
   return (
     <Form method={metodo} className="medium-input" ref={formRef}>

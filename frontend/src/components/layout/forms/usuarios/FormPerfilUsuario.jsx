@@ -1,19 +1,23 @@
 import '../../../../styles/form.css';
-import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import RenderFields from '../RenderFields';
-import FormBtn from '../../../UI/FormBtn';
-import ErrorParagraph from '../../../UI/ErrorParagraph';
+import { useRef, useState } from 'react';
+import { useLoaderData, Link, useSubmit, Form } from 'react-router-dom';
+import RenderFields from '../RenderFields.jsx';
+import FormBtn from '../../../UI/FormBtn.jsx';
+import ErrorParagraph from '../../../UI/ErrorParagraph.jsx';
+import ApiAlert from '../../../UI/ApiAlert.jsx';
+import Confirmation from '../../modal/Confirmation.jsx';
 
 
 const FormPerfilUsuario = () => {
   const [readMode, setReadMode] = useState(true);
+  const formRef = useRef();
+  const submit = useSubmit();
   const userData = useLoaderData();
 
   if (userData.isError) return <ErrorParagraph error={{ message: userData.message }} />
 
   const rowPadding = 'py-2';
-  const fields = [
+  let fields = [
     {
       wrapper: {
         size: 'large-input',
@@ -64,29 +68,51 @@ const FormPerfilUsuario = () => {
     },
   ];
 
-  const handleEdit = (event) => {
-    event.preventDefault();
-  };
+  const toggleReadMode = () => setReadMode(prevMode => !prevMode);
 
-  const toggleReadMode = () => {
-    setReadMode(prevMode => !prevMode);
-  };
+  let btn = <FormBtn text="Editar Dados" onClick={toggleReadMode} type="button" />;
 
-  const editBtnText = (readMode) ? 'Editar Dados' : 'Salvar Alterações';
-  const editBtnType = (readMode) ? 'button' : 'submit';
+  if (!readMode) {
+    const handleConfirm = () => {
+      const formData = new FormData(formRef.current);
+      const data = Object.fromEntries(formData.entries());
+      submit(data, { method: 'PUT' });
+    }
+
+    const handleCancel = () => {
+      formRef.current.reset();
+      setReadMode(true);
+    }
+
+    btn = (
+      <div className='d-flex justify-content-center gap-5'>
+        <Confirmation
+          title="Tem certeza?"
+          text="Ao editar seus dados, você terá que se autenticar novamente."
+          btnText="Confirmar"
+          className='form-btn'
+          onClick={handleConfirm}
+        >
+          Salvar
+        </Confirmation>
+        <FormBtn variant='danger' onClick={handleCancel} text="Cancelar" className="delete-btn" />
+      </div>
+    );
+  }
 
   return (
-    <form onSubmit={handleEdit} className="medium-input">
+    <form className="medium-input" ref={formRef}>
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center">
-        <FormBtn
-          text={editBtnText}
-          onClick={toggleReadMode}
-          type={editBtnType}
-        />
+        {btn}
       </div>
-      <div className="row pb-5 justify-content-center">
-        <FormBtn text="Alterar Minha Senha" />
+      <div className="row justify-content-center">
+        <Link className='no-decoration text-center my-link'>
+          Alterar Minha Senha
+        </Link>
+      </div>
+      <div className="py-4">
+        <ApiAlert />
       </div>
     </form>
   );

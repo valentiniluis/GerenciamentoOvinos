@@ -8,12 +8,12 @@ import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
+import CadastroUsuario, { loader as usersLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
+import PerfilUsuario, { loader as profileLoader, action as profileAction } from './pages/usuarios/PerfilUsuario.jsx';
 import RootLayout, { loader as rootLoader } from './components/layout/root/RootLayout.jsx';
-import PerfilUsuario, { loader as profileLoader } from './pages/usuarios/PerfilUsuario.jsx';
 import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
 import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
 import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
-import CadastroUsuario, { loader as usersLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
 import CadastroGrupo, { action as submitGroupAction } from './pages/grupos/CadastroGrupo.jsx';
 import Autenticacao, { action as authenticateAction } from './pages/autenticacao/Autenticacao.jsx';
 import EditarOvino, { loader as loadSheep } from './pages/rebanho/EditarOvino.jsx';
@@ -82,7 +82,7 @@ const router = createBrowserRouter([
           }
         ]
       },
-      { path: 'perfil', element: <PerfilUsuario />, loader: profileLoader },
+      { path: 'perfil', element: <PerfilUsuario />, loader: profileLoader, action: profileAction },
       { path: 'relatorio', element: <Relatorio /> },
       { path: 'logout', action: logoutAction, loader: logoutLoader },
       { path: '*', element: <ErrorPage title="Página não encontrada" /> }
