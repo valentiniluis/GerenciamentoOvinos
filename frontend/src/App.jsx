@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import ListarRebanho from './pages/rebanho/ListagemRebanho.jsx';
 import ListagemUsuarios from './pages/usuarios/ListagemUsuarios.jsx';
-import ListagemGrupos from './pages/grupos/ListagemGrupos.jsx';
+import ListagemGrupos, { loader as groupsLoader } from './pages/grupos/ListagemGrupos.jsx';
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: 'grupo',
         children: [
-          { path: 'listar', element: <ListagemGrupos /> },
+          { path: 'listar', element: <ListagemGrupos />, loader: groupsLoader },
           { path: 'cadastrar', element: <CadastroGrupo />, action: submitGroupAction },
           {
             path: ':nome',

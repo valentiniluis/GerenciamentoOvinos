@@ -4,7 +4,7 @@ const CardPesagensRecentes = ({ pesagens, permissao }) => {
   if (!permissao) return null;
   if (!pesagens || pesagens.length === 0) {
     return (
-      <Card className="mb-4">
+      <Card className="mb-4 dashboard-card">
         <Card.Body>
           <Card.Title>Últimas Pesagens</Card.Title>
           <p className="text-muted">Nenhum dado disponível</p>
@@ -12,11 +12,11 @@ const CardPesagensRecentes = ({ pesagens, permissao }) => {
       </Card>
     );
   }
-  
+
   return (
-    <Card className="mb-4">
+    <Card className="mb-4 dashboard-card">
+      <Card.Header>Últimas Pesagens</Card.Header>
       <Card.Body>
-        <Card.Title>Últimas Pesagens</Card.Title>
         <Table striped responsive>
           <thead>
             <tr>

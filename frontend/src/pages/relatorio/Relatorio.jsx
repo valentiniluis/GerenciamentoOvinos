@@ -20,7 +20,7 @@ const Relatorio = () => {
 
   return (
     <>
-      <PageTitle title="Geração de Relatórios" />
+      <PageTitle title="Relatórios" />
       <div className="form-cont limit-600 m-auto">
         <p className='report-paragraph py-3'>
           Selecione a data de início e a data final do relatório e gere relatórios

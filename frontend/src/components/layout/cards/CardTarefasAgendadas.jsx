@@ -5,9 +5,9 @@ const CardTarefasAgendadas = ({ tarefas, permissao }) => {
   if (!permissao) return;
   if (!tarefas || tarefas.length === 0) {
     return (
-      <Card className="h-100">
+      <Card className="h-100 dashboard-card">
         <Card.Header>
-          <Card.Title className="mb-0">Tarefas Agendadas</Card.Title>
+          Próximas Tarefas
         </Card.Header>
         <Card.Body>
           <p>Nenhuma tarefa agendada no momento.</p>
@@ -17,9 +17,9 @@ const CardTarefasAgendadas = ({ tarefas, permissao }) => {
   }
 
   return (
-    <Card className="h-100">
+    <Card className="h-100 dashboard-card">
       <Card.Header>
-        <Card.Title className="mb-0">Tarefas Agendadas</Card.Title>
+        Próximas Tarefas
       </Card.Header>
       <Card.Body>
         <Table hover responsive>

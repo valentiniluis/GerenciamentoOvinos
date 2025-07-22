@@ -5,7 +5,7 @@ export default function CardTotalAnimais({ xLabels, series, permissao }) {
   if (!permissao) return null;
   if (!xLabels || !series || series.length === 0) {
     return (
-      <Card className="mb-2">
+      <Card className="mb-2 dashboard-card">
         <Card.Header>Total animais</Card.Header>
         <Card.Body>
           <p className="text-muted">Nenhum dado disponível</p>
@@ -15,7 +15,7 @@ export default function CardTotalAnimais({ xLabels, series, permissao }) {
   }
 
   return (
-    <Card className="mb-2">
+    <Card className="mb-2 dashboard-card">
       <Card.Header>Total animais</Card.Header>
       <Card.Body>
         <LineChart xAxis={[{ data: xLabels, label: 'Meses' }]} series={series} height={150} />

@@ -3,14 +3,14 @@ import PageTitle from '../../components/UI/PageTitle.jsx';
 import EventModal from '../../components/layout/modal/EventModal.jsx';
 import ErrorPage from '../ErrorPage.jsx';
 import CustomAlert from '../../components/UI/CustomAlert.jsx';
+import { PermissionsContext } from '../../store/permissions-context.jsx';
+import '../../styles/calendar.css';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import ptBrLocales from '@fullcalendar/core/locales/pt-br';
 import InteractionPlugin from '@fullcalendar/interaction';
 
-import { PermissionsContext } from '../../store/permissions-context.jsx';
-import '../../styles/calendar.css';
 import api from '../../api/request.js';
 
 
@@ -33,7 +33,6 @@ const Calendar = () => {
           allDay: true,
           descricao: evento.descricao || 'teste',
         }));
-        console.log(eventosData);
         setEvents(eventosData);
       } catch (err) {
         setErrorMessage(err.response?.data?.message || 'Falha ao carregar eventos');

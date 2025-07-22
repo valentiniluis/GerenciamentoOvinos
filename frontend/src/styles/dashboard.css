@@ -1,0 +1,18 @@
+
+.dashboard-card {
+  height: 100%;
+}
+
+.dashboard-card .card-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
