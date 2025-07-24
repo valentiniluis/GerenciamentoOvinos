@@ -1,5 +1,7 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { useFetcher } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import CustomTable from '../../components/layout/table/CustomTable.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
@@ -8,32 +10,41 @@ import TablePagination from '../../components/layout/table/TablePagination.jsx';
 import ErrorPage from '../ErrorPage.jsx';
 import editIcon from '/edit_icon.svg';
 import { PermissionsContext } from '../../store/permissions-context';
+import { SHEEP_SCHEMA } from '../../util/tableSchemas.js';
 
+import api from '../../api/request.js';
 
 
 const ListagemRebanho = () => {
   const permissions = useContext(PermissionsContext);
-  const [animalData, setAnimalData] = useState([]);
-  const [pages, setPages] = useState({ current: 1, max: null });
-  const [errorMessage, setErrorMessage] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
+  const fetcher = useFetcher();
+  const data = fetcher.data;
 
-  const SCHEMA = [
-    ['brinco_num', 'Nº do Brinco'],
-    ['brinco_mae', 'Nº Brinco Mãe'],
-    ['data_nascimento', 'Nascimento'],
-    ['raca', 'Raça'],
-    ['sexo', 'Sexo'],
-    ['finalidade', 'Finalidade'],
-    ['abatido', 'Abatido'],
-    ['pesagens', 'Pesagens']
-  ];
-
-  const updateData = useCallback(data => {
-    if (data?.isError) {
-      setErrorMessage(data.message);
-      return;
+  useEffect(() => {
+    const { filterProp, filterValue } = filter;
+    const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
+    let url = '/rebanho/listar?page=' + currentPage;
+    if (hasFilterSet) {
+      const queryParam = `&${filterProp}=${filterValue}`;
+      url += queryParam;
     }
-    const linkedData = data.map(obj => {
+    fetcher.load(url);
+  }, [filter, currentPage]);
+
+  if (!permissions.perm_visual_rebanho) return <ErrorPage title="Usuário não autorizado" />;
+
+  const isLoading = (fetcher.state === 'loading');
+  const errorMessage = (data?.isError) ? data.message : null;
+  const maxPages = data?.pages;
+
+  // se o state de página atual é maior que a quantidade de páginas de dados consultados, 
+  // retorna-se para a página 1. Para isso deve haver ao menos 1 página
+  if (maxPages >= 1 && currentPage > maxPages) setCurrentPage(1);
+  let sheepData = (!data?.isError && data?.sheep?.length > 0) ? [...data.sheep] : [];
+  if (sheepData.length > 0) {
+    sheepData = sheepData.map(obj => {
       const updatedData = { ...obj };
       const brinco = updatedData['brinco_num'];
       updatedData['pesagens'] = (
@@ -43,7 +54,6 @@ const ListagemRebanho = () => {
       );
 
       if (!permissions.perm_alter_rebanho) return updatedData;
-
       updatedData['editar'] = (
         <Link className="my-link" to={`/rebanho/${brinco}/editar`}>
           <img src={editIcon} alt="Ícone para Editar Ovino" className='edit-icon' />
@@ -51,34 +61,33 @@ const ListagemRebanho = () => {
       );
       return updatedData;
     });
-    setAnimalData(linkedData);
-  }, [permissions.perm_alter_rebanho]);
+  }
 
-  const updatePages = useCallback((current, max) => setPages({ current, max }), []);
-
-  if (!permissions.perm_visual_rebanho) return <ErrorPage title="Usuário não autorizado" />;
-  if (permissions.perm_alter_rebanho) SCHEMA.push(['editar', 'Editar']);
+  const schema = [...SHEEP_SCHEMA];
+  if (permissions.perm_alter_rebanho) schema.push(['editar', 'Editar']);
 
   return (
     <>
       <PageTitle title="Listagem Rebanho" />
-      {errorMessage ? <ErrorParagraph error={{ message: errorMessage }} />
+      <section className="form-cont flex-center">
+        <FiltroOvinos filter={filter} updateFilter={setFilter} />
+      </section>
+      {isLoading ? (
+        <div className='spinner-container'>
+          <Spinner variant='primary' animation='border' role='status' />
+        </div>
+      ) : errorMessage ? <ErrorParagraph error={{ message: errorMessage }} />
         : (
-          <>
-            <section className="form-cont flex-center">
-              <FiltroOvinos updateData={updateData} page={pages.current} updatePages={updatePages} />
-            </section>
-            <div className="row py-3">
-              {animalData.length > 0
-                ? (
-                  <>
-                    <CustomTable schema={SCHEMA} data={animalData} uniqueCol="brinco_num" />
-                    <TablePagination pages={pages} updatePages={updatePages} />
-                  </>
-                )
-                : <ErrorParagraph error={{ message: "Nenhum ovino cadastrado" }} />}
-            </div>
-          </>
+          <div className="row py-3">
+            {sheepData.length > 0
+              ? (
+                <>
+                  <CustomTable schema={schema} data={sheepData} uniqueCol="brinco_num" />
+                  <TablePagination pages={{ current: currentPage, max: maxPages }} updatePage={setCurrentPage} />
+                </>
+              )
+              : <ErrorParagraph error={{ message: "Nenhum ovino cadastrado" }} />}
+          </div>
         )
       }
     </>
@@ -86,3 +95,20 @@ const ListagemRebanho = () => {
 };
 
 export default ListagemRebanho;
+
+
+export const loader = async ({ request }) => {
+  try {
+    // extrair os search/query params e copiá-los para a URL da API Back-End
+    const loaderQueryParams = new URL(request.url).search;
+    const url = '/rebanho' + loaderQueryParams;
+    const response = await api.get(url);
+    const data = response.data;
+    return data;
+  } catch (err) {
+    return {
+      isError: true,
+      message: err.response?.data?.message || 'Falha ao carregar usuarios'
+    };
+  }
+}

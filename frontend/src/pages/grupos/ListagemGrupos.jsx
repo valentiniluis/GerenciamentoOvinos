@@ -43,7 +43,7 @@ const ListagemGrupos = () => {
     const baseURL = '/grupo/listar';
     const url = (hasFilterSet) ? `${baseURL}?${filterProp}=${filterValue}` : baseURL;
     fetcher.load(url);
-  }, [filter, permissions.perm_alter_usuario_grupo]);
+  }, [filter]);
 
   if (!permissions.perm_visual_grupos) return <ErrorPage title="Usuário não autorizado" />;
 
@@ -78,23 +78,16 @@ export default ListagemGrupos;
 
 export const loader = async ({ request }) => {
   try {
-    const searchParams = new URL(request.url).searchParams;
-    let url = '/grupos';
-    if (searchParams.size > 0) {
-      url += '?';
-      const entries = searchParams.entries().map(entry => entry);
-      entries.forEach((entry, index) => {
-        url += `${entry[0]}=${entry[1]}`;
-        if (index < entries.length - 1) url += '&';
-      });
-    };
+    // extrair os search/query params e copiá-los para a URL da API Back-End
+    const loaderQueryParams = new URL(request.url).search;
+    const url = '/grupos' + loaderQueryParams;
     const response = await api.get(url);
     const data = response.data;
     return data;
   } catch (err) {
     return {
       isError: true,
-      message: err.response?.data?.message || 'Falha ao carregar dados'
+      message: err.response?.data?.message || 'Falha ao carregar grupos'
     };
   }
 }

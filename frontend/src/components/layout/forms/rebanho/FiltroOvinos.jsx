@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
 import FilterForm from "../FilterForm.jsx";
-
 import FILTER_TYPES from "../../../../util/filterTypes.js";
-import api from '../../../../api/request.js';
 
 
-const FiltroOvinos = ({ updateData, page, updatePages }) => {
-  const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
+const FiltroOvinos = ({ filter, updateFilter }) => {
   const noFilterApplied = (filter.filterProp === 'nenhuma');
 
   const inputFilter = [{
@@ -17,7 +13,7 @@ const FiltroOvinos = ({ updateData, page, updatePages }) => {
       label: 'Condição de Filtro (Opcional)',
       id: 'filtro',
       name: 'filtro',
-      onChange: (event) => setFilter({ filterProp: event.target.value }),
+      onChange: (event) => updateFilter({ filterProp: event.target.value }),
       options: [
         { value: 'nenhuma', name: 'Nenhuma' },
         { value: 'brinco_num', name: 'Brinco do Ovino' },
@@ -30,33 +26,9 @@ const FiltroOvinos = ({ updateData, page, updatePages }) => {
     }
   }];
 
-  useEffect(() => {
-    async function fetchData() {
-      const { filterProp, filterValue } = filter;
-      const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
-      try {
-        let url = '/rebanho?page=' + page;
-        if (hasFilterSet) {
-          const queryParam = `&${filterProp}=${filterValue}`;
-          url += queryParam;
-        }
-        const response = await api.get(url);
-        const data = response.data;
-        updateData(data.sheep);
-        updatePages(page, data.pages);
-      } catch (err) {
-        updateData({
-          isError: true,
-          message: err.response.data.message || 'Falha ao extrair ovinos'
-        });
-      }
-    }
-    fetchData();
-  }, [filter, updateData, page, updatePages]);
-
   const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[filter.filterProp]
 
-  return <FilterForm defaultFields={inputFilter} setFilter={setFilter} filterProps={props} />
+  return <FilterForm defaultFields={inputFilter} setFilter={updateFilter} filterProps={props} />
 }
 
 export default FiltroOvinos;

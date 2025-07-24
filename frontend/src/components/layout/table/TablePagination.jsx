@@ -1,13 +1,12 @@
 import classes from '../../../styles/TablePagination.module.css';
 
 
-const TablePagination = ({ pages, updatePages }) => {
+const TablePagination = ({ pages, updatePage }) => {
   const { current, max } = pages;
   if (max === 1) return null;
 
   const previousPage = current - 1;
   const nextPage = current + 1;
-
   const FIRST = 1;
 
   return (
@@ -15,7 +14,7 @@ const TablePagination = ({ pages, updatePages }) => {
       {previousPage > FIRST ? (
         <>
           <li className={classes.pageItems}>
-            <button onClick={() => updatePages(FIRST, max)}>{FIRST}</button>
+            <button onClick={() => updatePage(FIRST)}>{FIRST}</button>
           </li>
           { previousPage - 1 > FIRST ? (
             <li>
@@ -26,7 +25,7 @@ const TablePagination = ({ pages, updatePages }) => {
       ) : null}
       {previousPage >= 1 ? (
         <li className={classes.pageItems}>
-          <button onClick={() => updatePages(previousPage, max)}>
+          <button onClick={() => updatePage(previousPage)}>
             {previousPage}
           </button>
         </li>
@@ -38,7 +37,7 @@ const TablePagination = ({ pages, updatePages }) => {
       </li>
       {nextPage <= max ? (
         <li className={classes.pageItems}>
-          <button onClick={() => updatePages(nextPage, max)}>
+          <button onClick={() => updatePage(nextPage)}>
             {nextPage}
           </button>
         </li>
@@ -51,7 +50,7 @@ const TablePagination = ({ pages, updatePages }) => {
             </li>
             ) : null }
           <li className={classes.pageItems}>
-            <button onClick={() => updatePages(max, max)}>{max}</button>
+            <button onClick={() => updatePage(max)}>{max}</button>
           </li>
         </>
       ) : null}
