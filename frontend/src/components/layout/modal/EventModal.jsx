@@ -1,68 +1,102 @@
+import { useContext, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { PermissionsContext } from '../../../store/permissions-context';
+import { useSubmit } from 'react-router-dom';
 
-import api from '../../../api/request';
-import ApiAlert from '../../UI/ApiAlert';
+const EventModal = ({ show, onClose, event, date }) => {
+  const permissions = useContext(PermissionsContext);
+  const submit = useSubmit();
+  const formRef = useRef();
+  const canAlter = permissions.perm_alter_calendario;
+  const isEditing = (event !== null);
+  const formMethod = (isEditing) ? 'PUT' : 'POST';
 
-const EventModal = ({ show, onClose, onSave, initialDate, initialEvent }) => {
-  const [titulo, setTitulo] = useState(initialEvent?.tarefa_nome || '');
-  const [descricao, setDescricao] = useState(initialEvent?.descricao || '');
+  const handleSave = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const submitData = Object.fromEntries(formData.entries());
+    submit(submitData, { action: '/calendario', method: formMethod });
+    onClose();
+  }
 
-  // Atualiza campos ao abrir modal para edição
-  useEffect(() => {
-    setTitulo(initialEvent?.tarefa_nome || '');
-    setDescricao(initialEvent?.descricao || '');
-  }, [initialEvent, show]);
-
-  const handleSave = async () => {
-    if (!titulo) return alert('Informe corretamente um título.');
-    if (!initialDate) return alert('Data inválida.');
-    onSave({ titulo, descricao });
-  };
+  const handleDelete = () => {
+    const title = event.tarefa_nome;
+    submit(null, { action: `/calendario/excluir?title=${title}&date=${date}`, method: 'DELETE' });
+    onClose();
+  }
 
   return (
     <Modal show={show} onHide={onClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>{initialEvent ? 'Editar Tarefa' : 'Nova Tarefa'}</Modal.Title>
-      </Modal.Header>
-      <ApiAlert />
-      <Modal.Body>
-        <Form>
-          <Form.Group controlId="formTitulo" className="mb-3">
+      <Form onSubmit={handleSave} ref={formRef}>
+        <Modal.Header closeButton>
+          <Modal.Title>{isEditing ? 'Editar Tarefa' : 'Nova Tarefa'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input type="hidden" value="admin@admin.com" name="usuario_email" />
+          <Form.Group className="mb-3">
             <Form.Label>Título</Form.Label>
             <Form.Control
+              required
               type="text"
+              name="tarefa_nome"
+              id="tarefa_nome"
               placeholder="Digite o título da tarefa"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
+              defaultValue={event?.tarefa_nome}
               autoFocus
             />
           </Form.Group>
-
-          <Form.Group controlId="formDescricao" className="mb-3">
+          <Form.Group className="mb-3">
             <Form.Label>Descrição</Form.Label>
             <Form.Control
+              name="descricao"
+              id="descricao"
               as="textarea"
               rows={3}
               placeholder="Digite a descrição da tarefa (opcional)"
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
+              defaultValue={event?.descricao}
             />
           </Form.Group>
-          <Form.Group controlId="formDate" className="mb-3">
+          <Form.Group className="mb-3">
             <Form.Label>Data</Form.Label>
-            <Form.Control type="text" readOnly value={initialDate} />
+            <Form.Control
+              type="date"
+              name="data_criacao"
+              id="data_criacao"
+              defaultValue={date}
+              readOnly
+            />
           </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
-          Cancelar
-        </Button>
-        <Button variant="primary" onClick={handleSave}>
-          Salvar
-        </Button>
-      </Modal.Footer>
+          {isEditing ? (
+            <input 
+              name="tarefa_nome_original" 
+              id="tarefa_nome_original" 
+              type='hidden' 
+              value={event.tarefa_nome} 
+            />
+          ) : null}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onClose}>
+            Fechar
+          </Button>
+          {
+            isEditing && canAlter ? (
+              <>
+                <Button variant="danger" type='button' onClick={handleDelete}>
+                  Excluir
+                </Button>
+                <Button variant="primary" type='submit'>
+                  Editar
+                </Button>
+              </>
+            ) : !isEditing ? (
+              <Button variant="primary" type='submit'>
+                Salvar
+              </Button>
+            ) : null
+          }
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 };

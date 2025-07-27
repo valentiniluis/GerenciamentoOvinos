@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
 
-exports.getTarefas = async (req, res, next) => {
+exports.getTasks = async (req, res, next) => {
     try {
       const data = await db.manyOrNone(
         `SELECT *, TO_CHAR(data_criacao, 'YYYY-MM-DD') AS data_criacao_formatada FROM tarefa;`
@@ -17,7 +17,7 @@ exports.getTarefas = async (req, res, next) => {
     }
 }
 
-exports.postTarefas = async (req, res, next) => {
+exports.postTask = async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
         const error = new Error(result.array()[0].msg);
@@ -38,7 +38,7 @@ exports.postTarefas = async (req, res, next) => {
     }
 }
 
-exports.putTarefas = async (req, res, next) => {
+exports.putTask = async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
         const error = new Error(result.array()[0].msg);
@@ -46,14 +46,39 @@ exports.putTarefas = async (req, res, next) => {
         throw error;
     }
     try {
-        const { tarefa_nome_original, data_criacao_original, tarefa_nome, descricao, data_criacao, usuario_email } = req.body;
-        // Atualiza tarefa identificada pela chave composta
+        const { tarefa_nome_original, tarefa_nome, descricao, data_criacao, usuario_email } = req.body;
         await db.none(
-            `UPDATE tarefa SET tarefa_nome = $1, descricao = $2, data_criacao = $3, usuario_email = $4
-             WHERE tarefa_nome = $5 AND data_criacao = $6`,
-            [tarefa_nome, descricao, data_criacao, usuario_email, tarefa_nome_original, data_criacao_original]
+            `
+            UPDATE tarefa
+            SET 
+            tarefa_nome = $1, 
+            descricao = $2
+            WHERE 
+            usuario_email = $3 AND 
+            tarefa_nome = $4 AND 
+            data_criacao = $5;`,
+            [tarefa_nome, descricao, usuario_email, tarefa_nome_original, data_criacao]
         );
         res.status(200).json({ success: true, message: "Tarefa atualizada com sucesso" });
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
+exports.deleteTask = async (req, res, next) => {
+    try {
+        const { title, date } = req.params;
+        await db.none(`
+            DELETE FROM
+            tarefa
+            WHERE
+            tarefa_nome = $1 AND
+            data_criacao = $2;`, 
+            [title, date]
+        );
+        res.status(200).json({ success: true, message: 'Tarefa excluída com sucesso' });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

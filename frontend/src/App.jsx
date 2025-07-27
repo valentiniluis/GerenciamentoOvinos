@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 
 import Relatorio from './pages/relatorio/Relatorio.jsx';
-import Calendario from './pages/calendario/Calendario.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import ListarRebanho, { loader as sheepListLoader } from './pages/rebanho/ListagemRebanho.jsx';
@@ -17,11 +16,13 @@ import CadastroGrupo, { action as submitGroupAction } from './pages/grupos/Cadas
 import Autenticacao, { action as authenticateAction } from './pages/autenticacao/Autenticacao.jsx';
 import CadastroRebanho, { action as submitSheepAction } from './pages/rebanho/CadastroRebanho.jsx';
 import CadastroPesagem, { action as submitWeighInAction } from './pages/rebanho/CadastroPesagem.jsx';
+import { action as deleteTaskAction, loader as deleteTaskLoader } from './pages/calendario/ExcluirTarefa.jsx';
 import { action as deleteSheepAction } from './pages/rebanho/ExcluirOvino.jsx';
 import { action as deleteUserAction } from './pages/usuarios/ExcluirUsuario.jsx';
 import { action as deleteGroupAction } from './pages/grupos/ExcluirGrupo.jsx';
 import { action as deleteWeighInAction } from './pages/rebanho/ExcluirPesagem.jsx';
 import { action as logoutAction, loader as logoutLoader } from './pages/autenticacao/Logout.jsx';
+import Calendario, { loader as tasksLoader, action as tasksAction } from './pages/calendario/Calendario.jsx';
 import CadastroUsuario, { loader as userCreationLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
 import PerfilUsuario, { loader as profileLoader, action as profileAction } from './pages/usuarios/PerfilUsuario.jsx';
 
@@ -34,7 +35,6 @@ const router = createBrowserRouter([
     loader: rootLoader,
     children: [
       { index: true, element: <Dashboard /> },
-      { path: 'calendario', element: <Calendario /> },
       {
         path: 'rebanho',
         children: [
@@ -50,6 +50,15 @@ const router = createBrowserRouter([
               { path: 'pesagem/:data', action: deleteWeighInAction }
             ]
           }
+        ]
+      },
+      {
+        path: 'calendario',
+        element: <Calendario />,
+        loader: tasksLoader,
+        action: tasksAction,
+        children: [
+          { path: 'excluir', action: deleteTaskAction, loader: deleteTaskLoader }
         ]
       },
       {
