@@ -1,13 +1,11 @@
-import { redirect } from "react-router-dom";
-
 import api from '../../api/request.js';
 
 export const action = async ({ params }) => {
   const { brinco } = params;
 
   try {
-    await api.delete('/rebanho/' + brinco);
-    return redirect('/rebanho/listar');
+    const response = await api.delete('/rebanho/' + brinco);
+    return response.data;
   } catch (err) {
     return {
       isError: true,

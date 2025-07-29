@@ -16,8 +16,10 @@ const FilterForm = ({ defaultFields, setFilter, filterProps }) => {
       {noFilterApplied ? null : (
         <div className="py-4">
           {options === undefined 
-            ? <InputFilter {...filterProps} updateFilter={updateFilter} />
-            : <SelectFilter {...filterProps} updateFilter={updateFilter} />
+          // Ao mudar a key dos componentes abaixo, eles são re-executados como na sua primeira execução.
+          // Com isso, o valor e state dos filtros é resetado quando a filterProp é modificada
+            ? <InputFilter key={filterProp} {...filterProps} updateFilter={updateFilter} />
+            : <SelectFilter key={filterProp} {...filterProps} updateFilter={updateFilter} />
           }
         </div>
       )

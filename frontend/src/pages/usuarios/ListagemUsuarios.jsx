@@ -31,7 +31,7 @@ const ListagemUsuarios = () => {
       url += queryParam;
     }
     fetcher.load(url);
-  }, [filter, currentPage])
+  }, [filter.filterValue, currentPage]);
 
   if (!permissions.perm_visual_grupos) return <ErrorPage title="Usuário não autorizado" />
 

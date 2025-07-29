@@ -22,6 +22,8 @@ const ListagemRebanho = () => {
   const fetcher = useFetcher();
   const data = fetcher.data;
 
+  // Ao mudar o tipo do filtro, o valor do filtro é resetado para ''.
+  // A requisição das informações no back-end só acontece se o valor do filtro ou página mudar.
   useEffect(() => {
     const { filterProp, filterValue } = filter;
     const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
@@ -31,7 +33,7 @@ const ListagemRebanho = () => {
       url += queryParam;
     }
     fetcher.load(url);
-  }, [filter, currentPage]);
+  }, [filter.filterValue, currentPage]);
 
   if (!permissions.perm_visual_rebanho) return <ErrorPage title="Usuário não autorizado" />;
 

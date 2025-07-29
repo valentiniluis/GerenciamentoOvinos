@@ -1,5 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';

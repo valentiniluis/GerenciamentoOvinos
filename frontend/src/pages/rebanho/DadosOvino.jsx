@@ -88,7 +88,7 @@ export default DadosOvino;
 
 export const loader = async ({ params }) => {
   const { brinco } = params;
-  const url = '/rebanho/' + brinco;
+  const url = '/rebanho/' + brinco + '/dados';
   try {
     return await api.get(url);
   } catch (err) {

@@ -43,7 +43,7 @@ const ListagemGrupos = () => {
     const baseURL = '/grupo/listar';
     const url = (hasFilterSet) ? `${baseURL}?${filterProp}=${filterValue}` : baseURL;
     fetcher.load(url);
-  }, [filter]);
+  }, [filter.filterValue]);
 
   if (!permissions.perm_visual_grupos) return <ErrorPage title="Usuário não autorizado" />;
 

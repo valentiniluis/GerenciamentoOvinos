@@ -31,7 +31,7 @@ exports.getUsers = async (req, res, next) => {
         const endIndex = startIndex + MAX_PER_PAGE;
         const paginatedData = data.slice(startIndex, endIndex);
         const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
-        res.status(200).json({ users: paginatedData, pages: totalPages });
+        res.status(200).json({ success: true, users: paginatedData, pages: totalPages });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

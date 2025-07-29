@@ -44,7 +44,7 @@ exports.getSheep = async (req, res, next) => {
         const endIndex = startIndex + MAX_PER_PAGE;
         const paginatedData = data.slice(startIndex, endIndex);
         const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
-        res.status(200).json({ sheep: paginatedData, pages: totalPages });
+        res.status(200).json({ success: true, sheep: paginatedData, pages: totalPages });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -52,7 +52,7 @@ exports.getSheep = async (req, res, next) => {
 }
 
 
-exports.getOneSheep = async (req, res, next) => {
+exports.getSingleSheepData = async (req, res, next) => {
     const { brinco } = req.params;
     try {
         const data = await db.manyOrNone(
@@ -71,6 +71,34 @@ exports.getOneSheep = async (req, res, next) => {
             [brinco]
         );
         res.status(201).json(data);
+    } catch (err) {
+        if (!err.statusCode) err.statusCode = 500;
+        throw err;
+    }
+}
+
+
+exports.getSingleSheep = async (req, res, next) => {
+    const { brinco } = req.params;
+    try {
+        const sheep = await db.oneOrNone(
+            `SELECT
+                ov.brinco_num, ov.brinco_mae, ov.raca, ov.sexo, ov.finalidade, ov.peso_nascimento,
+                TO_CHAR(ov.data_nascimento, 'DD/MM/YYYY') AS data_nascimento,
+                CASE
+                    WHEN abatido = true THEN 'Sim' ELSE 'Não'
+                END AS abatido
+            FROM ovino AS ov
+            WHERE ov.brinco_num = $1;`,
+            brinco);
+
+        if (!sheep) {
+            const error = new Error('Ovino não encontrado');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        res.status(200).json({ success: true, sheep });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -115,18 +143,18 @@ exports.putSheep = async (req, res, next) => {
         const { brinco_num: novo_brinco, raca, sexo, data_nascimento, finalidade, peso_nascimento, abatido } = req.body;
         const brinco_mae = (!req.body.comprado) ? req.body.brinco_mae : null;
         const { brinco: antigo_brinco } = req.params;
-        await db.none(
-            "UPDATE ovino \
-            SET \
-            brinco_num = $1, \
-            brinco_mae = $2, \
-            raca = $3, \
-            sexo = $4, \
-            peso_nascimento = $5, \
-            data_nascimento = $6, \
-            finalidade = $7, \
-            abatido = $8 \
-            WHERE brinco_num = $9;",
+        await db.none(`
+            UPDATE ovino
+            SET
+            brinco_num = $1,
+            brinco_mae = $2,
+            raca = $3,
+            sexo = $4,
+            peso_nascimento = $5,
+            data_nascimento = $6,
+            finalidade = $7,
+            abatido = $8
+            WHERE brinco_num = $9;`,
             [novo_brinco, brinco_mae, raca, sexo, peso_nascimento, data_nascimento, finalidade, abatido, antigo_brinco]
         );
         res.status(200).json({ success: true, message: "Ovino editado com sucesso" });
@@ -151,7 +179,7 @@ exports.deleteSheep = async (req, res, next) => {
             DELETE FROM ovino \
             WHERE ovino.brinco_num = $1;',
             [brinco]);
-        res.status(200).json({ message: 'Ovino excluído com sucesso' });
+        res.status(200).json({ success: true, message: 'Ovino excluído com sucesso' });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

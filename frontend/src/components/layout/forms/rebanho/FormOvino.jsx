@@ -1,5 +1,5 @@
 import '../../../../styles/form.css';
-import { Form, useActionData, useSubmit } from 'react-router-dom';
+import { Form, useActionData, useFetcher } from 'react-router-dom';
 import FormRow from '../../../UI/FormRow.jsx';
 import InputField from '../../../UI/InputField.jsx';
 import FieldWrapper from '../../../UI/FieldWrapper.jsx';
@@ -12,10 +12,13 @@ import { dateFromLocaleToISO } from '../../../../util/utilFunctions.js';
 import { useEffect, useRef } from 'react';
 
 
-const FormOvino = ({ dados, metodo }) => {
+const FormOvino = ({ dados, metodo, excluirOvino }) => {
   const formRef = useRef();
-  const submit = useSubmit();
   const data = useActionData();
+  const fetcher = useFetcher();
+  const fetcherData = fetcher.data;
+
+  console.log(fetcherData);
 
   useEffect(() => {
     if (!data?.isError) formRef.current.reset();
@@ -166,7 +169,6 @@ const FormOvino = ({ dados, metodo }) => {
   let formButtons = <FormBtn text="Cadastrar" type="submit" />;
 
   if (metodo === 'PUT') {
-    const handleDelete = () => submit(null, { action: `/rebanho/${dados.brinco_num}/excluir`, method: 'DELETE' });
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
@@ -174,7 +176,7 @@ const FormOvino = ({ dados, metodo }) => {
           btnText="Excluir"
           title="Confirmar Exclusão"
           text="Excluir um ovino irá também deletar suas pesagens e registros médicos"
-          onClick={handleDelete}
+          onClick={excluirOvino}
           variant="danger"
         >
           Excluir Ovino

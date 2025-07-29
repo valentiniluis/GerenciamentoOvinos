@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useFetcher, useLoaderData, Link } from 'react-router-dom';
 import '../../styles/form.css';
 import ReturnLink from '../../components/UI/ReturnLink.jsx';
 import PageTitle from '../../components/UI/PageTitle.jsx';
@@ -14,9 +14,24 @@ import api from '../../api/request';
 const EditarOvino = () => {
   const permissions = useContext(PermissionsContext);
   const data = useLoaderData();
+  const fetcher = useFetcher();
+  const fetcherData = fetcher.data;
 
   if (!permissions.perm_alter_rebanho) return <ErrorPage title="Usuário não autorizado" />
+
+  if (fetcherData?.success) return (
+    <div className='text-center my-3'>
+      <ErrorParagraph error={{ message: fetcherData.message }} />
+      <Link to="/rebanho/listar" className='my-link'>Voltar para Listagem de Ovinos</Link>
+    </div>
+  );
+  
   if (data && data.isError) return <ErrorParagraph error={data} />
+
+  const handleDelete = () => { 
+    if (!data) return;
+    fetcher.submit(null, { action: `/rebanho/${data.brinco_num}/excluir`, method: 'DELETE' });
+  }
 
   const pageTitle = 'Editar Ovino N° ' + data.brinco_num;
   const title = (
@@ -26,12 +41,11 @@ const EditarOvino = () => {
     </>
   );
 
-
   return (
     <>
       <PageTitle title={title} />
       <div className="form-cont flex-center">
-        <FormOvino dados={data} metodo="PUT" />
+        <FormOvino dados={data} metodo="PUT" excluirOvino={handleDelete} />
       </div>
     </>
   );
@@ -45,16 +59,13 @@ export const loader = async ({ params }) => {
   const { brinco } = params;
 
   try {
-    const queryParam = 'brinco_num=' + brinco;
-    const response = await api.get('/rebanho?' + queryParam);
+    const response = await api.get('/rebanho/' + brinco);
     const data = response.data.sheep;
-    if (data.length === 0) throw new Error('Ovino não cadastrado');
-    return data[0];
+    return data;
   } catch (err) {
     return {
       isError: true,
-      defaultMessage: err.message,
-      message: 'Falha ao carregar dados do ovino. Tente novamente mais tarde'
+      message: err.response?.data?.message || 'Falha ao carregar dados do ovino. Tente novamente mais tarde'
     };
   }
 }

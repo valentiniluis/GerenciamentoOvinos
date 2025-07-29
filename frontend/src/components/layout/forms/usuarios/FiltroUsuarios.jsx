@@ -13,7 +13,7 @@ const FiltroUsuarios = ({ filter, updateFilter }) => {
       label: 'Condição de Filtro (Opcional)',
       id: 'filtro',
       name: 'filtro',
-      onChange: (event) => updateFilter({ filterProp: event.target.value }),
+      onChange: (event) => updateFilter({ filterProp: event.target.value, filterValue: '' }),
       options: [
         { value: 'nenhuma', name: 'Nenhuma' },
         { value: 'email', name: 'E-Mail' },
