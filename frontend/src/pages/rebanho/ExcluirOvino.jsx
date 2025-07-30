@@ -9,7 +9,7 @@ export const action = async ({ params }) => {
   } catch (err) {
     return {
       isError: true,
-      message: err.response?.data?.message
+      message: err.response?.data?.message || 'Falha ao excluir ovino'
     }
   }
 }

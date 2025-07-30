@@ -1,5 +1,5 @@
 import '../../../../styles/form.css';
-import { Form, useActionData, useFetcher } from 'react-router-dom';
+import { Form, useActionData } from 'react-router-dom';
 import FormRow from '../../../UI/FormRow.jsx';
 import InputField from '../../../UI/InputField.jsx';
 import FieldWrapper from '../../../UI/FieldWrapper.jsx';
@@ -15,10 +15,6 @@ import { useEffect, useRef } from 'react';
 const FormOvino = ({ dados, metodo, excluirOvino }) => {
   const formRef = useRef();
   const data = useActionData();
-  const fetcher = useFetcher();
-  const fetcherData = fetcher.data;
-
-  console.log(fetcherData);
 
   useEffect(() => {
     if (!data?.isError) formRef.current.reset();
@@ -143,6 +139,7 @@ const FormOvino = ({ dados, metodo, excluirOvino }) => {
     ],
   ];
 
+  let formButtons = <FormBtn text="Cadastrar" type="submit" />;
   if (metodo === 'PUT') {
     const abatido = (dados.abatido === "Sim") ? true : false;
     const abatidoProps = {
@@ -164,11 +161,7 @@ const FormOvino = ({ dados, metodo, excluirOvino }) => {
       }
     }
     rows.push([abatidoProps]);
-  }
 
-  let formButtons = <FormBtn text="Cadastrar" type="submit" />;
-
-  if (metodo === 'PUT') {
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
@@ -182,8 +175,8 @@ const FormOvino = ({ dados, metodo, excluirOvino }) => {
           Excluir Ovino
         </Confirmation>
       </>
-    )
-  };
+    );
+  }
 
   return (
     <Form method={metodo} className="large-input" ref={formRef}>

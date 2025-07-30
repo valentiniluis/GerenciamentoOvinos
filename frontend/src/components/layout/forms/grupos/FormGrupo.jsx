@@ -1,4 +1,4 @@
-import { Form as RouterForm, useActionData, useSubmit } from 'react-router-dom';
+import { Form as RouterForm, useActionData } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import '../../../../styles/form.css';
 import RenderFields from '../RenderFields.jsx';
@@ -12,8 +12,7 @@ import { useEffect, useRef } from 'react';
 const TEXT_PADDING = 'py-2';
 const CHECKBOX_PADDING = 'py-1';
 
-const FormCadastroGrupo = ({ dados, metodo }) => {
-  const submit = useSubmit();
+const FormGrupo = ({ dados, metodo, excluirGrupo }) => {
   const formRef = useRef();
   const data = useActionData();
 
@@ -150,8 +149,6 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
   let formButtons = <FormBtn text="Cadastrar" type="submit" />;
 
   if (metodo === 'PUT') {
-    const handleDelete = () => submit(null, { method: 'DELETE', action: `/grupo/${dados.nome}/excluir` });
-
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
@@ -159,7 +156,7 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
           btnText="Excluir"
           title="Confirmar Exclusão"
           text="Ao excluir um grupo, os usuários pertencentes a ele também serão deletados. Você tem certeza?"
-          onClick={handleDelete}
+          onClick={excluirGrupo}
           variant="danger"
         >
           Excluir Grupo
@@ -183,4 +180,4 @@ const FormCadastroGrupo = ({ dados, metodo }) => {
   );
 }
 
-export default FormCadastroGrupo;
+export default FormGrupo;

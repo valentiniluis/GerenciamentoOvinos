@@ -7,9 +7,10 @@ import ErrorParagraph from '../../components/UI/ErrorParagraph.jsx';
 import DeleteIcon from '../../components/UI/DeleteIcon.jsx';
 import CustomAlert from '../../components/UI/CustomAlert.jsx';
 import { PermissionsContext } from '../../store/permissions-context.jsx';
-
-import api from '../../api/request';
 import ErrorPage from '../ErrorPage.jsx';
+
+import { SHEEP_WEIGHT_SCHEMA } from '../../util/tableSchemas.js';
+import api from '../../api/request';
 
 
 const DadosOvino = () => {
@@ -28,16 +29,9 @@ const DadosOvino = () => {
 
   if (!permissions.perm_visual_rebanho) return <ErrorPage title="Usuário não autorizado" />
 
-  if (response.isError) return <ErrorParagraph error={response} />
-  let sheepData = response.data;
+  if (response.isError) return <ErrorPage title={response.message} />
 
-  const SCHEMA = [
-    ['ovino_brinco', 'Nº do Brinco'],
-    ['etapa_vida', 'Etapa da Vida'],
-    ['peso', 'Peso (kg)'],
-    ['data_pesagem', 'Data da Pesagem'],
-    ['observacao', 'Observação']
-  ];
+  let sheepData = response.data;
 
   const handleDelete = (dataPesagem) => {
     const dataFormatada = dataPesagem.split('/').join('-');
@@ -45,6 +39,8 @@ const DadosOvino = () => {
   }
 
   const handleCloseMessage = () => setDeleteMessage({ variant: null, message: null });
+
+  const schema = [...SHEEP_WEIGHT_SCHEMA];
 
   if (permissions.perm_alter_rebanho) {
     sheepData = sheepData.map(pesagem => ({
@@ -57,7 +53,7 @@ const DadosOvino = () => {
         />
       )
     }));
-    SCHEMA.push(['excluir', 'Excluir']);
+    schema.push(['excluir', 'Excluir']);
   }
 
   return (
@@ -66,7 +62,7 @@ const DadosOvino = () => {
       <section className="row py-4">
         <h2>Pesagens</h2>
         {sheepData.length > 0
-          ? <CustomTable schema={SCHEMA} data={sheepData} uniqueCol="data_pesagem" />
+          ? <CustomTable schema={schema} data={sheepData} uniqueCol="data_pesagem" />
           : <ErrorParagraph error={{ message: 'Nenhuma pesagem cadastrada' }} />
         }
       </section>
@@ -94,8 +90,7 @@ export const loader = async ({ params }) => {
   } catch (err) {
     return {
       isError: true,
-      defaultMessage: err.message,
-      message: 'Falha ao carregar dados do ovino. Tente novamente mais tarde.'
+      message: err.response?.data?.message || 'Falha ao carregar dados do ovino. Tente novamente mais tarde.'
     };
   }
 }

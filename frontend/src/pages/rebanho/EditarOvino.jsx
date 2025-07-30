@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useFetcher, useLoaderData, Link } from 'react-router-dom';
-import '../../styles/form.css';
 import ReturnLink from '../../components/UI/ReturnLink.jsx';
 import PageTitle from '../../components/UI/PageTitle.jsx';
 import FormOvino from '../../components/layout/forms/rebanho/FormOvino.jsx';
@@ -26,7 +25,7 @@ const EditarOvino = () => {
     </div>
   );
   
-  if (data && data.isError) return <ErrorParagraph error={data} />
+  if (data?.isError) return <ErrorPage title={data.message} />
 
   const handleDelete = () => { 
     if (!data) return;

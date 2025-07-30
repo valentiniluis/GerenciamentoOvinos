@@ -68,8 +68,15 @@ exports.getSingleSheepData = async (req, res, next) => {
             SELECT ovino_brinco, etapa_vida, peso, observacao, \
             TO_CHAR(data_pesagem, 'DD/MM/YYYY') AS data_pesagem \
             FROM pesagem WHERE ovino_brinco = $1;",
-            [brinco]
+            brinco
         );
+
+        if (data.length === 0) {
+            const error = new Error('Ovino não encontrado');
+            error.statusCode = 400;
+            throw error;
+        }
+
         res.status(201).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;

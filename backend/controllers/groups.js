@@ -144,10 +144,17 @@ exports.deleteGroup = async (req, res, next) => {
 exports.getGroup = async (req, res, next) => {
     const { nome } = req.params;
     try {
-        const data = await db.one(
+        const data = await db.oneOrNone(
             "SELECT * FROM grupo AS gp WHERE gp.nome = $1;",
-            [nome]
+            nome
         );
+
+        if (!data) {
+            const error = new Error('Grupo não encontrado');
+            error.statusCode = 400;
+            throw error;
+        }
+
         res.status(200).json(data);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;

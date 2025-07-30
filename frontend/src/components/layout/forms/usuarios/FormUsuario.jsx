@@ -1,5 +1,5 @@
 import '../../../../styles/form.css';
-import { useRouteLoaderData, Form, useSubmit, useActionData } from 'react-router-dom';
+import { useRouteLoaderData, Form, useActionData } from 'react-router-dom';
 import RenderFields from '../RenderFields.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
@@ -8,8 +8,7 @@ import Confirmation from '../../modal/Confirmation.jsx';
 import { useEffect, useRef } from 'react';
 
 
-const FormCadastroUsuario = ({ dados, metodo }) => {
-  const submit = useSubmit();
+const FormUsuario = ({ dados, metodo, excluirUsuario }) => {
   const response = useRouteLoaderData('user');
   const data = useActionData();
   const formRef = useRef();
@@ -22,10 +21,7 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
 
   const groups = response.data;
   const filtered = groups.filter(group => group.nome !== 'Administrador');
-  const grupos = filtered.map((group) => ({
-    name: group.nome,
-    value: group.nome,
-  }));
+  const grupos = filtered.map((group) => ({ name: group.nome, value: group.nome }));
 
   const rowPadding = 'py-3';
   let fields = [
@@ -77,6 +73,10 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
     }
   ];
 
+  let formButtons = (
+    <FormBtn text="Cadastrar" type="submit" />
+  );
+
   if (metodo === 'POST') {
     const senha = [{
       wrapper: {
@@ -104,13 +104,7 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
     }];
     fields = fields.concat(senha);
   }
-
-  let formButtons = (
-    <FormBtn text="Cadastrar" type="submit" />
-  );
-
-  if (metodo === 'PUT') {
-    const handleDelete = () => submit(null, { action: `/usuario/${dados.email}/excluir`, method: 'DELETE' });
+  else if (metodo === 'PUT') {
     formButtons = (
       <>
         <FormBtn text="Salvar" type="submit" />
@@ -118,7 +112,7 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
           btnText="Excluir"
           title="Confirmar Exclusão"
           text="Deletar um usuário é uma ação permanente. Você tem certeza?"
-          onClick={handleDelete}
+          onClick={excluirUsuario}
           variant="danger"
         >
           Excluir Usuário
@@ -138,4 +132,4 @@ const FormCadastroUsuario = ({ dados, metodo }) => {
   );
 };
 
-export default FormCadastroUsuario;
+export default FormUsuario;

@@ -124,8 +124,15 @@ exports.deleteUser = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
     const { email } = req.params;
     try {
-        const data = await db.one("SELECT * FROM usuario AS us WHERE us.email = $1;", email);
-        res.status(200).json(data);
+        const user = await db.oneOrNone("SELECT * FROM usuario AS us WHERE us.email = $1;", email);
+        
+        if (!user) {
+            const error = new Error('Usuário não encontrado');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        res.status(200).json(user);
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

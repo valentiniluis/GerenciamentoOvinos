@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import '../../styles/form.css';
 import PageTitle from '../../components/UI/PageTitle.jsx';
-import FormCadastroGrupo from '../../components/layout/forms/grupos/FormCadastroGrupo.jsx';
+import FormGrupo from '../../components/layout/forms/grupos/FormGrupo.jsx';
 import ErrorPage from '../ErrorPage.jsx';
 import { PermissionsContext } from '../../store/permissions-context.jsx';
 
@@ -17,7 +17,7 @@ const CadastroGrupo = () => {
     <>
       <PageTitle title="Cadastrar Grupo" />
       <div className="form-cont px-4 flex-center">
-        <FormCadastroGrupo metodo="POST" />
+        <FormGrupo metodo="POST" />
       </div>
     </>
   );

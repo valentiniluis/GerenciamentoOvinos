@@ -18,7 +18,7 @@ const DeleteIcon = ({ confirm, modalText, modalTitle, disabled = false }) => {
       title={modalTitle}
       text={modalText}
       className="delete-btn-icon"
-      buttonTxt="Excluir"
+      btnText="Excluir"
       onClick={confirm}
       variant="danger"
     >

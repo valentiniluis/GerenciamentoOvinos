@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import PageTitle from '../../components/UI/PageTitle';
-import FormCadastroUsuario from '../../components/layout/forms/usuarios/FormCadastroUsuario';
+import PageTitle from '../../components/UI/PageTitle.jsx';
+import FormUsuario from '../../components/layout/forms/usuarios/FormUsuario.jsx';
 import ErrorPage from '../ErrorPage.jsx';
 import { PermissionsContext } from '../../store/permissions-context.jsx';
 
@@ -11,12 +11,12 @@ const CadastroUsuario = () => {
   const permissions = useContext(PermissionsContext);
 
   if (!permissions.perm_alter_usuario_grupo) return <ErrorPage title="Usuário não autorizado" />
-  
+
   return (
     <>
       <PageTitle title="Cadastrar Usuário" />
       <div className="form-cont px-4 flex-center">
-        <FormCadastroUsuario metodo="POST" />
+        <FormUsuario metodo="POST" />
       </div>
     </>
   );
@@ -52,7 +52,6 @@ export const action = async ({ request, params }) => {
     if (method === 'POST') result = await api.post('/usuarios', data);
     else if (method === 'PUT') result = await api.put('/usuarios/' + email, data);
     return result.data;
-
   } catch (err) {
     return {
       isError: true,

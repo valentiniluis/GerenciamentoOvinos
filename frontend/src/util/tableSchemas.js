@@ -24,3 +24,12 @@ export const SHEEP_SCHEMA = [
   ['abatido', 'Abatido'],
   ['pesagens', 'Pesagens']
 ];
+
+
+export const SHEEP_WEIGHT_SCHEMA = [
+  ['ovino_brinco', 'Nº do Brinco'],
+  ['etapa_vida', 'Etapa da Vida'],
+  ['peso', 'Peso (kg)'],
+  ['data_pesagem', 'Data da Pesagem'],
+  ['observacao', 'Observação']
+];
