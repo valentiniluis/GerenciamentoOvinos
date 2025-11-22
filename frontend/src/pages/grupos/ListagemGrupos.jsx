@@ -1,93 +1,92 @@
-import { useState, useContext, useEffect } from 'react';
-import { Link, useFetcher } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import PageTitle from '../../components/UI/PageTitle';
 import CustomTable from '../../components/layout/table/CustomTable';
-import FiltroGrupos from '../../components/layout/forms/grupos/FiltroGrupos';
+import Filtro from '../../components/layout/forms/Filtro.jsx';
 import ErrorParagraph from '../../components/UI/ErrorParagraph';
 import ErrorPage from '../ErrorPage';
 import { PermissionsContext } from '../../store/permissions-context';
 import editIcon from '/edit_icon.svg';
 import editDisabledIcon from '/edit_disabled.svg';
 import { GROUP_SCHEMA } from '../../util/tableSchemas.js';
+import { getFilteredList } from '../../util/loaders.js';
+import TablePagination from '../../components/layout/table/TablePagination.jsx';
 
-import api from '../../api/request.js';
 
+const initialState = {
+  attribute: "nenhuma",
+  value: ""
+};
 
 const ListagemGrupos = () => {
   const permissions = useContext(PermissionsContext);
-  const [filter, setFilter] = useState({ filterProp: 'nenhuma', filterValue: '' });
-  const fetcher = useFetcher();
-  const data = fetcher.data;
+  const [filter, setFilter] = useState(initialState);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const isLoading = (fetcher.state === 'loading');
-  const errorMessage = (data?.isError) ? data.message : null;
-  let groupsData = (!data?.isError && data?.length > 0) ? [...data] : [];
-  if (groupsData.length > 0 && permissions.perm_alter_usuario_grupo) {
-    groupsData = groupsData.map(group => {
-      const isAdmin = (group.nome === 'Administrador');
-      const linkPath = (isAdmin) ? null : '/grupo/' + group.nome;
-      const linkIcon = (isAdmin) ? editDisabledIcon : editIcon;
-      const editar = (
-        <Link to={linkPath}>
-          <img src={linkIcon} alt="Ícone de editar grupo" className='edit-icon' />
-        </Link>
-      );
-      return { ...group, editar };
-    });
-  }
-
-  useEffect(() => {
-    const { filterProp, filterValue } = filter;
-    const hasFilterSet = (filterProp !== 'nenhuma' && filterValue);
-    const baseURL = '/grupo/listar';
-    const url = (hasFilterSet) ? `${baseURL}?${filterProp}=${filterValue}` : baseURL;
-    fetcher.load(url);
-  }, [filter.filterValue]);
+  
+  const { data, isError, error, isPending } = useQuery({
+    queryKey: ['grupos', { page: currentPage }, filter],
+    queryFn: getFilteredList,
+    enabled: permissions.perm_visual_grupos
+  });
 
   if (!permissions.perm_visual_grupos) return <ErrorPage title="Usuário não autorizado" />;
 
-  const schema = [...GROUP_SCHEMA];
-  if (permissions.perm_alter_usuario_grupo) schema.push(['editar', 'Editar']);
+  let content;
+  if (isPending) {
+    content = (
+      <div className='spinner-container'>
+        <Spinner variant='primary' animation='border' role='status' />
+      </div>
+    );
+  }
+  else if (isError || !data?.groups?.length) {
+    content = <ErrorParagraph error={{ message: error?.message || "Nenhum grupo encontrado" }} />
+  }
+  else if (data) {
+    const { groups, pages } = data;
+    const schema = [...GROUP_SCHEMA];
+    let groupsData = [...groups];
+
+    if (permissions.perm_alter_usuario_grupo) {
+      schema.push(['editar', 'Editar'])
+      groupsData = groupsData.map(group => {
+        const isAdmin = (group.nome === 'Administrador');
+        const linkPath = (isAdmin) ? null : '/grupo/' + group.nome;
+        const linkIcon = (isAdmin) ? editDisabledIcon : editIcon;
+        const editar = (
+          <Link to={linkPath}>
+            <img src={linkIcon} alt="Ícone de editar grupo" className='edit-icon' />
+          </Link>
+        );
+        return { ...group, editar };
+      });
+    }
+
+    content = (
+      <div className="row py-3">
+        <CustomTable schema={schema} data={groupsData} uniqueCol="nome" />
+        <TablePagination pages={pages} updatePage={setCurrentPage} />
+      </div>
+    );
+  }
 
   return (
     <>
       <PageTitle title="Grupos de Usuários" />
       <section className="form-cont flex-center">
-        <FiltroGrupos filter={filter} updateFilter={setFilter} />
+        <Filtro
+          filter={filter}
+          setFilter={setFilter}
+          setPage={setCurrentPage}
+          type="grupos"
+        />
       </section>
-      {isLoading ? (
-        <div className='spinner-container'>
-          <Spinner variant='primary' animation='border' role='status' />
-        </div>
-      ) : errorMessage ? <ErrorParagraph error={{ message: errorMessage }} />
-        : (
-          <div className="row py-3">
-            {groupsData.length > 0
-              ? <CustomTable schema={schema} data={groupsData} uniqueCol="nome" />
-              : <ErrorParagraph error={{ message: 'Nenhum grupo encontrado' }} />
-            }
-          </div>
-        )}
+      {content}
     </>
   );
 };
 
 export default ListagemGrupos;
-
-
-export const loader = async ({ request }) => {
-  try {
-    // extrair os search/query params e copiá-los para a URL da API Back-End
-    const loaderQueryParams = new URL(request.url).search;
-    const url = '/grupos' + loaderQueryParams;
-    const response = await api.get(url);
-    const data = response.data;
-    return data;
-  } catch (err) {
-    return {
-      isError: true,
-      message: err.response?.data?.message || 'Falha ao carregar grupos'
-    };
-  }
-}

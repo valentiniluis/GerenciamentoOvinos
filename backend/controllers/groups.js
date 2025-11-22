@@ -1,32 +1,41 @@
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
+const { getPagesAndClearData } = require('../util/db-util');
 
 
 exports.getGroups = async (req, res, next) => {
-    const queryArgs = [
-        "WITH users_count AS ( \
-                SELECT grupo_nome, COUNT(*) AS membros \
-                FROM usuario \
-                GROUP BY grupo_nome \
-            ) \
-            SELECT \
-                gp.nome, gp.descricao, COALESCE(us.membros, 0) AS membros, \
-                TO_CHAR(gp.data_criacao, 'DD/MM/YYYY') AS data_criacao \
-            FROM grupo AS gp \
-            LEFT JOIN users_count AS us \
-            ON gp.nome = us.grupo_nome"
-    ];
-    const filterProps = req.query;
-    const filters = Object.entries(filterProps).filter(([key]) => key !== 'page');
+    const { page = 1, limit = 7 } = req.query;
+    const filters = Object.entries(req.query).filter(([key]) => !(['page', 'limit'].includes(key)));
+    const offset = (page - 1) * limit;
+
+    const queryArgs = [limit, offset];
+    let query = `
+        WITH users_count AS (
+            SELECT grupo_nome, COUNT(*) AS membros
+            FROM usuario
+            GROUP BY grupo_nome
+        )
+        SELECT
+            gp.nome, gp.descricao, COALESCE(us.membros, 0) AS membros,
+            TO_CHAR(gp.data_criacao, 'DD/MM/YYYY') AS data_criacao,
+            COUNT(*) OVER() AS row_count
+        FROM grupo AS gp
+        LEFT JOIN users_count AS us
+        ON gp.nome = us.grupo_nome
+        `;
+
+    const queryEnd = ' LIMIT $1 OFFSET $2;';
     if (filters.length > 0) {
-        queryArgs[0] += " WHERE $1:name ILIKE '%$2#%';";
-        queryArgs.push(filters[0]);
+        query += " WHERE $3:name ILIKE '%$4#%'";
+        const [filter] = filters;
+        queryArgs.push(...filter);
     }
-    queryArgs[0] += ';';
+    query += queryEnd;
 
     try {
-        const data = await db.manyOrNone(...queryArgs);
-        res.status(200).json(data);
+        const data = await db.manyOrNone(query, queryArgs);
+        const finalData = getPagesAndClearData(data, limit, 'groups');
+        res.status(200).json({ success: true, message: "Fetched groups successfully!", ...finalData });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { getPermissions } = require('../util/permissions');
+const { getPermissions } = require('../util/db-util');
 require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET;

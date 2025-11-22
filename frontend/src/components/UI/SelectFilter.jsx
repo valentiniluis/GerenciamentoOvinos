@@ -6,7 +6,7 @@ const SelectFilter = ({ label, options, updateFilter, ...props }) => {
 
   return (
     <>
-      {label ? <Form.Label className='my-label'>{label}</Form.Label> : null}
+      {label && <Form.Label className='my-label'>{label}</Form.Label>}
       <Form.Select {...props} onChange={handleChange}>
         {options.map(option => (
           <option key={option.name} value={option.value} {...option}>{option.name}</option>

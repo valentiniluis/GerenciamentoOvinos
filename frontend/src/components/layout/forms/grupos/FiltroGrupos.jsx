@@ -1,33 +1,17 @@
 import FilterForm from "../FilterForm.jsx";
-import FILTER_TYPES from "../../../../util/filterTypes.js";
+import FILTER_TYPES from "../../../../util/constants.js";
 
 
-const FiltroGrupos = ({ filter, updateFilter }) => {
-  const noFilterApplied = (filter.filterProp === 'nenhuma');
+const FiltroGrupos = ({ onUpdateAttr, onUpdateValue, filter }) => {
+  const { attribute } = filter;
 
-  const inputFilter = [{
-    wrapper: {
-      size: 'large-input'
-    },
-    inputProps: {
-      label: 'Condição de Filtro (Opcional)',
-      id: 'filtro',
-      name: 'filtro',
-      onChange: (event) => updateFilter({ filterProp: event.target.value, filterValue: '' }),
-      options: [
-        { value: 'nenhuma', name: 'Nenhuma' },
-        { value: 'nome', name: 'Nome do Grupo' },
-        { value: 'descricao', name: 'Descrição' }
-      ]
-    }
-  }];
-
-  const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[filter.filterProp]
+  const noFilterApplied = (filter.attribute === 'nenhuma');
+  const props = noFilterApplied ? { name: 'nenhuma' } : FILTER_TYPES[attribute];
 
   return (
-    <FilterForm
+    <FilterForm 
       defaultFields={inputFilter}
-      setFilter={updateFilter}
+      onUpdate={onUpdateValue}
       filterProps={props}
     />
   );

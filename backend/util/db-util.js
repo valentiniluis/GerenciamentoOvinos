@@ -19,3 +19,12 @@ exports.getPermissions = async (userEmail) => {
     userEmail);
   return result;
 }
+
+
+exports.getPagesAndClearData = (data, limit, key = 'data') => {
+  const total_items = data.length > 0 ? +data[0].row_count : 0;
+  const pages = Math.ceil(total_items / limit);
+  // cleanup
+  data.forEach(item => delete item.row_count);
+  return { [key]: data, pages };
+}

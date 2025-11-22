@@ -1,28 +1,19 @@
 import '../../../../styles/form.css';
-import { useRouteLoaderData, Form, useActionData } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import RenderFields from '../RenderFields.jsx';
 import ApiAlert from '../../../UI/ApiAlert.jsx';
 import FormBtn from '../../../UI/FormBtn.jsx';
 import ErrorParagraph from '../../../UI/ErrorParagraph.jsx';
 import Confirmation from '../../modal/Confirmation.jsx';
 import { useEffect, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getGroups } from '../../../../util/loaders.js';
+import { useContext } from 'react';
+import { PermissionsContext } from '../../../../store/permissions-context.jsx';
+import { Spinner } from 'react-bootstrap';
 
 
-const FormUsuario = ({ dados, metodo, excluirUsuario }) => {
-  const response = useRouteLoaderData('user');
-  const data = useActionData();
-  const formRef = useRef();
-
-  useEffect(() => {
-    if (!data?.isError) formRef.current.reset();
-  }, [data]);
-
-  if (response.isError) return <ErrorParagraph error={response} />
-
-  const groups = response.data;
-  const filtered = groups.filter(group => group.nome !== 'Administrador');
-  const grupos = filtered.map((group) => ({ name: group.nome, value: group.nome }));
-
+const CamposForm = ({ dados, grupos, metodo, excluirUsuario }) => {
   const rowPadding = 'py-3';
   let fields = [
     {
@@ -78,30 +69,32 @@ const FormUsuario = ({ dados, metodo, excluirUsuario }) => {
   );
 
   if (metodo === 'POST') {
-    const senha = [{
-      wrapper: {
-        class: rowPadding,
-        size: 'medium-input',
+    const senha = [
+      {
+        wrapper: {
+          class: rowPadding,
+          size: 'medium-input',
+        },
+        inputProps: {
+          label: 'Senha',
+          id: 'senha',
+          type: 'password',
+          name: 'senha',
+        },
       },
-      inputProps: {
-        label: 'Senha',
-        id: 'senha',
-        type: 'password',
-        name: 'senha',
-      },
-    },
-    {
-      wrapper: {
-        class: rowPadding,
-        size: 'medium-input',
-      },
-      inputProps: {
-        label: 'Confirmação Senha',
-        id: 'confirmacao_senha',
-        type: 'password',
-        name: 'confirmacao_senha',
-      },
-    }];
+      {
+        wrapper: {
+          class: rowPadding,
+          size: 'medium-input',
+        },
+        inputProps: {
+          label: 'Confirmação Senha',
+          id: 'confirmacao_senha',
+          type: 'password',
+          name: 'confirmacao_senha',
+        },
+      }
+    ];
     fields = fields.concat(senha);
   }
   else if (metodo === 'PUT') {
@@ -122,11 +115,47 @@ const FormUsuario = ({ dados, metodo, excluirUsuario }) => {
   };
 
   return (
-    <Form method={metodo} className="medium-input" ref={formRef}>
+    <>
       <RenderFields fields={fields} />
       <div className="row py-5 justify-content-center gap-5">
         {formButtons}
       </div>
+    </>
+  );
+}
+
+
+const FormUsuario = ({ dados, metodo, excluirUsuario }) => {
+  const permissions = useContext(PermissionsContext);
+  const formRef = useRef();
+
+  const { data, isError, isPending } = useQuery({
+    queryKey: ['grupos'],
+    queryFn: getGroups,
+    enabled: permissions.perm_alter_usuario_grupo
+  });
+
+  useEffect(() => {
+    if (!data?.isError) formRef?.current?.reset();
+  }, [data]);
+
+  let content;
+  if (isPending) {
+    content = <Spinner role='status' />;
+  }
+  else if (isError) {
+    content = <ErrorParagraph error={{ message: "Não foi possível carregar os grupos." }} />
+  }
+  else if (data) {
+    const groups = data.groups?.
+      filter(group => group.nome !== 'Administrador').
+      map((group) => ({ name: group.nome, value: group.nome }));
+    content = <CamposForm dados={dados} metodo={metodo} excluirUsuario={excluirUsuario} grupos={groups} />
+  }
+
+  return (
+    <Form method={metodo} className="medium-input" ref={formRef}>
+      {content}
       <ApiAlert />
     </Form>
   );

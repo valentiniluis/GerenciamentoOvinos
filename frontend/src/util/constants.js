@@ -1,5 +1,5 @@
 
-const FILTER_TYPES = {
+export const FILTER_TYPES = {
   nome: {
     placeholder: 'Insira um nome...',
     id: 'nome',
@@ -45,7 +45,7 @@ const FILTER_TYPES = {
     options: [
       { value: '', hidden: true, name: 'Selecione a finalidade...' },
       { value: 'Reprodução', name: 'Reprodução' },
-      { value: 'Abate', name: 'Abate'},
+      { value: 'Abate', name: 'Abate' },
       { value: 'Venda', name: 'Venda' },
       { value: 'Leite', name: 'Leite' },
       { value: 'Outra', name: 'Outra' },
@@ -62,5 +62,54 @@ const FILTER_TYPES = {
   }
 }
 
+export const filtroOvinos = [{
+  wrapper: {
+    size: 'large-input'
+  },
+  inputProps: {
+    label: 'Condição de Filtro (Opcional)',
+    id: 'filtro',
+    name: 'filtro',
+    options: [
+      { value: 'nenhuma', name: 'Nenhuma' },
+      { value: 'brinco_num', name: 'Brinco do Ovino' },
+      { value: 'brinco_mae', name: 'Brinco da Mãe do Ovino' },
+      { value: 'raca', name: 'Raça' },
+      { value: 'sexo', name: 'Sexo' },
+      { value: 'finalidade', name: 'Finalidade' },
+      { value: 'abatido', name: 'Abatido' }
+    ]
+  }
+}];
 
-export default FILTER_TYPES;
+export const filtroGrupos = [{
+  wrapper: {
+    size: 'large-input'
+  },
+  inputProps: {
+    label: 'Condição de Filtro (Opcional)',
+    id: 'filtro',
+    name: 'filtro',
+    options: [
+      { value: 'nenhuma', name: 'Nenhuma' },
+      { value: 'nome', name: 'Nome do Grupo' },
+      { value: 'descricao', name: 'Descrição' }
+    ]
+  }
+}];
+
+export const filtroUsuarios = [{
+  wrapper: {
+    size: 'large-input'
+  },
+  inputProps: {
+    label: 'Condição de Filtro (Opcional)',
+    id: 'filtro',
+    name: 'filtro',
+    options: [
+      { value: 'nenhuma', name: 'Nenhuma' },
+      { value: 'email', name: 'E-Mail' },
+      { value: 'nome', name: 'Nome' }
+    ]
+  }
+}];

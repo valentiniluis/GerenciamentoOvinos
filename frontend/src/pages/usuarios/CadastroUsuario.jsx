@@ -26,19 +26,6 @@ const CadastroUsuario = () => {
 export default CadastroUsuario;
 
 
-export const loader = async () => {
-  try {
-    return await api.get('/grupos');
-  } catch (err) {
-    return {
-      isError: true,
-      defaultMessage: err.message,
-      message: 'Não foi possível extrair os grupos. Tente novamente mais tarde.'
-    };
-  }
-}
-
-
 export const action = async ({ request, params }) => {
   const { method } = request;
   const { email } = params;

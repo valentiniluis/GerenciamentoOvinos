@@ -1,37 +1,41 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const db = require('../model/database');
+const { getPagesAndClearData } = require('../util/db-util');
 require('dotenv').config();
 
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 
 
-// queryArgs[0] corresponde à query
-// queryArgs[1] são os valores para os filtros que serão aplicados, se houverem
-
 exports.getUsers = async (req, res, next) => {
     const page = req.query.page || 1;
     const MAX_PER_PAGE = 10;
-    const queryArgs = [
-        "SELECT us.nome, us.email, us.grupo_nome, TO_CHAR(us.data_cadastro, 'DD/MM/YYYY') AS data_cadastro \
-        FROM usuario AS us"
-    ];
-    const filterProps = req.query;
-    const filters = Object.entries(filterProps).filter(([key]) => key !== 'page');
+    const offset = (page - 1) * MAX_PER_PAGE;
+
+    const queryArgs = [MAX_PER_PAGE, offset];
+    let query = `
+        SELECT 
+            us.nome, 
+            us.email, 
+            us.grupo_nome, 
+            TO_CHAR(us.data_cadastro, 'DD/MM/YYYY') AS data_cadastro,
+            COUNT(*) OVER() AS row_count
+        FROM usuario AS us
+        `;
+    const queryEnd = ' LIMIT $1 OFFSET $2;';
+
+    const filters = Object.entries(req.query).filter(([key]) => key !== 'page');
     if (filters.length > 0) {
-        queryArgs[0] += " WHERE $1:name ILIKE '%$2#%';";
-        queryArgs.push(filters[0]);
+        query += "WHERE $3:name ILIKE '%$4#%'";
+        const [filter] = filters;
+        queryArgs.push(...filter);
     }
-    queryArgs[0] += ';';
+    query += queryEnd;
 
     try {
-        const data = await db.manyOrNone(...queryArgs);
-        const totalRows = data.length;
-        const startIndex = (page - 1) * MAX_PER_PAGE;
-        const endIndex = startIndex + MAX_PER_PAGE;
-        const paginatedData = data.slice(startIndex, endIndex);
-        const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
-        res.status(200).json({ success: true, users: paginatedData, pages: totalPages });
+        const data = await db.manyOrNone(query, queryArgs);
+        const finalData = getPagesAndClearData(data, MAX_PER_PAGE, 'users');
+        res.status(200).json({ success: true, ...finalData });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;
@@ -125,7 +129,7 @@ exports.getUser = async (req, res, next) => {
     const { email } = req.params;
     try {
         const user = await db.oneOrNone("SELECT * FROM usuario AS us WHERE us.email = $1;", email);
-        
+
         if (!user) {
             const error = new Error('Usuário não encontrado');
             error.statusCode = 400;

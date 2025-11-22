@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
-const { getPermissions } = require('../util/permissions');
+const { getPermissions } = require('../util/db-util');
 require('dotenv').config();
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS;

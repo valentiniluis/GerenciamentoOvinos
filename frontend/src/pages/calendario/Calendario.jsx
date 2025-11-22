@@ -116,7 +116,6 @@ export const loader = async () => {
 export const action = async ({ request }) => {
   try {
     const { method } = request;
-    console.log(method);
     const formData = await request.formData();
     const submitData = Object.fromEntries(formData.entries());
     let result;

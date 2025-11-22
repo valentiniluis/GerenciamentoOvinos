@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const db = require('../model/database');
+const { getPagesAndClearData } = require('../util/db-util');
 
 // mapeia um tipo de entrada para uma condição WHERE
 const queryWhereOperators = {
@@ -8,43 +9,45 @@ const queryWhereOperators = {
 
 
 exports.getSheep = async (req, res, next) => {
+    const filters = (Object.entries(req.query)).filter(param => param[0] !== 'page');
     const page = req.query.page || 1;
     const MAX_PER_PAGE = 12;
-    const queryArgs = [
-        "SELECT \
-            ov.brinco_num, ov.brinco_mae, ov.raca, ov.sexo, ov.finalidade, ov.peso_nascimento, \
-            TO_CHAR(ov.data_nascimento, 'DD/MM/YYYY') AS data_nascimento, \
-            CASE \
-                WHEN abatido = true THEN 'Sim' ELSE 'Não' \
-            END AS abatido \
-        FROM ovino AS ov"
-    ];
-    const filterProps = req.query;
-    const filters = (Object.entries(filterProps)).filter(param => param[0] !== 'page');
+    const offset = (page - 1) * MAX_PER_PAGE;
+
+    const queryArgs = [MAX_PER_PAGE, offset];
+    let query = `
+        SELECT
+            ov.brinco_num, ov.brinco_mae, ov.raca, ov.sexo, ov.finalidade, ov.peso_nascimento,
+            TO_CHAR(ov.data_nascimento, 'DD/MM/YYYY') AS data_nascimento,
+            CASE
+                WHEN abatido = true THEN 'Sim' ELSE 'Não'
+            END AS abatido,
+            COUNT(*) OVER() AS row_count
+        FROM ovino AS ov
+        `;
+    const queryEnd = ' LIMIT $1 OFFSET $2;';
+
     if (filters.length > 0) {
-        let queryValues = [];
-        queryArgs[0] += ' WHERE ';
-        const conditions = filters.map((keyValuePair, index) => {
-            const firstVariableNumber = (index * 2) + 1;
-            queryValues = queryValues.concat(keyValuePair);
-            const column = keyValuePair[0];
-            const operator = queryWhereOperators[column] || 'ILIKE';
-            let value = `$${firstVariableNumber + 1}`;
-            if (operator === 'ILIKE') value = `'%${value}#%'`
-            return `$${firstVariableNumber}:name ${operator} ${value}`;
+        query += 'WHERE ';
+        const conditions = filters.map(([col, value]) => {
+            const varNumber = queryArgs.length + 1;
+            queryArgs.push(col, value);
+            const operator = queryWhereOperators[col] || 'ILIKE';
+            const conditionStart = `$${varNumber}:name ${operator} `;
+            const conditionEnd = (operator === 'ILIKE') ? `'%$${varNumber + 1}#%'` : `$${varNumber + 1}`;
+            return conditionStart + conditionEnd;
         });
-        queryArgs[0] += conditions.join(' AND ');
-        queryArgs.push(queryValues);
+        query += conditions.join(' AND ');
     }
-    queryArgs[0] += ';';
+
+    query += queryEnd;
+
+    console.log(query);
+
     try {
-        const data = await db.manyOrNone(...queryArgs);
-        const totalRows = data.length;
-        const startIndex = (page - 1) * MAX_PER_PAGE;
-        const endIndex = startIndex + MAX_PER_PAGE;
-        const paginatedData = data.slice(startIndex, endIndex);
-        const totalPages = Math.ceil(totalRows / MAX_PER_PAGE);
-        res.status(200).json({ success: true, sheep: paginatedData, pages: totalPages });
+        const data = await db.manyOrNone(query, queryArgs);
+        const finalData = getPagesAndClearData(data, MAX_PER_PAGE, 'sheep');
+        res.status(200).json({ success: true, ...finalData });
     } catch (err) {
         if (!err.statusCode) err.statusCode = 500;
         throw err;

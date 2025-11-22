@@ -1,11 +1,16 @@
+import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import queryClient from './util/queryClient.js';
 
 import Relatorio from './pages/relatorio/Relatorio.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
-import ListarRebanho, { loader as sheepListLoader } from './pages/rebanho/ListagemRebanho.jsx';
-import ListagemUsuarios, { loader as usersLoader } from './pages/usuarios/ListagemUsuarios.jsx';
-import ListagemGrupos, { loader as groupsLoader } from './pages/grupos/ListagemGrupos.jsx';
+
+const ListarRebanho = lazy(() => import('./pages/rebanho/ListagemRebanho.jsx'));
+const ListarGrupos = lazy(() => import('./pages/grupos/ListagemGrupos.jsx'));
+const ListarUsuarios = lazy(() => import('./pages/usuarios/ListagemUsuarios.jsx'));
+
 import RootLayout, { loader as rootLoader } from './components/layout/root/RootLayout.jsx';
 import DadosOvino, { loader as sheepDataLoader } from './pages/rebanho/DadosOvino.jsx';
 import EditarOvino, { loader as singleSheepLoader } from './pages/rebanho/EditarOvino.jsx';
@@ -22,7 +27,7 @@ import { action as deleteGroupAction } from './pages/grupos/ExcluirGrupo.jsx';
 import { action as deleteWeighInAction } from './pages/rebanho/ExcluirPesagem.jsx';
 import { action as logoutAction, loader as logoutLoader } from './pages/autenticacao/Logout.jsx';
 import Calendario, { loader as tasksLoader, action as tasksAction } from './pages/calendario/Calendario.jsx';
-import CadastroUsuario, { loader as userCreationLoader, action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
+import CadastroUsuario, { action as submitUserAction } from './pages/usuarios/CadastroUsuario.jsx';
 import PerfilUsuario, { loader as profileLoader, action as profileAction } from './pages/usuarios/PerfilUsuario.jsx';
 
 
@@ -38,7 +43,7 @@ const router = createBrowserRouter([
         path: 'rebanho',
         children: [
           { path: 'cadastrar', element: <CadastroRebanho />, action: submitSheepAction },
-          { path: 'listar', element: <ListarRebanho />, loader: sheepListLoader },
+          { path: 'listar', element: <ListarRebanho /> },
           { path: 'pesagem', element: <CadastroPesagem />, action: submitWeighInAction },
           {
             path: ':brinco',
@@ -62,11 +67,9 @@ const router = createBrowserRouter([
       },
       {
         path: 'usuario',
-        id: 'user',
-        loader: userCreationLoader,
         children: [
           { path: 'cadastrar', element: <CadastroUsuario />, action: submitUserAction },
-          { path: 'listar', element: <ListagemUsuarios />, loader: usersLoader },
+          { path: 'listar', element: <ListarUsuarios /> },
           {
             path: ':email',
             children: [
@@ -79,7 +82,7 @@ const router = createBrowserRouter([
       {
         path: 'grupo',
         children: [
-          { path: 'listar', element: <ListagemGrupos />, loader: groupsLoader },
+          { path: 'listar', element: <ListarGrupos /> },
           { path: 'cadastrar', element: <CadastroGrupo />, action: submitGroupAction },
           {
             path: ':nome',
@@ -100,7 +103,9 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 
